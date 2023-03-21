@@ -1,0 +1,15 @@
+name: Generate SDK Packages
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+permissions:
+  contents: write
+jobs:
+  generate-js:
+    name: Generate JavaScript SDK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build JavaScript SDK
+        uses: Kong/shared-actions/build-js-sdk@main
