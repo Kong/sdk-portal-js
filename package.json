@@ -1,0 +1,15 @@
+{
+  "name": "@kong/sdk-portal-js",
+  "main": "dist/index.js",
+  "types": "./index.ts",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": "git@github.com:Kong/sdk-portal-js.git",
+  "devDependencies": {
+    "@types/axios": "0.14.0",
+    "typescript": "5.0.2"
+  }
+}
