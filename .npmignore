@@ -1,2 +1,1 @@
-.github
-git_push.sh
+# empty npmignore to ensure all required files (e.g., in the dist folder) are published by npm
