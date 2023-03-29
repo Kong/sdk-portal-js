@@ -1,0 +1,2300 @@
+openapi: 3.0.3
+info:
+  title: Portal API
+  version: 2.0.0
+  description: Portal API
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+paths:
+  /api/v2/application-registrations/service-versions/{id}:
+    get:
+      summary: Application registration Configuration
+      description: Returns the application registration configuration of the given service
+      operationId: get-application-registration-configuration
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: id of the service version
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: application registration configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationRegistrationConfiguration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - app-reg
+  /api/v2/applications:
+    get:
+      summary: Get many applications
+      description: This endpoint allows the developer to list applications
+      operationId: get-many-applications
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetManyApplications'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+      tags:
+        - applications
+    post:
+      summary: Create Application
+      description: This endpoint allows the developer to create an application
+      operationId: create-application
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApplication'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApplicationCreation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - applications
+  /api/v2/applications/{applicationId}:
+    get:
+      summary: Get one Application
+      description: This endpoint allows the developer to get an application
+      operationId: get-one-application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplication'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - applications
+    delete:
+      summary: Delete Application
+      description: This endpoint allows the developer to delete an application they own
+      operationId: delete-application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '204':
+          description: The application has been deleted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      tags:
+        - applications
+    put:
+      summary: Update Application
+      description: This endpoint allows the developer to update an application they own
+      operationId: update-application
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApplication'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApplicationUpdate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - applications
+  /api/v2/applications/{applicationId}/credentials:
+    get:
+      summary: Get Many credentials
+      description: >-
+        This endpoint allows the developer to list the credentials for an
+        application they own
+      operationId: get-many-credentials
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCredentials'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - credentials
+    post:
+      summary: Post Credential
+      description: >-
+        This endpoint allows the developer to create a credential for an
+        application they own
+      operationId: create-credential
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCredential'
+      responses:
+        '201':
+          $ref: '#/components/responses/CredentialCreation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - credentials
+  /api/v2/applications/{applicationId}/credentials/{credentialId}:
+    put:
+      summary: Update Credential
+      description: >-
+        This endpoint allows the developer to update a credential for an
+        application they own
+      operationId: update-credential
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/CredentialId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCredential'
+      responses:
+        '200':
+          description: credential properly updated
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - credentials
+    delete:
+      summary: Delete Credential
+      description: >-
+        This endpoint allows the developer to delete a credential for an
+        application they own
+      operationId: delete-credential
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/CredentialId'
+      responses:
+        '204':
+          description: credential properly deleted
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - credentials
+  /api/v2/applications/{applicationId}/refresh-token:
+    post:
+      summary: refresh token
+      description: >-
+        This endpoint allows the developer to reset the client secret for an
+        application they own
+      operationId: refresh-application-token
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '201':
+          $ref: '#/components/responses/RefreshToken'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - applications
+        - credentials
+  /api/v2/applications/{applicationId}/registrations:
+    get:
+      summary: Get application registrations
+      description: This endpoint lists service registrations for an application
+      operationId: get-many-application-registrations
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetManyRegistrations'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - registrations
+    post:
+      summary: Register an application for a service
+      description: This endpoint registers an application for a service
+      operationId: create-application-registration
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateRegistration'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateRegistration'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - registrations
+  /api/v2/applications/{applicationId}/registrations/{registrationId}:
+    get:
+      summary: Get an application registration
+      description: >-
+        This endpoint retrieves the specified service registration for an
+        application
+      operationId: get-one-application-registration
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetRegistration'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - registrations
+    delete:
+      summary: Delete an application registration
+      description: This endpoint unregister an application for a service version
+      operationId: delete-application-registration
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '204':
+          description: The registration has been deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - registrations
+  /api/v2/developer:
+    post:
+      operationId: register
+      summary: Register
+      description: Register to the developer portal
+      requestBody:
+        description: Developer registration
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterPayload'
+      responses:
+        '201':
+          description: the developer has been properly registered.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - developer
+  /api/v2/developer/password-reset:
+    post:
+      operationId: reset-password
+      summary: Password Reset
+      description: |
+        Starts the password reset flow for the desired account. An email
+        will be sent to the email address to initiate the password reset flow.
+      requestBody:
+        description: Developer registration
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordPayload'
+      responses:
+        '200':
+          description: the password reset flow has been initiated.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+        - developer
+  /api/v2/portal/appearance:
+    get:
+      operationId: get-portal-appearance
+      summary: portal appearance
+      description: appearance of the portal
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalAppearanceResponse'
+      tags:
+        - portal
+  /api/v2/portal/context:
+    get:
+      operationId: get-portal-context
+      summary: get portal context
+      description: return the portal context
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalContextResponse'
+      tags:
+        - portal
+  /api/v2/portal/stylesheet/catalog-cover:
+    get:
+      operationId: get-portal-catalog-cover
+      summary: catalog cover
+      description: Cover banner for the developer portal
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalCoverResponse'
+      tags:
+        - portal
+  /api/v2/portal/stylesheet/logo:
+    get:
+      operationId: get-portal-logo
+      summary: portal logo
+      description: Logo of the developer portal
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalLogoResponse'
+      tags:
+        - portal
+  /api/v2/products:
+    get:
+      summary: Get page of products
+      description: >-
+        Returns a paginated list of published API Products, each with their
+        versions and documents
+      operationId: get-many-products
+      parameters:
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductGetMany'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - products
+  /api/v2/products/{productId}:
+    get:
+      summary: Get a product
+      description: Returns the given published product, with its versions attached
+      operationId: get-product
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductGet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - products
+  /api/v2/products/{productId}/document-tree:
+    get:
+      summary: Get product document tree
+      description: Return the entire documentation tree of a product
+      operationId: get-product-document-tree
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductDocumentTreeGet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - documentation
+  /api/v2/products/{productId}/documents/{documentId}:
+    get:
+      summary: Get one product document
+      description: Returns the specified document from the product's document tree
+      operationId: get-product-document
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/DocumentId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductDocumentGet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - documentation
+  /api/v2/products/{productId}/versions:
+    get:
+      summary: Get page of product versions
+      description: Returns paginated list of versions of a given product
+      operationId: get-many-product-versions
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductGetManyVersions'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - versions
+  /api/v2/products/{productId}/versions/{versionId}:
+    get:
+      summary: Get product version
+      description: Return given product version
+      operationId: get-product-version
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionGet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - versions
+  /api/v2/products/{productId}/versions/{versionId}/operations:
+    get:
+      summary: Get operations in version spec
+      description: >-
+        Returns list of operations used in the OpenAPI specefication document
+        attached to given product version
+      operationId: get-product-version-spec-operations
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionSpecOperationsGet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - versions
+  /api/v2/products/{productId}/versions/{versionId}/spec:
+    get:
+      summary: Get OpenAPI spec for product version
+      description: >-
+        Returns the OpenAPI specification document attached to given product
+        version
+      operationId: get-product-version-spec
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionSpecGet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - versions
+  /api/v2/search/{indices}:
+    get:
+      summary: Search Portal Entities
+      operationId: search-portal-entities
+      description: >-
+        Returns paginated search results from the specified entities with the
+        given search parameters.
+      responses:
+        '200':
+          $ref: '#/components/responses/SearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+      parameters:
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/SearchIndices'
+      tags:
+        - Search
+components:
+  securitySchemes:
+    portalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        The Developer portal access token is meant to be used by the Developer
+        API to authenticate with.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ApplicationRegistrationConfiguration:
+      type: object
+      properties:
+        auto_approve:
+          type: boolean
+        status:
+          type: string
+          enum:
+            - enabled
+            - pending
+        auth_config:
+          type: object
+          properties:
+            name:
+              type: string
+              enum:
+                - key-auth
+                - openid-connect
+            config:
+              type: object
+      required:
+        - status
+        - auth_config
+        - auto_approve
+    Error:
+      type: object
+      title: Error
+      description: standard error
+      x-examples:
+        Example 1:
+          status: 404
+          title: Not Found
+          type: https://kongapi.info/konnect/not-found
+          instance: portal:trace:2287285207635123011
+          detail: The requested document was not found
+      required:
+        - status
+        - title
+        - instance
+      properties:
+        status:
+          type: integer
+          description: The HTTP status code.
+          example: 404
+        title:
+          type: string
+          description: The error response code.
+          example: Not Found
+        type:
+          type: string
+          description: The error type.
+          example: Not Found
+        instance:
+          type: string
+          example: portal:trace:2287285207635123011
+          description: The portal traceback code
+        invalid_parameters:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the invalid parameter.
+              reason:
+                type: string
+                description: The reason the parameter is invalid.
+              field:
+                type: string
+                description: The field that caused the error.
+                example: name
+              rule:
+                type: string
+                description: The rule that caused the error.
+                example: required
+            additionalProperties: true
+            required:
+              - field
+              - reason
+          description: >-
+            An array of objects that contains information related to the error
+            response.
+        detail:
+          type: string
+          example: The requested team was not found
+          description: Details about the error.
+    PaginatedMeta:
+      type: object
+      additionalProperties: false
+      title: PaginatedMeta
+      description: Returns pagination information
+      properties:
+        page:
+          type: object
+          description: >-
+            Contains pagination query parameters and the total number of objects
+            returned.
+          properties:
+            number:
+              type: integer
+              example: 2
+              description: Specifies the number of objects returned per page.
+            size:
+              type: integer
+              example: 10
+              maximum: 100
+              description: Specifies the size of the page.
+            total:
+              type: integer
+              example: 100
+              description: Integer representation of the amount of items returned.
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+    PageParameters:
+      additionalProperties: false
+      title: PageParameters
+      type: object
+      properties:
+        size:
+          type: integer
+          example: 10
+        number:
+          type: integer
+          example: 2
+    CreateCredentialPayload:
+      additionalProperties: false
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+    UpdateCredentialPayload:
+      additionalProperties: false
+      type: object
+      required:
+        - display_name
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+    GetManyApplicationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetApplicationResponse'
+    GetApplicationResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        reference_id:
+          type: string
+        description:
+          type: string
+        redirect_uri:
+          type: string
+        is_dcr:
+          type: boolean
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - is_dcr
+    GetCredentialsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              display_name:
+                type: string
+            required:
+              - id
+              - display_name
+    CredentialCreationResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        credential:
+          type: string
+        id:
+          type: string
+        display_name:
+          type: string
+      required:
+        - credential
+        - id
+        - display_name
+    RefreshTokenResponse:
+      additionalProperties: false
+      type: object
+      title: Refresh token response
+      description: Refresh token response
+      required:
+        - client_id
+        - client_secret
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+    CreateApplicationPayload:
+      additionalProperties: false
+      type: object
+      title: CreateApplicationPayload
+      description: an application payload
+      required:
+        - name
+        - reference_id
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        reference_id:
+          type: string
+          maxLength: 255
+        redirect_uri:
+          type: string
+          format: uri
+        description:
+          type: string
+          maxLength: 255
+    ApplicationCreationResponse:
+      additionalProperties: false
+      type: object
+      title: ApplicationCreationResponse
+      description: Application creation response payload
+      required:
+        - name
+        - reference_id
+        - description
+        - is_dcr
+      properties:
+        name:
+          type: string
+        reference_id:
+          type: string
+        description:
+          type: string
+        redirect_uri:
+          type: string
+        is_dcr:
+          type: boolean
+        credentials:
+          type: object
+          required:
+            - client_id
+            - client_secret
+          properties:
+            client_id:
+              type: string
+            client_secret:
+              type: string
+    UpdateApplicationPayload:
+      additionalProperties: false
+      type: object
+      title: UpdateApplicationPayload
+      description: Payload required to update an application
+      properties:
+        name:
+          type: string
+        reference_id:
+          type: string
+        description:
+          type: string
+        redirect_uri:
+          type: string
+    ApplicationUpdateResponse:
+      additionalProperties: false
+      type: object
+      title: ApplicationUpdateResponse
+      description: Application update response payload
+      required:
+        - name
+        - reference_id
+        - description
+        - is_dcr
+      properties:
+        name:
+          type: string
+        reference_id:
+          type: string
+        description:
+          type: string
+        redirect_uri:
+          type: string
+        is_dcr:
+          type: boolean
+    RegisterPayload:
+      title: register payload
+      description: |
+        Payload required to be sent to register a developer to the
+        portal.
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@konghq.com
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 256
+          example: Jane Doe
+      required:
+        - full_name
+        - email
+    ResetPasswordPayload:
+      title: reset password payload
+      description: |
+        Payload required to start the reset password flow
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@konghq.com
+      required:
+        - email
+    PortalAppearance:
+      title: Portal Appearance
+      description: the portal appearance
+      type: object
+      additionalProperties: false
+      properties:
+        variables:
+          type: object
+          properties:
+            catalog:
+              type: object
+              properties:
+                logo:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                cover:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                primary_header:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                welcome_message:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+        stylesheets:
+          type: object
+          properties:
+            global:
+              type: object
+              properties:
+                main:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+    PortalContext:
+      title: Portal Context
+      description: describe the portal execution context
+      type: object
+      additionalProperties: false
+      properties:
+        portal_id:
+          type: string
+        org_id:
+          type: string
+        featureset_id:
+          type: string
+        basic_auth_enabled:
+          type: boolean
+        is_public:
+          type: boolean
+        rbac_enabled:
+          type: boolean
+          description: Is the portal protected with role base access
+        is_dcr:
+          type: boolean
+          description: Is the portal using DCR application registration
+        oidc_auth_enabled:
+          type: boolean
+      required:
+        - portal_id
+        - org_id
+        - is_public
+        - featureset_id
+        - basic_auth_enabled
+        - rbac_enabled
+        - is_dcr
+        - oidc_auth_enabled
+    Product:
+      title: Product
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of product creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of product update date.
+          readOnly: true
+        name:
+          type: string
+          example: Billing
+          description: name of service
+        display_name:
+          type: string
+          example: Billing
+          description: display name used by UI for service
+        description:
+          type: string
+          example: Api for billing functions
+        labels:
+          type: object
+    ProductListPage:
+      title: ProductListPage
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    ProductVersion:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: >-
+            An ISO-8604 timestamp representation of product version creation
+            date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of product version update date.
+          readOnly: true
+        version:
+          type: string
+          example: v2.0.0
+          description: Name of product version
+        is_deprecated:
+          type: boolean
+          description: If true, product version is deprecated
+        tracking_id:
+          type: string
+          format: uuid
+          description: >-
+            ID used for application registration with Konnect Application Auth
+            Plugin
+      required:
+        - id
+        - created_at
+        - updated_at
+        - version
+        - is_deprecated
+        - tracking_id
+    ProductVersionListPage:
+      title: ProductVersionListPage
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersion'
+    ProductVersionSpec:
+      type: string
+      title: Product Version Spec Document
+      description: Open API specification
+    ProductVersionSpecOperations:
+      type: object
+      title: Operations in product version spec document
+      description: List of every operation detailed in the product version spec document
+      properties:
+        operations:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+                example: /pet
+              method:
+                type: string
+                enum:
+                  - get
+                  - patch
+                  - post
+                  - put
+                  - delete
+                  - options
+                  - connect
+                  - trace
+                example: post
+              opertationId:
+                type: string
+                example: addPet
+              tags:
+                type: array
+                items:
+                  type: string
+                  example: pet
+              summary:
+                type: string
+                example: Add a new Pet to the store
+              depercated:
+                type: boolean
+    ProductDocument:
+      type: object
+      title: Document
+      description: a document
+      required:
+        - id
+        - slug
+        - meta
+        - title
+        - content
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        content:
+          $ref: '#/components/schemas/DocumentBlock'
+        meta:
+          type: object
+          description: the metadata of the document
+          additionalProperties: true
+          example:
+            title: Hello World
+            description: This is a description
+            keywords: hello, world
+        title:
+          type: string
+          description: the title of the document
+          example: Hello World
+    ProductDocumentTree:
+      type: object
+      title: ProductDocumentTree
+      description: >-
+        a list of top-level documents in a document tree, each with their
+        children
+      required:
+        - tree
+      properties:
+        tree:
+          $ref: '#/components/schemas/ProductDocumentTreeItem'
+    ProductDocumentTreeItem:
+      type: object
+      title: ProductDocumentTreeItem
+      description: an item in a document tree attached to a product
+      required:
+        - id
+        - title
+        - slug
+        - meta
+        - children
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        title:
+          type: string
+          description: the title of the document
+          example: Getting Started
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        meta:
+          type: object
+          description: the metadata of the document
+          additionalProperties: true
+          example:
+            author: Jane Doe
+            description: This is a description
+            keywords: hello, world
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentBlock'
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+    InvalidParameterItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - rule
+        - reason
+    InvalidParameters:
+      type: array
+      items:
+        $ref: '#/components/schemas/InvalidParameterItem'
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 2
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    BaseNode:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+    DocumentBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            version:
+              type: string
+      description: content of the document
+      example:
+        type: doc
+        content:
+          - type: paragraph
+            content:
+              - type: text
+                text: Hello World
+    BlockNode:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            children:
+              description: List of children nodes of the current node
+              type: array
+              items:
+                $ref: '#/components/schemas/AnyNode'
+    HeadingBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            level:
+              description: Level of the heading which maps to HTML <h> tag
+              type: number
+              minimum: 1
+              maximum: 6
+    BlockQuoteBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    ParagraphBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    TextBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    BreakBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    CodeBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            lang:
+              type: string
+    ListBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            isOrdered:
+              description: Defines if the list is ordered or not
+              type: boolean
+    ListItemBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+    Text:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            text:
+              type: string
+            hardBreak:
+              description: >
+                If this property is true the end of this block should
+
+                be a carriage return and not concatenated to the next Text
+                block.
+              type: boolean
+            softBreak:
+              description: >
+                If this property is true the end of this block should should be
+
+                concatenated with a space caracter before the next block. This
+                is
+
+                the flag showing that the parsed markdown block was at the end
+                of
+
+                the line.
+              type: boolean
+    Emphasis:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            level:
+              type: number
+              minimum: 1
+              maximum: 2
+              description: |
+                Level of emphasis
+                1 - italic
+                2 - bold
+    Code:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - $ref: '#/components/schemas/BlockNode'
+    Link:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            href:
+              description: Target url of the link
+              type: string
+            title:
+              description: Title of the link
+              type: string
+    Image:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            url:
+              description: Url of the image
+              type: string
+            alt:
+              description: Alternate tag of the image
+              type: string
+            title:
+              description: Title of the image
+              type: string
+    StrikeThrough:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+    TaskCheckbox:
+      allOf:
+        - $ref: '#/components/schemas/BaseNode'
+        - type: object
+          properties:
+            checked:
+              type: boolean
+              description: State of the checkbox
+          required:
+            - checked
+    AlignmentKind:
+      type: string
+      enum:
+        - left
+        - right
+        - center
+        - none
+    TableAlignments:
+      type: object
+      properties:
+        alignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlignmentKind'
+      required:
+        - alignments
+    TableBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/TableAlignments'
+    TableHeaderBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/TableAlignments'
+    TableCellBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - type: object
+          properties:
+            alignment:
+              $ref: '#/components/schemas/AlignmentKind'
+    TableRowBlock:
+      allOf:
+        - $ref: '#/components/schemas/BlockNode'
+        - $ref: '#/components/schemas/TableAlignments'
+    AnyNode:
+      oneOf:
+        - $ref: '#/components/schemas/DocumentBlock'
+        - $ref: '#/components/schemas/HeadingBlock'
+        - $ref: '#/components/schemas/BlockQuoteBlock'
+        - $ref: '#/components/schemas/ParagraphBlock'
+        - $ref: '#/components/schemas/TextBlock'
+        - $ref: '#/components/schemas/BreakBlock'
+        - $ref: '#/components/schemas/CodeBlock'
+        - $ref: '#/components/schemas/ListBlock'
+        - $ref: '#/components/schemas/ListItemBlock'
+        - $ref: '#/components/schemas/Text'
+        - $ref: '#/components/schemas/Emphasis'
+        - $ref: '#/components/schemas/Code'
+        - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/Image'
+        - $ref: '#/components/schemas/StrikeThrough'
+        - $ref: '#/components/schemas/TableBlock'
+        - $ref: '#/components/schemas/TableHeaderBlock'
+        - $ref: '#/components/schemas/TableCellBlock'
+        - $ref: '#/components/schemas/TableRowBlock'
+        - $ref: '#/components/schemas/TaskCheckbox'
+      discriminator:
+        propertyName: type
+        mapping:
+          document: '#/components/schemas/DocumentBlock'
+          heading: '#/components/schemas/HeadingBlock'
+          blockquote: '#/components/schemas/BlockQuoteBlock'
+          paragraph: '#/components/schemas/ParagraphBlock'
+          text_block: '#/components/schemas/TextBlock'
+          break: '#/components/schemas/BreakBlock'
+          code_block: '#/components/schemas/CodeBlock'
+          list: '#/components/schemas/ListBlock'
+          list_item: '#/components/schemas/ListItemBlock'
+          text: '#/components/schemas/Text'
+          emphasis: '#/components/schemas/Emphasis'
+          code: '#/components/schemas/Code'
+          link: '#/components/schemas/Link'
+          image: '#/components/schemas/Image'
+          strikethrough: '#/components/schemas/StrikeThrough'
+          task_checkbox: '#/components/schemas/TaskCheckbox'
+          table: '#/components/schemas/TableBlock'
+          table_header: '#/components/schemas/TableHeaderBlock'
+          table_cell: '#/components/schemas/TableCellBlock'
+          table_row: '#/components/schemas/TableRowBlock'
+    CreateRegistrationPayload:
+      additionalProperties: false
+      type: object
+      title: CreateRegistrationPayload
+      description: an application registration payload
+      required:
+        - service_version_id
+      properties:
+        service_version_id:
+          description: The UUID of the service version to register for
+          type: string
+          format: uuid
+    GetManyRegistrationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetRegistrationResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - status
+        - service_version_id
+        - application_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          description: The UUID of the registration
+          type: string
+          format: uuid
+        status:
+          description: The approval status of the registration
+          type: string
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+        service_version_id:
+          description: The UUID of the service version registered for
+          type: string
+          format: uuid
+        application_id:
+          description: The UUID of the application the registration is linked to
+          type: string
+          format: uuid
+        created_at:
+          description: ISO timestamp the registration record was created
+          type: string
+          format: date-time
+        updated_at:
+          description: ISO timestamp the registration record was last updated
+          type: string
+          format: date-time
+    SearchResults:
+      title: SearchResults
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          description: The paginated data items that matched the search query
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              index:
+                $ref: '#/components/schemas/SearchIndicesParameters'
+              source:
+                $ref: '#/components/schemas/ServiceCatalogIndexSource'
+            required:
+              - index
+              - source
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+    ServiceCatalogIndexSource:
+      title: ServiceCatalogIndexSource
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          description: The entity ID.
+          readOnly: true
+        name:
+          type: string
+          example: Test Service
+          description: the name of the service
+          readOnly: true
+        display_name:
+          type: string
+          example: Test Service
+          description: the name of the service
+          readOnly: true
+        description:
+          type: string
+          example: Test Service
+          description: the name of the service
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of entity creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An ISO-8604 timestamp representation of entity update date.
+          readOnly: true
+        versions:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - created_at
+              - updated_at
+              - version
+              - publish_status
+              - deprecated
+              - tracking_id
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                description: The entity ID.
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                example: '2022-11-04T20:10:06.927Z'
+                description: An ISO-8604 timestamp representation of entity creation date.
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                example: '2022-11-04T20:10:06.927Z'
+                description: An ISO-8604 timestamp representation of entity update date.
+                readOnly: true
+              version:
+                type: string
+                example: Test Service
+                description: the name of the service
+              publish_status:
+                type: string
+                enum:
+                  - published
+                  - unpublished
+                example: published
+                readOnly: true
+              deprecated:
+                type: boolean
+                example: true
+                readOnly: true
+              tracking_id:
+                type: string
+                format: uuid
+                example: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+                description: The entity ID.
+                readOnly: true
+    SearchIndicesParameters:
+      title: SearchIndicesParameters
+      type: string
+      enum:
+        - service-catalog
+    SearchParameters:
+      title: SearchParameters
+      type: object
+      properties:
+        q:
+          type: string
+        join:
+          type: string
+          enum:
+            - documents
+            - versions
+            - versions.documents
+          example: versions.documents
+  responses:
+    Unauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            title: UnauthenticatedError
+            type: object
+            description: The error response object.
+            properties:
+              type:
+                type: string
+                description: The type of error.
+                example: unauthenticated
+              status:
+                type: integer
+                example: 401
+                description: The HTTP status code.
+                enum:
+                  - 401
+              title:
+                type: string
+                description: The Error Response.
+                example: Unauthenticated
+              instance:
+                type: string
+                description: The Konnect traceback code.
+                example: konnect:trace:952172606039454040
+              detail:
+                type: string
+                description: Details about the error response.
+                example: A valid session is required
+            required:
+              - status
+              - title
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            title: BadRequestError
+            type: object
+            description: The error object
+            properties:
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 400
+                enum:
+                  - 400
+              title:
+                type: string
+                example: Bad Request
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: konnect:trace:3674017986744198214
+              detail:
+                type: string
+                description: Information about the error response.
+                example: Validation
+              invalid_parameters:
+                type: array
+                description: >-
+                  An array of objects that contains information related to the
+                  error response.
+                items:
+                  type: object
+                  additionalProperties: true
+                  properties:
+                    rule:
+                      type: string
+                    field:
+                      type: string
+                    reason:
+                      type: string
+                required:
+                  - field
+                  - reason
+            required:
+              - status
+              - title
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            title: NotFoundError
+            type: object
+            description: The error object
+            properties:
+              type:
+                type: string
+                description: The error type.
+              status:
+                type: integer
+                description: The HTTP response code
+                example: 404
+                enum:
+                  - 404
+              title:
+                type: string
+                example: Not Found
+                description: The Error response
+              instance:
+                type: string
+                description: The Konnect traceback ID.
+                example: konnect:trace:3674017986744198214
+                required:
+                  - field
+                  - reason
+            required:
+              - status
+              - title
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+            title: InternalServerError
+            type: object
+            description: The error response object.
+            properties:
+              status:
+                type: integer
+                description: The HTTP status code.
+                example: 500
+                enum:
+                  - 500
+              title:
+                type: string
+                description: The error response code.
+                example: Internal Server Error
+              instance:
+                type: string
+                example: konnect:trace:2287285207635123011
+                description: The Konnect traceback code
+              details:
+                type: string
+                description: Details about the error.
+            required:
+              - status
+              - title
+    GetManyApplications:
+      description: Get applications response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetManyApplicationsResponse'
+    GetApplication:
+      description: Get application response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetApplicationResponse'
+    RefreshToken:
+      description: Refresh token response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RefreshTokenResponse'
+    GetCredentials:
+      description: Get credentials response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetCredentialsResponse'
+    CredentialCreation:
+      description: Credential Creation success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CredentialCreationResponse'
+    ApplicationCreation:
+      description: Application Creation success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationCreationResponse'
+    ApplicationUpdate:
+      description: Application Update success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationUpdateResponse'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RetrievePortalLogoResponse:
+      description: Logo of the portal. Can be either png or jpg
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+        image/jpg:
+          schema:
+            type: string
+            format: binary
+    RetrievePortalCoverResponse:
+      description: Cover of the portal. Can be either png or jpg
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+        image/jpg:
+          schema:
+            type: string
+            format: binary
+    RetrievePortalAppearanceResponse:
+      description: portal appearance
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAppearance'
+    RetrievePortalContextResponse:
+      description: portal context
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalContext'
+    ProductGet:
+      description: Response for getting a product
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+    ProductGetMany:
+      description: Response for getting many products
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductListPage'
+    ProductGetManyVersions:
+      description: Response for getting a paginated list of versions of an API Product
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionListPage'
+    ProductVersionGet:
+      description: Response for getting a product version
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersion'
+    ProductVersionSpecGet:
+      description: Response for getting a product version spec document
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionSpec'
+    ProductVersionSpecOperationsGet:
+      description: Response for getting product version spec operations
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionSpecOperations'
+    ProductDocumentGet:
+      description: Response for getting one of the product's documents
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDocument'
+    ProductDocumentTreeGet:
+      description: Response for getting product documentation tree
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductDocumentTree'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    CreateRegistration:
+      description: Registration creation response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetRegistration:
+      description: Get registration response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetManyRegistrations:
+      description: Get registrations response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetManyRegistrationsResponse'
+    SearchResponse:
+      description: Search Results
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchResults'
+          examples:
+            Search Response Example:
+              $ref: '#/components/examples/SearchResponseExample'
+  parameters:
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      description: Id of the targeted application
+      schema:
+        type: string
+        format: uuid
+    CredentialId:
+      name: credentialId
+      in: path
+      required: true
+      description: Id of the targeted credential
+      schema:
+        type: string
+        format: uuid
+    Page:
+      name: page
+      description: Determines which page of search results to retrieve.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/PageParameters'
+        title: PageParameters
+        type: object
+        properties:
+          page[size]:
+            type: integer
+            example: 10
+          page[number]:
+            type: integer
+            example: 2
+    ProductId:
+      name: productId
+      in: path
+      required: true
+      description: Id of the product
+      schema:
+        type: string
+        format: uuid
+    ProductVersionId:
+      name: versionId
+      in: path
+      required: true
+      description: Id of the product version
+      schema:
+        type: string
+        format: uuid
+    DocumentId:
+      name: documentId
+      in: path
+      required: true
+      description: Id of the document
+      schema:
+        type: string
+        format: uuid
+    RegistrationId:
+      name: registrationId
+      in: path
+      required: true
+      description: Id of the targeted registration
+      schema:
+        type: string
+        format: uuid
+    Search:
+      name: search
+      description: Determines how to filter search results
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SearchParameters'
+    SearchIndices:
+      name: indices
+      description: Determines which entity sets to search
+      required: true
+      in: path
+      schema:
+        $ref: '#/components/schemas/SearchIndicesParameters'
+  requestBodies:
+    CreateApplication:
+      description: Create an application
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApplicationPayload'
+    UpdateApplication:
+      description: Update an application
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationPayload'
+    CreateCredential:
+      description: Create a credential
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateCredentialPayload'
+    UpdateCredential:
+      description: Update a credential
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateCredentialPayload'
+    CreateRegistration:
+      description: Create an application registration
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRegistrationPayload'
+  examples:
+    SearchResponseExample:
+      value:
+        data:
+          - index: service-catalog
+            source:
+              created_at: '2023-01-19T17:41:55.896Z'
+              updated_at: '2023-01-19T17:41:55.896Z'
+              id: e35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+              name: test service
+              display_name: Test Service
+              description: Test Service Description
+              labels: {}
+              versions:
+                - created_at: '2023-01-19T17:41:55.896Z'
+                  updated_at: '2023-01-19T17:41:55.896Z'
+                  id: b35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+                  version: v0
+                  publish_status: published
+                  deprecated: false
+                  tracking_id: c45b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+                - created_at: '2022-01-19T17:41:55.896Z'
+                  updated_at: '2022-01-19T17:41:55.896Z'
+                  id: 455b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+                  version: v1
+                  publish_status: unpublished
+                  deprecated: false
+                  tracking_id: 885b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
+        meta:
+          page:
+            number: 2
+            size: 1
+            total: 4
+security:
+  - portalAccessToken: []
+  - bearerAuth: []
+  - {}
+tags:
+  - name: app-reg
+    description: Application Registration
+  - name: applications
+  - name: credentials
+  - name: developer
+    description: Portal Developer API
+  - name: portal
+    description: Portal API
+  - name: products
+  - name: versions
+  - name: documentation
+  - name: registrations
+  - name: Search
+    description: Endpoints for searching across portal entities
+servers:
+  - url: https://custom.example.com
+    description: Portal API
