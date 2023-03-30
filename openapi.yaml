@@ -594,10 +594,6 @@ components:
       description: >
         The Developer portal access token is meant to be used by the Developer
         API to authenticate with.
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
   schemas:
     ApplicationRegistrationConfiguration:
       type: object
@@ -2278,7 +2274,6 @@ components:
             total: 4
 security:
   - portalAccessToken: []
-  - bearerAuth: []
   - {}
 tags:
   - name: app-reg
