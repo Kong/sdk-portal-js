@@ -85,6 +85,18 @@ export interface ApplicationCreationResponse {
      * @memberof ApplicationCreationResponse
      */
     'credentials'?: ApplicationCreationResponseCredentials;
+    /**
+     * An ISO-8601 timestamp representation of application creation date.
+     * @type {string}
+     * @memberof ApplicationCreationResponse
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of application last updated at date.
+     * @type {string}
+     * @memberof ApplicationCreationResponse
+     */
+    'updated_at': string;
 }
 /**
  * 
@@ -105,66 +117,6 @@ export interface ApplicationCreationResponseCredentials {
      */
     'client_secret': string;
 }
-/**
- * 
- * @export
- * @interface ApplicationRegistrationConfiguration
- */
-export interface ApplicationRegistrationConfiguration {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ApplicationRegistrationConfiguration
-     */
-    'auto_approve': boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ApplicationRegistrationConfiguration
-     */
-    'status': ApplicationRegistrationConfigurationStatusEnum;
-    /**
-     * 
-     * @type {ApplicationRegistrationConfigurationAuthConfig}
-     * @memberof ApplicationRegistrationConfiguration
-     */
-    'auth_config': ApplicationRegistrationConfigurationAuthConfig;
-}
-
-export const ApplicationRegistrationConfigurationStatusEnum = {
-    Enabled: 'enabled',
-    Pending: 'pending'
-} as const;
-
-export type ApplicationRegistrationConfigurationStatusEnum = typeof ApplicationRegistrationConfigurationStatusEnum[keyof typeof ApplicationRegistrationConfigurationStatusEnum];
-
-/**
- * 
- * @export
- * @interface ApplicationRegistrationConfigurationAuthConfig
- */
-export interface ApplicationRegistrationConfigurationAuthConfig {
-    /**
-     * 
-     * @type {string}
-     * @memberof ApplicationRegistrationConfigurationAuthConfig
-     */
-    'name'?: ApplicationRegistrationConfigurationAuthConfigNameEnum;
-    /**
-     * 
-     * @type {object}
-     * @memberof ApplicationRegistrationConfigurationAuthConfig
-     */
-    'config'?: object;
-}
-
-export const ApplicationRegistrationConfigurationAuthConfigNameEnum = {
-    KeyAuth: 'key-auth',
-    OpenidConnect: 'openid-connect'
-} as const;
-
-export type ApplicationRegistrationConfigurationAuthConfigNameEnum = typeof ApplicationRegistrationConfigurationAuthConfigNameEnum[keyof typeof ApplicationRegistrationConfigurationAuthConfigNameEnum];
-
 /**
  * Application update response payload
  * @export
@@ -201,6 +153,18 @@ export interface ApplicationUpdateResponse {
      * @memberof ApplicationUpdateResponse
      */
     'is_dcr': boolean;
+    /**
+     * An ISO-8601 timestamp representation of application creation date.
+     * @type {string}
+     * @memberof ApplicationUpdateResponse
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of application last updated at date.
+     * @type {string}
+     * @memberof ApplicationUpdateResponse
+     */
+    'updated_at': string;
 }
 /**
  * 
@@ -209,35 +173,41 @@ export interface ApplicationUpdateResponse {
  */
 export interface BadRequestError {
     /**
-     * The HTTP status code of the error. Useful when passing the response body to child properties in a frontend UI. Must be returned as an integer. 
-     * @type {number}
+     * 
+     * @type {any}
      * @memberof BadRequestError
      */
-    'status': number;
+    'status'?: any;
     /**
-     * A short, human-readable summary of the problem. It should not change between occurences of a problem, except for localization. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof BadRequestError
      */
-    'title': string;
+    'title'?: any;
     /**
-     * The error type.
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof BadRequestError
      */
-    'type'?: string;
+    'type'?: any;
     /**
-     * Used to return the correlation ID back to the user, in the format kong:trace:<correlation_id>. This helps us find the relevant logs when a customer reports an issue. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof BadRequestError
      */
-    'instance': string;
+    'instance'?: any;
     /**
-     * A human readable explanation specific to this occurence of the problem. This field may contain request/entity data to help the user understand what went wrong. Enclose variable values in square brackets. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof BadRequestError
      */
-    'detail': string;
+    'detail'?: any;
+    /**
+     * invalid parameters
+     * @type {Set<InvalidParameterItem>}
+     * @memberof BadRequestError
+     */
+    'invalid_parameters': Set<InvalidParameterItem>;
 }
 /**
  * standard error
@@ -417,31 +387,68 @@ export interface CodeBlockAllOf {
     'lang'?: string;
 }
 /**
+ * 
+ * @export
+ * @interface ConflictError
+ */
+export interface ConflictError {
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictError
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictError
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictError
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictError
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictError
+     */
+    'detail'?: any;
+}
+/**
  * an application payload
  * @export
  * @interface CreateApplicationPayload
  */
 export interface CreateApplicationPayload {
     /**
-     * 
+     * The name of the application
      * @type {string}
      * @memberof CreateApplicationPayload
      */
     'name': string;
     /**
-     * 
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
      * @type {string}
      * @memberof CreateApplicationPayload
      */
-    'reference_id': string;
+    'reference_id'?: string;
     /**
-     * 
+     * URL to redirect to after completing an OIDC auth flow
      * @type {string}
      * @memberof CreateApplicationPayload
      */
     'redirect_uri'?: string;
     /**
-     * 
+     * A brief description of the application
      * @type {string}
      * @memberof CreateApplicationPayload
      */
@@ -467,11 +474,11 @@ export interface CreateCredentialPayload {
  */
 export interface CreateRegistrationPayload {
     /**
-     * The UUID of the service version to register for
+     * The UUID of the product version to register for
      * @type {string}
      * @memberof CreateRegistrationPayload
      */
-    'service_version_id': string;
+    'product_version_id': string;
 }
 /**
  * 
@@ -497,6 +504,43 @@ export interface CredentialCreationResponse {
      * @memberof CredentialCreationResponse
      */
     'display_name': string;
+}
+/**
+ * A developer is an individual who can use a developer portal.
+ * @export
+ * @interface Developer
+ */
+export interface Developer {
+    /**
+     * 
+     * @type {string}
+     * @memberof Developer
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Developer
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Developer
+     */
+    'full_name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Developer
+     */
+    'created_at'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Developer
+     */
+    'updated_at'?: string;
 }
 /**
  * content of the document
@@ -580,8 +624,6 @@ export interface EmphasisAllOf {
  * @interface ErrorInvalidParametersInner
  */
 export interface ErrorInvalidParametersInner {
-    [key: string]: any;
-
     /**
      * The name of the invalid parameter.
      * @type {string}
@@ -593,19 +635,56 @@ export interface ErrorInvalidParametersInner {
      * @type {string}
      * @memberof ErrorInvalidParametersInner
      */
-    'reason': string;
+    'reason'?: string;
     /**
      * The field that caused the error.
      * @type {string}
      * @memberof ErrorInvalidParametersInner
      */
-    'field': string;
+    'field'?: string;
     /**
      * The rule that caused the error.
      * @type {string}
      * @memberof ErrorInvalidParametersInner
      */
     'rule'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ForbiddenError
+ */
+export interface ForbiddenError {
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenError
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenError
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenError
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenError
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenError
+     */
+    'detail'?: any;
 }
 /**
  * 
@@ -649,6 +728,18 @@ export interface GetApplicationResponse {
      * @memberof GetApplicationResponse
      */
     'is_dcr': boolean;
+    /**
+     * An ISO-8601 timestamp representation of application creation date.
+     * @type {string}
+     * @memberof GetApplicationResponse
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of application last updated at date.
+     * @type {string}
+     * @memberof GetApplicationResponse
+     */
+    'updated_at': string;
 }
 /**
  * 
@@ -745,11 +836,17 @@ export interface GetRegistrationResponse {
      */
     'status': GetRegistrationResponseStatusEnum;
     /**
-     * The UUID of the service version registered for
+     * The UUID of the product registered for
      * @type {string}
      * @memberof GetRegistrationResponse
      */
-    'service_version_id': string;
+    'product_id': string;
+    /**
+     * The UUID of the product version registered for
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'product_version_id': string;
     /**
      * The UUID of the application the registration is linked to
      * @type {string}
@@ -876,6 +973,43 @@ export interface ImageAllOf {
 /**
  * 
  * @export
+ * @interface InternalError
+ */
+export interface InternalError {
+    /**
+     * The HTTP status code of the error. Useful when passing the response body to child properties in a frontend UI. Must be returned as an integer. 
+     * @type {number}
+     * @memberof InternalError
+     */
+    'status': number;
+    /**
+     * A short, human-readable summary of the problem. It should not change between occurences of a problem, except for localization. Should be provided as \"Sentence case\" for direct use in the UI. 
+     * @type {string}
+     * @memberof InternalError
+     */
+    'title': string;
+    /**
+     * The error type.
+     * @type {string}
+     * @memberof InternalError
+     */
+    'type'?: string;
+    /**
+     * Used to return the correlation ID back to the user, in the format kong:trace:<correlation_id>. This helps us find the relevant logs when a customer reports an issue. 
+     * @type {string}
+     * @memberof InternalError
+     */
+    'instance': string;
+    /**
+     * A human readable explanation specific to this occurence of the problem. This field may contain request/entity data to help the user understand what went wrong. Enclose variable values in square brackets. Should be provided as \"Sentence case\" for direct use in the UI. 
+     * @type {string}
+     * @memberof InternalError
+     */
+    'detail': string;
+}
+/**
+ * 
+ * @export
  * @interface InvalidParameterItem
  */
 export interface InvalidParameterItem {
@@ -890,7 +1024,7 @@ export interface InvalidParameterItem {
      * @type {InvalidRules}
      * @memberof InvalidParameterItem
      */
-    'rule': InvalidRules;
+    'rule'?: InvalidRules | null;
     /**
      * 
      * @type {string}
@@ -902,7 +1036,7 @@ export interface InvalidParameterItem {
      * @type {Set<any>}
      * @memberof InvalidParameterItem
      */
-    'choices'?: Set<any>;
+    'choices'?: Set<any> | null;
 }
 /**
  * invalid parameters rules
@@ -1056,7 +1190,7 @@ export interface ModelError {
      */
     'instance': string;
     /**
-     * An array of objects that contains information related to the error response.
+     * An array of invalid parameters.
      * @type {Array<ErrorInvalidParametersInner>}
      * @memberof ModelError
      */
@@ -1075,35 +1209,35 @@ export interface ModelError {
  */
 export interface NotFoundError {
     /**
-     * The HTTP status code of the error. Useful when passing the response body to child properties in a frontend UI. Must be returned as an integer. 
-     * @type {number}
+     * 
+     * @type {any}
      * @memberof NotFoundError
      */
-    'status': number;
+    'status'?: any;
     /**
-     * A short, human-readable summary of the problem. It should not change between occurences of a problem, except for localization. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof NotFoundError
      */
-    'title': string;
+    'title'?: any;
     /**
-     * The error type.
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof NotFoundError
      */
-    'type'?: string;
+    'type'?: any;
     /**
-     * Used to return the correlation ID back to the user, in the format kong:trace:<correlation_id>. This helps us find the relevant logs when a customer reports an issue. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof NotFoundError
      */
-    'instance': string;
+    'instance'?: any;
     /**
-     * A human readable explanation specific to this occurence of the problem. This field may contain request/entity data to help the user understand what went wrong. Enclose variable values in square brackets. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof NotFoundError
      */
-    'detail': string;
+    'detail'?: any;
 }
 /**
  * Contains pagination query parameters and the total number of objects returned.
@@ -1141,16 +1275,16 @@ export interface PageParameters {
      * @type {number}
      * @memberof PageParameters
      */
-    'size'?: number;
+    'page[size]'?: number;
     /**
      * 
      * @type {number}
      * @memberof PageParameters
      */
-    'number'?: number;
+    'page[number]'?: number;
 }
 /**
- * Returns pagination information
+ * returns the pagination information
  * @export
  * @interface PaginatedMeta
  */
@@ -1414,6 +1548,98 @@ export interface Product {
     'labels'?: object;
 }
 /**
+ * 
+ * @export
+ * @interface ProductCatalogIndexSource
+ */
+export interface ProductCatalogIndexSource {
+    /**
+     * The entity ID.
+     * @type {string}
+     * @memberof ProductCatalogIndexSource
+     */
+    'id': string;
+    /**
+     * the name of the product
+     * @type {string}
+     * @memberof ProductCatalogIndexSource
+     */
+    'name': string;
+    /**
+     * the displayable name of the product
+     * @type {string}
+     * @memberof ProductCatalogIndexSource
+     */
+    'display_name'?: string;
+    /**
+     * a description of the product
+     * @type {string}
+     * @memberof ProductCatalogIndexSource
+     */
+    'description'?: string;
+    /**
+     * whether the product has documents associated with it
+     * @type {boolean}
+     * @memberof ProductCatalogIndexSource
+     */
+    'has_documentation': boolean;
+    /**
+     * An ISO-8601 timestamp representation of entity creation date.
+     * @type {string}
+     * @memberof ProductCatalogIndexSource
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of entity update date.
+     * @type {string}
+     * @memberof ProductCatalogIndexSource
+     */
+    'updated_at': string;
+    /**
+     * 
+     * @type {Array<ProductCatalogIndexSourceVersionsInner>}
+     * @memberof ProductCatalogIndexSource
+     */
+    'versions'?: Array<ProductCatalogIndexSourceVersionsInner>;
+}
+/**
+ * 
+ * @export
+ * @interface ProductCatalogIndexSourceVersionsInner
+ */
+export interface ProductCatalogIndexSourceVersionsInner {
+    /**
+     * the entity id
+     * @type {string}
+     * @memberof ProductCatalogIndexSourceVersionsInner
+     */
+    'id': string;
+    /**
+     * An ISO-8601 timestamp representation of entity creation date.
+     * @type {string}
+     * @memberof ProductCatalogIndexSourceVersionsInner
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of entity update date.
+     * @type {string}
+     * @memberof ProductCatalogIndexSourceVersionsInner
+     */
+    'updated_at': string;
+    /**
+     * the name of the version
+     * @type {string}
+     * @memberof ProductCatalogIndexSourceVersionsInner
+     */
+    'version': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProductCatalogIndexSourceVersionsInner
+     */
+    'deprecated': boolean;
+}
+/**
  * a document
  * @export
  * @interface ProductDocument
@@ -1573,6 +1799,12 @@ export interface ProductVersion {
      * @memberof ProductVersion
      */
     'tracking_id': string;
+    /**
+     * Configurations for how the product version is able to be registered for by applications
+     * @type {Array<ProductVersionRegistrationConfigsInner>}
+     * @memberof ProductVersion
+     */
+    'registration_configs': Array<ProductVersionRegistrationConfigsInner>;
 }
 /**
  * 
@@ -1593,6 +1825,27 @@ export interface ProductVersionListPage {
      */
     'data'?: Array<ProductVersion>;
 }
+/**
+ * 
+ * @export
+ * @interface ProductVersionRegistrationConfigsInner
+ */
+export interface ProductVersionRegistrationConfigsInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductVersionRegistrationConfigsInner
+     */
+    'name': ProductVersionRegistrationConfigsInnerNameEnum;
+}
+
+export const ProductVersionRegistrationConfigsInnerNameEnum = {
+    KeyAuth: 'key-auth',
+    OpenidConnect: 'openid-connect'
+} as const;
+
+export type ProductVersionRegistrationConfigsInnerNameEnum = typeof ProductVersionRegistrationConfigsInnerNameEnum[keyof typeof ProductVersionRegistrationConfigsInnerNameEnum];
+
 /**
  * List of every operation detailed in the product version spec document
  * @export
@@ -1721,7 +1974,7 @@ export interface ResetPasswordPayload {
  */
 
 export const SearchIndicesParameters = {
-    ServiceCatalog: 'service-catalog'
+    ProductCatalog: 'product-catalog'
 } as const;
 
 export type SearchIndicesParameters = typeof SearchIndicesParameters[keyof typeof SearchIndicesParameters];
@@ -1748,7 +2001,6 @@ export interface SearchParameters {
 }
 
 export const SearchParametersJoinEnum = {
-    Documents: 'documents',
     Versions: 'versions',
     VersionsDocuments: 'versions.documents'
 } as const;
@@ -1762,17 +2014,17 @@ export type SearchParametersJoinEnum = typeof SearchParametersJoinEnum[keyof typ
  */
 export interface SearchResults {
     /**
-     * The paginated data items that matched the search query
-     * @type {Array<SearchResultsDataInner>}
-     * @memberof SearchResults
-     */
-    'data': Array<SearchResultsDataInner>;
-    /**
      * 
      * @type {PaginatedMeta}
      * @memberof SearchResults
      */
     'meta': PaginatedMeta;
+    /**
+     * The paginated results that matched the search query
+     * @type {Array<SearchResultsDataInner>}
+     * @memberof SearchResults
+     */
+    'data': Array<SearchResultsDataInner>;
 }
 /**
  * 
@@ -1788,117 +2040,11 @@ export interface SearchResultsDataInner {
     'index': SearchIndicesParameters;
     /**
      * 
-     * @type {ServiceCatalogIndexSource}
+     * @type {ProductCatalogIndexSource}
      * @memberof SearchResultsDataInner
      */
-    'source': ServiceCatalogIndexSource;
+    'source': ProductCatalogIndexSource;
 }
-/**
- * 
- * @export
- * @interface ServiceCatalogIndexSource
- */
-export interface ServiceCatalogIndexSource {
-    /**
-     * The entity ID.
-     * @type {string}
-     * @memberof ServiceCatalogIndexSource
-     */
-    'id': string;
-    /**
-     * the name of the service
-     * @type {string}
-     * @memberof ServiceCatalogIndexSource
-     */
-    'name': string;
-    /**
-     * the name of the service
-     * @type {string}
-     * @memberof ServiceCatalogIndexSource
-     */
-    'display_name'?: string;
-    /**
-     * the name of the service
-     * @type {string}
-     * @memberof ServiceCatalogIndexSource
-     */
-    'description'?: string;
-    /**
-     * An ISO-8604 timestamp representation of entity creation date.
-     * @type {string}
-     * @memberof ServiceCatalogIndexSource
-     */
-    'created_at': string;
-    /**
-     * An ISO-8604 timestamp representation of entity update date.
-     * @type {string}
-     * @memberof ServiceCatalogIndexSource
-     */
-    'updated_at': string;
-    /**
-     * 
-     * @type {Array<ServiceCatalogIndexSourceVersionsInner>}
-     * @memberof ServiceCatalogIndexSource
-     */
-    'versions'?: Array<ServiceCatalogIndexSourceVersionsInner>;
-}
-/**
- * 
- * @export
- * @interface ServiceCatalogIndexSourceVersionsInner
- */
-export interface ServiceCatalogIndexSourceVersionsInner {
-    /**
-     * The entity ID.
-     * @type {string}
-     * @memberof ServiceCatalogIndexSourceVersionsInner
-     */
-    'id': string;
-    /**
-     * An ISO-8604 timestamp representation of entity creation date.
-     * @type {string}
-     * @memberof ServiceCatalogIndexSourceVersionsInner
-     */
-    'created_at': string;
-    /**
-     * An ISO-8604 timestamp representation of entity update date.
-     * @type {string}
-     * @memberof ServiceCatalogIndexSourceVersionsInner
-     */
-    'updated_at': string;
-    /**
-     * the name of the service
-     * @type {string}
-     * @memberof ServiceCatalogIndexSourceVersionsInner
-     */
-    'version': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ServiceCatalogIndexSourceVersionsInner
-     */
-    'publish_status': ServiceCatalogIndexSourceVersionsInnerPublishStatusEnum;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ServiceCatalogIndexSourceVersionsInner
-     */
-    'deprecated': boolean;
-    /**
-     * The entity ID.
-     * @type {string}
-     * @memberof ServiceCatalogIndexSourceVersionsInner
-     */
-    'tracking_id': string;
-}
-
-export const ServiceCatalogIndexSourceVersionsInnerPublishStatusEnum = {
-    Published: 'published',
-    Unpublished: 'unpublished'
-} as const;
-
-export type ServiceCatalogIndexSourceVersionsInnerPublishStatusEnum = typeof ServiceCatalogIndexSourceVersionsInnerPublishStatusEnum[keyof typeof ServiceCatalogIndexSourceVersionsInnerPublishStatusEnum];
-
 /**
  * 
  * @export
@@ -2158,35 +2304,35 @@ export interface TextBlock {
  */
 export interface UnauthorizedError {
     /**
-     * The HTTP status code of the error. Useful when passing the response body to child properties in a frontend UI. Must be returned as an integer. 
-     * @type {number}
+     * 
+     * @type {any}
      * @memberof UnauthorizedError
      */
-    'status': number;
+    'status'?: any;
     /**
-     * A short, human-readable summary of the problem. It should not change between occurences of a problem, except for localization. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof UnauthorizedError
      */
-    'title': string;
+    'title'?: any;
     /**
-     * The error type.
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof UnauthorizedError
      */
-    'type'?: string;
+    'type'?: any;
     /**
-     * Used to return the correlation ID back to the user, in the format kong:trace:<correlation_id>. This helps us find the relevant logs when a customer reports an issue. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof UnauthorizedError
      */
-    'instance': string;
+    'instance'?: any;
     /**
-     * A human readable explanation specific to this occurence of the problem. This field may contain request/entity data to help the user understand what went wrong. Enclose variable values in square brackets. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
+     * 
+     * @type {any}
      * @memberof UnauthorizedError
      */
-    'detail': string;
+    'detail'?: any;
 }
 /**
  * Payload required to update an application
@@ -2232,129 +2378,6 @@ export interface UpdateCredentialPayload {
      */
     'display_name': string;
 }
-
-/**
- * AppRegApi - axios parameter creator
- * @export
- */
-export const AppRegApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Returns the application registration configuration of the given service
-         * @summary Application registration Configuration
-         * @param {string} id id of the service version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getApplicationRegistrationConfiguration: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('getApplicationRegistrationConfiguration', 'id', id)
-            const localVarPath = `/api/v2/application-registrations/service-versions/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * AppRegApi - functional programming interface
- * @export
- */
-export const AppRegApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = AppRegApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Returns the application registration configuration of the given service
-         * @summary Application registration Configuration
-         * @param {string} id id of the service version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getApplicationRegistrationConfiguration(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApplicationRegistrationConfiguration>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationRegistrationConfiguration(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
-};
-
-/**
- * AppRegApi - factory interface
- * @export
- */
-export const AppRegApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = AppRegApiFp(configuration)
-    return {
-        /**
-         * Returns the application registration configuration of the given service
-         * @summary Application registration Configuration
-         * @param {string} id id of the service version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getApplicationRegistrationConfiguration(id: string, options?: any): AxiosPromise<ApplicationRegistrationConfiguration> {
-            return localVarFp.getApplicationRegistrationConfiguration(id, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for getApplicationRegistrationConfiguration operation in AppRegApi.
- * @export
- * @interface AppRegApiGetApplicationRegistrationConfigurationRequest
- */
-export interface AppRegApiGetApplicationRegistrationConfigurationRequest {
-    /**
-     * id of the service version
-     * @type {string}
-     * @memberof AppRegApiGetApplicationRegistrationConfiguration
-     */
-    readonly id: string
-}
-
-/**
- * AppRegApi - object-oriented interface
- * @export
- * @class AppRegApi
- * @extends {BaseAPI}
- */
-export class AppRegApi extends BaseAPI {
-    /**
-     * Returns the application registration configuration of the given service
-     * @summary Application registration Configuration
-     * @param {AppRegApiGetApplicationRegistrationConfigurationRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AppRegApi
-     */
-    public getApplicationRegistrationConfiguration(requestParameters: AppRegApiGetApplicationRegistrationConfigurationRequest, options?: AxiosRequestConfig) {
-        return AppRegApiFp(this.configuration).getApplicationRegistrationConfiguration(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
 
 /**
  * ApplicationsApi - axios parameter creator
@@ -2443,7 +2466,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
         /**
          * This endpoint allows the developer to list applications
          * @summary Get many applications
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2499,44 +2522,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             }
 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * This endpoint allows the developer to reset the client secret for an application they own
-         * @summary refresh token
-         * @param {string} applicationId Id of the targeted application
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        refreshApplicationToken: async (applicationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'applicationId' is not null or undefined
-            assertParamExists('refreshApplicationToken', 'applicationId', applicationId)
-            const localVarPath = `/api/v2/applications/{applicationId}/refresh-token`
-                .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2634,7 +2619,7 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
         /**
          * This endpoint allows the developer to list applications
          * @summary Get many applications
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2651,17 +2636,6 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
          */
         async getOneApplication(applicationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApplicationResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOneApplication(applicationId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * This endpoint allows the developer to reset the client secret for an application they own
-         * @summary refresh token
-         * @param {string} applicationId Id of the targeted application
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async refreshApplicationToken(applicationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshTokenResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshApplicationToken(applicationId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2709,7 +2683,7 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
         /**
          * This endpoint allows the developer to list applications
          * @summary Get many applications
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2725,16 +2699,6 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
          */
         getOneApplication(applicationId: string, options?: any): AxiosPromise<GetApplicationResponse> {
             return localVarFp.getOneApplication(applicationId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * This endpoint allows the developer to reset the client secret for an application they own
-         * @summary refresh token
-         * @param {string} applicationId Id of the targeted application
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        refreshApplicationToken(applicationId: string, options?: any): AxiosPromise<RefreshTokenResponse> {
-            return localVarFp.refreshApplicationToken(applicationId, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows the developer to update an application they own
@@ -2785,7 +2749,7 @@ export interface ApplicationsApiDeleteApplicationRequest {
  */
 export interface ApplicationsApiGetManyApplicationsRequest {
     /**
-     * Determines which page of search results to retrieve.
+     * Determines which page of the entity to retrieve.
      * @type {PageParameters}
      * @memberof ApplicationsApiGetManyApplications
      */
@@ -2802,20 +2766,6 @@ export interface ApplicationsApiGetOneApplicationRequest {
      * Id of the targeted application
      * @type {string}
      * @memberof ApplicationsApiGetOneApplication
-     */
-    readonly applicationId: string
-}
-
-/**
- * Request parameters for refreshApplicationToken operation in ApplicationsApi.
- * @export
- * @interface ApplicationsApiRefreshApplicationTokenRequest
- */
-export interface ApplicationsApiRefreshApplicationTokenRequest {
-    /**
-     * Id of the targeted application
-     * @type {string}
-     * @memberof ApplicationsApiRefreshApplicationToken
      */
     readonly applicationId: string
 }
@@ -2894,18 +2844,6 @@ export class ApplicationsApi extends BaseAPI {
      */
     public getOneApplication(requestParameters: ApplicationsApiGetOneApplicationRequest, options?: AxiosRequestConfig) {
         return ApplicationsApiFp(this.configuration).getOneApplication(requestParameters.applicationId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * This endpoint allows the developer to reset the client secret for an application they own
-     * @summary refresh token
-     * @param {ApplicationsApiRefreshApplicationTokenRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ApplicationsApi
-     */
-    public refreshApplicationToken(requestParameters: ApplicationsApiRefreshApplicationTokenRequest, options?: AxiosRequestConfig) {
-        return ApplicationsApiFp(this.configuration).refreshApplicationToken(requestParameters.applicationId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3016,7 +2954,7 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
          * This endpoint allows the developer to list the credentials for an application they own
          * @summary Get Many credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3179,7 +3117,7 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
          * This endpoint allows the developer to list the credentials for an application they own
          * @summary Get Many credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3247,7 +3185,7 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
          * This endpoint allows the developer to list the credentials for an application they own
          * @summary Get Many credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3335,7 +3273,7 @@ export interface CredentialsApiGetManyCredentialsRequest {
     readonly applicationId: string
 
     /**
-     * Determines which page of search results to retrieve.
+     * Determines which page of the entity to retrieve.
      * @type {PageParameters}
      * @memberof CredentialsApiGetManyCredentials
      */
@@ -3460,6 +3398,78 @@ export class CredentialsApi extends BaseAPI {
 export const DeveloperApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
+         * @summary Forgot Password
+         * @param {ResetPasswordPayload} [resetPasswordPayload] Developer registration
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        forgotPassword: async (resetPasswordPayload?: ResetPasswordPayload, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/forgot-password`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(resetPasswordPayload, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns info about the current developer.
+         * @summary Retrieve My Account
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDeveloperMe: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Register to the developer portal
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
@@ -3497,44 +3507,6 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
-         * @summary Password Reset
-         * @param {ResetPasswordPayload} [resetPasswordPayload] Developer registration
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        resetPassword: async (resetPasswordPayload?: ResetPasswordPayload, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/developer/password-reset`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(resetPasswordPayload, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -3546,6 +3518,27 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DeveloperApiAxiosParamCreator(configuration)
     return {
         /**
+         * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
+         * @summary Forgot Password
+         * @param {ResetPasswordPayload} [resetPasswordPayload] Developer registration
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async forgotPassword(resetPasswordPayload?: ResetPasswordPayload, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.forgotPassword(resetPasswordPayload, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Returns info about the current developer.
+         * @summary Retrieve My Account
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getDeveloperMe(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Developer>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDeveloperMe(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Register to the developer portal
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
@@ -3554,17 +3547,6 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
          */
         async register(registerPayload?: RegisterPayload, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.register(registerPayload, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
-         * @summary Password Reset
-         * @param {ResetPasswordPayload} [resetPasswordPayload] Developer registration
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async resetPassword(resetPasswordPayload?: ResetPasswordPayload, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.resetPassword(resetPasswordPayload, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -3578,6 +3560,25 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
     const localVarFp = DeveloperApiFp(configuration)
     return {
         /**
+         * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
+         * @summary Forgot Password
+         * @param {ResetPasswordPayload} [resetPasswordPayload] Developer registration
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        forgotPassword(resetPasswordPayload?: ResetPasswordPayload, options?: any): AxiosPromise<void> {
+            return localVarFp.forgotPassword(resetPasswordPayload, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns info about the current developer.
+         * @summary Retrieve My Account
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDeveloperMe(options?: any): AxiosPromise<Developer> {
+            return localVarFp.getDeveloperMe(options).then((request) => request(axios, basePath));
+        },
+        /**
          * Register to the developer portal
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
@@ -3587,18 +3588,22 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
         register(registerPayload?: RegisterPayload, options?: any): AxiosPromise<void> {
             return localVarFp.register(registerPayload, options).then((request) => request(axios, basePath));
         },
-        /**
-         * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
-         * @summary Password Reset
-         * @param {ResetPasswordPayload} [resetPasswordPayload] Developer registration
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        resetPassword(resetPasswordPayload?: ResetPasswordPayload, options?: any): AxiosPromise<void> {
-            return localVarFp.resetPassword(resetPasswordPayload, options).then((request) => request(axios, basePath));
-        },
     };
 };
+
+/**
+ * Request parameters for forgotPassword operation in DeveloperApi.
+ * @export
+ * @interface DeveloperApiForgotPasswordRequest
+ */
+export interface DeveloperApiForgotPasswordRequest {
+    /**
+     * Developer registration
+     * @type {ResetPasswordPayload}
+     * @memberof DeveloperApiForgotPassword
+     */
+    readonly resetPasswordPayload?: ResetPasswordPayload
+}
 
 /**
  * Request parameters for register operation in DeveloperApi.
@@ -3615,26 +3620,35 @@ export interface DeveloperApiRegisterRequest {
 }
 
 /**
- * Request parameters for resetPassword operation in DeveloperApi.
- * @export
- * @interface DeveloperApiResetPasswordRequest
- */
-export interface DeveloperApiResetPasswordRequest {
-    /**
-     * Developer registration
-     * @type {ResetPasswordPayload}
-     * @memberof DeveloperApiResetPassword
-     */
-    readonly resetPasswordPayload?: ResetPasswordPayload
-}
-
-/**
  * DeveloperApi - object-oriented interface
  * @export
  * @class DeveloperApi
  * @extends {BaseAPI}
  */
 export class DeveloperApi extends BaseAPI {
+    /**
+     * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
+     * @summary Forgot Password
+     * @param {DeveloperApiForgotPasswordRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public forgotPassword(requestParameters: DeveloperApiForgotPasswordRequest = {}, options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).forgotPassword(requestParameters.resetPasswordPayload, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns info about the current developer.
+     * @summary Retrieve My Account
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public getDeveloperMe(options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).getDeveloperMe(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Register to the developer portal
      * @summary Register
@@ -3645,18 +3659,6 @@ export class DeveloperApi extends BaseAPI {
      */
     public register(requestParameters: DeveloperApiRegisterRequest = {}, options?: AxiosRequestConfig) {
         return DeveloperApiFp(this.configuration).register(requestParameters.registerPayload, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
-     * @summary Password Reset
-     * @param {DeveloperApiResetPasswordRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeveloperApi
-     */
-    public resetPassword(requestParameters: DeveloperApiResetPasswordRequest = {}, options?: AxiosRequestConfig) {
-        return DeveloperApiFp(this.configuration).resetPassword(requestParameters.resetPasswordPayload, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -4185,7 +4187,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Returns a paginated list of published API Products, each with their versions and documents
          * @summary Get page of products
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4272,7 +4274,7 @@ export const ProductsApiFp = function(configuration?: Configuration) {
         /**
          * Returns a paginated list of published API Products, each with their versions and documents
          * @summary Get page of products
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4304,7 +4306,7 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
         /**
          * Returns a paginated list of published API Products, each with their versions and documents
          * @summary Get page of products
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4331,7 +4333,7 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
  */
 export interface ProductsApiGetManyProductsRequest {
     /**
-     * Determines which page of search results to retrieve.
+     * Determines which page of the entity to retrieve.
      * @type {PageParameters}
      * @memberof ProductsApiGetManyProducts
      */
@@ -4392,8 +4394,8 @@ export class ProductsApi extends BaseAPI {
 export const RegistrationsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * This endpoint registers an application for a service
-         * @summary Register an application for a service
+         * This endpoint registers an application for a product
+         * @summary Register an application for a product
          * @param {string} applicationId Id of the targeted application
          * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration
          * @param {*} [options] Override http request option.
@@ -4436,7 +4438,7 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * This endpoint unregister an application for a service version
+         * This endpoint unregister an application for a product version
          * @summary Delete an application registration
          * @param {string} applicationId Id of the targeted application
          * @param {string} registrationId Id of the targeted registration
@@ -4478,7 +4480,7 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * This endpoint lists service registrations for an application
+         * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
@@ -4516,7 +4518,7 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * This endpoint retrieves the specified service registration for an application
+         * This endpoint retrieves the specified product registration for an application
          * @summary Get an application registration
          * @param {string} applicationId Id of the targeted application
          * @param {string} registrationId Id of the targeted registration
@@ -4568,8 +4570,8 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = RegistrationsApiAxiosParamCreator(configuration)
     return {
         /**
-         * This endpoint registers an application for a service
-         * @summary Register an application for a service
+         * This endpoint registers an application for a product
+         * @summary Register an application for a product
          * @param {string} applicationId Id of the targeted application
          * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration
          * @param {*} [options] Override http request option.
@@ -4580,7 +4582,7 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint unregister an application for a service version
+         * This endpoint unregister an application for a product version
          * @summary Delete an application registration
          * @param {string} applicationId Id of the targeted application
          * @param {string} registrationId Id of the targeted registration
@@ -4592,7 +4594,7 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint lists service registrations for an application
+         * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
@@ -4603,7 +4605,7 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint retrieves the specified service registration for an application
+         * This endpoint retrieves the specified product registration for an application
          * @summary Get an application registration
          * @param {string} applicationId Id of the targeted application
          * @param {string} registrationId Id of the targeted registration
@@ -4625,8 +4627,8 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
     const localVarFp = RegistrationsApiFp(configuration)
     return {
         /**
-         * This endpoint registers an application for a service
-         * @summary Register an application for a service
+         * This endpoint registers an application for a product
+         * @summary Register an application for a product
          * @param {string} applicationId Id of the targeted application
          * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration
          * @param {*} [options] Override http request option.
@@ -4636,7 +4638,7 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
             return localVarFp.createApplicationRegistration(applicationId, createRegistrationPayload, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint unregister an application for a service version
+         * This endpoint unregister an application for a product version
          * @summary Delete an application registration
          * @param {string} applicationId Id of the targeted application
          * @param {string} registrationId Id of the targeted registration
@@ -4647,7 +4649,7 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
             return localVarFp.deleteApplicationRegistration(applicationId, registrationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint lists service registrations for an application
+         * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
@@ -4657,7 +4659,7 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
             return localVarFp.getManyApplicationRegistrations(applicationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint retrieves the specified service registration for an application
+         * This endpoint retrieves the specified product registration for an application
          * @summary Get an application registration
          * @param {string} applicationId Id of the targeted application
          * @param {string} registrationId Id of the targeted registration
@@ -4755,8 +4757,8 @@ export interface RegistrationsApiGetOneApplicationRegistrationRequest {
  */
 export class RegistrationsApi extends BaseAPI {
     /**
-     * This endpoint registers an application for a service
-     * @summary Register an application for a service
+     * This endpoint registers an application for a product
+     * @summary Register an application for a product
      * @param {RegistrationsApiCreateApplicationRegistrationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4767,7 +4769,7 @@ export class RegistrationsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint unregister an application for a service version
+     * This endpoint unregister an application for a product version
      * @summary Delete an application registration
      * @param {RegistrationsApiDeleteApplicationRegistrationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4779,7 +4781,7 @@ export class RegistrationsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint lists service registrations for an application
+     * This endpoint lists product registrations for an application
      * @summary Get application registrations
      * @param {RegistrationsApiGetManyApplicationRegistrationsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4791,7 +4793,7 @@ export class RegistrationsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint retrieves the specified service registration for an application
+     * This endpoint retrieves the specified product registration for an application
      * @summary Get an application registration
      * @param {RegistrationsApiGetOneApplicationRegistrationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4815,7 +4817,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {SearchParameters} [search] Determines how to filter search results
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4873,7 +4875,7 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {SearchParameters} [search] Determines how to filter search results
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4896,7 +4898,7 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {SearchParameters} [search] Determines how to filter search results
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4927,7 +4929,7 @@ export interface SearchApiSearchPortalEntitiesRequest {
     readonly search?: SearchParameters
 
     /**
-     * Determines which page of search results to retrieve.
+     * Determines which page of the entity to retrieve.
      * @type {PageParameters}
      * @memberof SearchApiSearchPortalEntities
      */
@@ -4965,7 +4967,7 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * Returns paginated list of versions of a given product
          * @summary Get page of product versions
          * @param {string} productId Id of the product
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5144,7 +5146,7 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * Returns paginated list of versions of a given product
          * @summary Get page of product versions
          * @param {string} productId Id of the product
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5202,7 +5204,7 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * Returns paginated list of versions of a given product
          * @summary Get page of product versions
          * @param {string} productId Id of the product
-         * @param {PageParameters} [page] Determines which page of search results to retrieve.
+         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5259,7 +5261,7 @@ export interface VersionsApiGetManyProductVersionsRequest {
     readonly productId: string
 
     /**
-     * Determines which page of search results to retrieve.
+     * Determines which page of the entity to retrieve.
      * @type {PageParameters}
      * @memberof VersionsApiGetManyProductVersions
      */
