@@ -1983,29 +1983,16 @@ export type SearchIndicesParameters = typeof SearchIndicesParameters[keyof typeo
 /**
  * 
  * @export
- * @interface SearchParameters
+ * @enum {string}
  */
-export interface SearchParameters {
-    /**
-     * 
-     * @type {string}
-     * @memberof SearchParameters
-     */
-    'q'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SearchParameters
-     */
-    'join'?: SearchParametersJoinEnum;
-}
 
-export const SearchParametersJoinEnum = {
+export const SearchJoinParameters = {
     Versions: 'versions',
     VersionsDocuments: 'versions.documents'
 } as const;
 
-export type SearchParametersJoinEnum = typeof SearchParametersJoinEnum[keyof typeof SearchParametersJoinEnum];
+export type SearchJoinParameters = typeof SearchJoinParameters[keyof typeof SearchJoinParameters];
+
 
 /**
  * 
@@ -4816,12 +4803,13 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * Returns paginated search results from the specified entities with the given search parameters.
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
-         * @param {SearchParameters} [search] Determines how to filter search results
+         * @param {string} [q] Determines how to filter search results
+         * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
          * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchPortalEntities: async (indices: SearchIndicesParameters, search?: SearchParameters, page?: PageParameters, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchPortalEntities: async (indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, page?: PageParameters, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'indices' is not null or undefined
             assertParamExists('searchPortalEntities', 'indices', indices)
             const localVarPath = `/api/v2/search/{indices}`
@@ -4841,8 +4829,12 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-            if (search !== undefined) {
-                localVarQueryParameter['search'] = search;
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            if (join !== undefined) {
+                localVarQueryParameter['join'] = join;
             }
 
             if (page !== undefined) {
@@ -4874,13 +4866,14 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * Returns paginated search results from the specified entities with the given search parameters.
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
-         * @param {SearchParameters} [search] Determines how to filter search results
+         * @param {string} [q] Determines how to filter search results
+         * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
          * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchPortalEntities(indices: SearchIndicesParameters, search?: SearchParameters, page?: PageParameters, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResults>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchPortalEntities(indices, search, page, options);
+        async searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, page?: PageParameters, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResults>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchPortalEntities(indices, q, join, page, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -4897,13 +4890,14 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
          * Returns paginated search results from the specified entities with the given search parameters.
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
-         * @param {SearchParameters} [search] Determines how to filter search results
+         * @param {string} [q] Determines how to filter search results
+         * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
          * @param {PageParameters} [page] Determines which page of the entity to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchPortalEntities(indices: SearchIndicesParameters, search?: SearchParameters, page?: PageParameters, options?: any): AxiosPromise<SearchResults> {
-            return localVarFp.searchPortalEntities(indices, search, page, options).then((request) => request(axios, basePath));
+        searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, page?: PageParameters, options?: any): AxiosPromise<SearchResults> {
+            return localVarFp.searchPortalEntities(indices, q, join, page, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -4923,10 +4917,17 @@ export interface SearchApiSearchPortalEntitiesRequest {
 
     /**
      * Determines how to filter search results
-     * @type {SearchParameters}
+     * @type {string}
      * @memberof SearchApiSearchPortalEntities
      */
-    readonly search?: SearchParameters
+    readonly q?: string
+
+    /**
+     * Determines which sub-entities to include in search results
+     * @type {SearchJoinParameters}
+     * @memberof SearchApiSearchPortalEntities
+     */
+    readonly join?: SearchJoinParameters
 
     /**
      * Determines which page of the entity to retrieve.
@@ -4952,7 +4953,7 @@ export class SearchApi extends BaseAPI {
      * @memberof SearchApi
      */
     public searchPortalEntities(requestParameters: SearchApiSearchPortalEntitiesRequest, options?: AxiosRequestConfig) {
-        return SearchApiFp(this.configuration).searchPortalEntities(requestParameters.indices, requestParameters.search, requestParameters.page, options).then((request) => request(this.axios, this.basePath));
+        return SearchApiFp(this.configuration).searchPortalEntities(requestParameters.indices, requestParameters.q, requestParameters.join, requestParameters.page, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
