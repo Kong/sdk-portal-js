@@ -54,6 +54,12 @@ export interface ApplicationCreationResponse {
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ApplicationCreationResponse
+     */
     'name': string;
     /**
      * 
@@ -123,6 +129,12 @@ export interface ApplicationCreationResponseCredentials {
  * @interface ApplicationUpdateResponse
  */
 export interface ApplicationUpdateResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof ApplicationUpdateResponse
+     */
+    'id': string;
     /**
      * 
      * @type {string}
@@ -1263,25 +1275,6 @@ export interface PageMeta {
      * @memberof PageMeta
      */
     'total': number;
-}
-/**
- * 
- * @export
- * @interface PageParameters
- */
-export interface PageParameters {
-    /**
-     * 
-     * @type {number}
-     * @memberof PageParameters
-     */
-    'page[size]'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageParameters
-     */
-    'page[number]'?: number;
 }
 /**
  * returns the pagination information
@@ -2453,11 +2446,15 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
         /**
          * This endpoint allows the developer to list applications
          * @summary Get many applications
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplications: async (page?: PageParameters, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getManyApplications: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/applications`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2474,8 +2471,24 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
+            }
+
+            if (filterNameEq !== undefined) {
+                localVarQueryParameter['filter[name][eq]'] = filterNameEq;
+            }
+
+            if (filterName !== undefined) {
+                localVarQueryParameter['filter[name]'] = filterName;
+            }
+
+            if (filterNameContains !== undefined) {
+                localVarQueryParameter['filter[name][contains]'] = filterNameContains;
             }
 
 
@@ -2606,12 +2619,16 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
         /**
          * This endpoint allows the developer to list applications
          * @summary Get many applications
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyApplications(page?: PageParameters, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyApplicationsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyApplications(page, options);
+        async getManyApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyApplicationsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2670,12 +2687,16 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
         /**
          * This endpoint allows the developer to list applications
          * @summary Get many applications
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplications(page?: PageParameters, options?: any): AxiosPromise<GetManyApplicationsResponse> {
-            return localVarFp.getManyApplications(page, options).then((request) => request(axios, basePath));
+        getManyApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: any): AxiosPromise<GetManyApplicationsResponse> {
+            return localVarFp.getManyApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows the developer to get an application
@@ -2736,11 +2757,39 @@ export interface ApplicationsApiDeleteApplicationRequest {
  */
 export interface ApplicationsApiGetManyApplicationsRequest {
     /**
-     * Determines which page of the entity to retrieve.
-     * @type {PageParameters}
+     * Determines the size of the page to retrieve.
+     * @type {number}
      * @memberof ApplicationsApiGetManyApplications
      */
-    readonly page?: PageParameters
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof ApplicationsApiGetManyApplications
+     */
+    readonly pageNumber?: number
+
+    /**
+     * Filter by direct equality comparison of the name property with a supplied value.
+     * @type {string}
+     * @memberof ApplicationsApiGetManyApplications
+     */
+    readonly filterNameEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+     * @type {string}
+     * @memberof ApplicationsApiGetManyApplications
+     */
+    readonly filterName?: string
+
+    /**
+     * Filter by contains comparison of the name property with a supplied substring
+     * @type {string}
+     * @memberof ApplicationsApiGetManyApplications
+     */
+    readonly filterNameContains?: string
 }
 
 /**
@@ -2818,7 +2867,7 @@ export class ApplicationsApi extends BaseAPI {
      * @memberof ApplicationsApi
      */
     public getManyApplications(requestParameters: ApplicationsApiGetManyApplicationsRequest = {}, options?: AxiosRequestConfig) {
-        return ApplicationsApiFp(this.configuration).getManyApplications(requestParameters.page, options).then((request) => request(this.axios, this.basePath));
+        return ApplicationsApiFp(this.configuration).getManyApplications(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2941,11 +2990,12 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
          * This endpoint allows the developer to list the credentials for an application they own
          * @summary Get Many credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyCredentials: async (applicationId: string, page?: PageParameters, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getManyCredentials: async (applicationId: string, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
             assertParamExists('getManyCredentials', 'applicationId', applicationId)
             const localVarPath = `/api/v2/applications/{applicationId}/credentials`
@@ -2965,8 +3015,12 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
             }
 
 
@@ -3104,12 +3158,13 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
          * This endpoint allows the developer to list the credentials for an application they own
          * @summary Get Many credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyCredentials(applicationId: string, page?: PageParameters, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCredentialsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyCredentials(applicationId, page, options);
+        async getManyCredentials(applicationId: string, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCredentialsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyCredentials(applicationId, pageSize, pageNumber, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3172,12 +3227,13 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
          * This endpoint allows the developer to list the credentials for an application they own
          * @summary Get Many credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyCredentials(applicationId: string, page?: PageParameters, options?: any): AxiosPromise<GetCredentialsResponse> {
-            return localVarFp.getManyCredentials(applicationId, page, options).then((request) => request(axios, basePath));
+        getManyCredentials(applicationId: string, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<GetCredentialsResponse> {
+            return localVarFp.getManyCredentials(applicationId, pageSize, pageNumber, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows the developer to reset the client secret for an application they own
@@ -3260,11 +3316,18 @@ export interface CredentialsApiGetManyCredentialsRequest {
     readonly applicationId: string
 
     /**
-     * Determines which page of the entity to retrieve.
-     * @type {PageParameters}
+     * Determines the size of the page to retrieve.
+     * @type {number}
      * @memberof CredentialsApiGetManyCredentials
      */
-    readonly page?: PageParameters
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof CredentialsApiGetManyCredentials
+     */
+    readonly pageNumber?: number
 }
 
 /**
@@ -3349,7 +3412,7 @@ export class CredentialsApi extends BaseAPI {
      * @memberof CredentialsApi
      */
     public getManyCredentials(requestParameters: CredentialsApiGetManyCredentialsRequest, options?: AxiosRequestConfig) {
-        return CredentialsApiFp(this.configuration).getManyCredentials(requestParameters.applicationId, requestParameters.page, options).then((request) => request(this.axios, this.basePath));
+        return CredentialsApiFp(this.configuration).getManyCredentials(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4174,11 +4237,20 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Returns a paginated list of published API Products, each with their versions and documents
          * @summary Get page of products
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {string} [filterDescriptionEq] Filter by direct equality comparison of the description property with a supplied value.
+         * @param {string} [filterDescription] Filter by direct equality comparison (short-hand) of the description property with a supplied value.
+         * @param {string} [filterDescriptionContains] Filter by contains comparison of the description property with a supplied substring
+         * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
+         * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyProducts: async (page?: PageParameters, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getManyProducts: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/products`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4195,8 +4267,44 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
+            }
+
+            if (filterNameEq !== undefined) {
+                localVarQueryParameter['filter[name][eq]'] = filterNameEq;
+            }
+
+            if (filterName !== undefined) {
+                localVarQueryParameter['filter[name]'] = filterName;
+            }
+
+            if (filterNameContains !== undefined) {
+                localVarQueryParameter['filter[name][contains]'] = filterNameContains;
+            }
+
+            if (filterDescriptionEq !== undefined) {
+                localVarQueryParameter['filter[description][eq]'] = filterDescriptionEq;
+            }
+
+            if (filterDescription !== undefined) {
+                localVarQueryParameter['filter[description]'] = filterDescription;
+            }
+
+            if (filterDescriptionContains !== undefined) {
+                localVarQueryParameter['filter[description][contains]'] = filterDescriptionContains;
+            }
+
+            if (filterIdEq !== undefined) {
+                localVarQueryParameter['filter[id][eq]'] = filterIdEq;
+            }
+
+            if (filterId !== undefined) {
+                localVarQueryParameter['filter[id]'] = filterId;
             }
 
 
@@ -4261,12 +4369,21 @@ export const ProductsApiFp = function(configuration?: Configuration) {
         /**
          * Returns a paginated list of published API Products, each with their versions and documents
          * @summary Get page of products
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {string} [filterDescriptionEq] Filter by direct equality comparison of the description property with a supplied value.
+         * @param {string} [filterDescription] Filter by direct equality comparison (short-hand) of the description property with a supplied value.
+         * @param {string} [filterDescriptionContains] Filter by contains comparison of the description property with a supplied substring
+         * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
+         * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyProducts(page?: PageParameters, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductListPage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyProducts(page, options);
+        async getManyProducts(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductListPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyProducts(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterDescriptionEq, filterDescription, filterDescriptionContains, filterIdEq, filterId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4293,12 +4410,21 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
         /**
          * Returns a paginated list of published API Products, each with their versions and documents
          * @summary Get page of products
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {string} [filterDescriptionEq] Filter by direct equality comparison of the description property with a supplied value.
+         * @param {string} [filterDescription] Filter by direct equality comparison (short-hand) of the description property with a supplied value.
+         * @param {string} [filterDescriptionContains] Filter by contains comparison of the description property with a supplied substring
+         * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
+         * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyProducts(page?: PageParameters, options?: any): AxiosPromise<ProductListPage> {
-            return localVarFp.getManyProducts(page, options).then((request) => request(axios, basePath));
+        getManyProducts(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options?: any): AxiosPromise<ProductListPage> {
+            return localVarFp.getManyProducts(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterDescriptionEq, filterDescription, filterDescriptionContains, filterIdEq, filterId, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns the given published product, with its versions attached
@@ -4320,11 +4446,74 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
  */
 export interface ProductsApiGetManyProductsRequest {
     /**
-     * Determines which page of the entity to retrieve.
-     * @type {PageParameters}
+     * Determines the size of the page to retrieve.
+     * @type {number}
      * @memberof ProductsApiGetManyProducts
      */
-    readonly page?: PageParameters
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly pageNumber?: number
+
+    /**
+     * Filter by direct equality comparison of the name property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly filterNameEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly filterName?: string
+
+    /**
+     * Filter by contains comparison of the name property with a supplied substring
+     * @type {string}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly filterNameContains?: string
+
+    /**
+     * Filter by direct equality comparison of the description property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly filterDescriptionEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the description property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly filterDescription?: string
+
+    /**
+     * Filter by contains comparison of the description property with a supplied substring
+     * @type {string}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly filterDescriptionContains?: string
+
+    /**
+     * Filter by direct equality comparison of the id property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly filterIdEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiGetManyProducts
+     */
+    readonly filterId?: string
 }
 
 /**
@@ -4357,7 +4546,7 @@ export class ProductsApi extends BaseAPI {
      * @memberof ProductsApi
      */
     public getManyProducts(requestParameters: ProductsApiGetManyProductsRequest = {}, options?: AxiosRequestConfig) {
-        return ProductsApiFp(this.configuration).getManyProducts(requestParameters.page, options).then((request) => request(this.axios, this.basePath));
+        return ProductsApiFp(this.configuration).getManyProducts(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterDescriptionEq, requestParameters.filterDescription, requestParameters.filterDescriptionContains, requestParameters.filterIdEq, requestParameters.filterId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4470,10 +4659,14 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
          * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
+         * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
+         * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplicationRegistrations: async (applicationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getManyApplicationRegistrations: async (applicationId: string, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
             assertParamExists('getManyApplicationRegistrations', 'applicationId', applicationId)
             const localVarPath = `/api/v2/applications/{applicationId}/registrations`
@@ -4492,6 +4685,22 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             // authentication portalAccessToken required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (filterIdEq !== undefined) {
+                localVarQueryParameter['filter[id][eq]'] = filterIdEq;
+            }
+
+            if (filterId !== undefined) {
+                localVarQueryParameter['filter[id]'] = filterId;
+            }
+
+            if (filterStatusEq !== undefined) {
+                localVarQueryParameter['filter[status][eq]'] = filterStatusEq;
+            }
+
+            if (filterStatus !== undefined) {
+                localVarQueryParameter['filter[status]'] = filterStatus;
+            }
 
 
     
@@ -4584,11 +4793,15 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
          * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
+         * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
+         * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyApplicationRegistrations(applicationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyRegistrationsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyApplicationRegistrations(applicationId, options);
+        async getManyApplicationRegistrations(applicationId: string, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyRegistrationsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyApplicationRegistrations(applicationId, filterIdEq, filterId, filterStatusEq, filterStatus, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4639,11 +4852,15 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
          * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
+         * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
+         * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplicationRegistrations(applicationId: string, options?: any): AxiosPromise<GetManyRegistrationsResponse> {
-            return localVarFp.getManyApplicationRegistrations(applicationId, options).then((request) => request(axios, basePath));
+        getManyApplicationRegistrations(applicationId: string, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: any): AxiosPromise<GetManyRegistrationsResponse> {
+            return localVarFp.getManyApplicationRegistrations(applicationId, filterIdEq, filterId, filterStatusEq, filterStatus, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint retrieves the specified product registration for an application
@@ -4713,6 +4930,34 @@ export interface RegistrationsApiGetManyApplicationRegistrationsRequest {
      * @memberof RegistrationsApiGetManyApplicationRegistrations
      */
     readonly applicationId: string
+
+    /**
+     * Filter by direct equality comparison of the id property with a supplied value.
+     * @type {string}
+     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     */
+    readonly filterIdEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+     * @type {string}
+     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     */
+    readonly filterId?: string
+
+    /**
+     * Filter by direct equality comparison of the status property with a supplied value.
+     * @type {'approved' | 'pending' | 'rejected' | 'revoked'}
+     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     */
+    readonly filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked'
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+     * @type {'approved' | 'pending' | 'rejected' | 'revoked'}
+     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     */
+    readonly filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked'
 }
 
 /**
@@ -4776,7 +5021,7 @@ export class RegistrationsApi extends BaseAPI {
      * @memberof RegistrationsApi
      */
     public getManyApplicationRegistrations(requestParameters: RegistrationsApiGetManyApplicationRegistrationsRequest, options?: AxiosRequestConfig) {
-        return RegistrationsApiFp(this.configuration).getManyApplicationRegistrations(requestParameters.applicationId, options).then((request) => request(this.axios, this.basePath));
+        return RegistrationsApiFp(this.configuration).getManyApplicationRegistrations(requestParameters.applicationId, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4805,11 +5050,12 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
          * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchPortalEntities: async (indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, page?: PageParameters, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchPortalEntities: async (indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'indices' is not null or undefined
             assertParamExists('searchPortalEntities', 'indices', indices)
             const localVarPath = `/api/v2/search/{indices}`
@@ -4837,8 +5083,12 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['join'] = join;
             }
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
             }
 
 
@@ -4868,12 +5118,13 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
          * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, page?: PageParameters, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResults>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchPortalEntities(indices, q, join, page, options);
+        async searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResults>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchPortalEntities(indices, q, join, pageSize, pageNumber, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -4892,12 +5143,13 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
          * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, page?: PageParameters, options?: any): AxiosPromise<SearchResults> {
-            return localVarFp.searchPortalEntities(indices, q, join, page, options).then((request) => request(axios, basePath));
+        searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<SearchResults> {
+            return localVarFp.searchPortalEntities(indices, q, join, pageSize, pageNumber, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -4930,11 +5182,18 @@ export interface SearchApiSearchPortalEntitiesRequest {
     readonly join?: SearchJoinParameters
 
     /**
-     * Determines which page of the entity to retrieve.
-     * @type {PageParameters}
+     * Determines the size of the page to retrieve.
+     * @type {number}
      * @memberof SearchApiSearchPortalEntities
      */
-    readonly page?: PageParameters
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof SearchApiSearchPortalEntities
+     */
+    readonly pageNumber?: number
 }
 
 /**
@@ -4953,7 +5212,7 @@ export class SearchApi extends BaseAPI {
      * @memberof SearchApi
      */
     public searchPortalEntities(requestParameters: SearchApiSearchPortalEntitiesRequest, options?: AxiosRequestConfig) {
-        return SearchApiFp(this.configuration).searchPortalEntities(requestParameters.indices, requestParameters.q, requestParameters.join, requestParameters.page, options).then((request) => request(this.axios, this.basePath));
+        return SearchApiFp(this.configuration).searchPortalEntities(requestParameters.indices, requestParameters.q, requestParameters.join, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -4968,11 +5227,15 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * Returns paginated list of versions of a given product
          * @summary Get page of product versions
          * @param {string} productId Id of the product
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
+         * @param {string} [filterVersion] Filter by direct equality comparison (short-hand) of the version property with a supplied value.
+         * @param {string} [filterVersionContains] Filter by contains comparison of the version property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyProductVersions: async (productId: string, page?: PageParameters, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getManyProductVersions: async (productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
             assertParamExists('getManyProductVersions', 'productId', productId)
             const localVarPath = `/api/v2/products/{productId}/versions`
@@ -4992,8 +5255,24 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
+            }
+
+            if (filterVersionEq !== undefined) {
+                localVarQueryParameter['filter[version][eq]'] = filterVersionEq;
+            }
+
+            if (filterVersion !== undefined) {
+                localVarQueryParameter['filter[version]'] = filterVersion;
+            }
+
+            if (filterVersionContains !== undefined) {
+                localVarQueryParameter['filter[version][contains]'] = filterVersionContains;
             }
 
 
@@ -5147,12 +5426,16 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * Returns paginated list of versions of a given product
          * @summary Get page of product versions
          * @param {string} productId Id of the product
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
+         * @param {string} [filterVersion] Filter by direct equality comparison (short-hand) of the version property with a supplied value.
+         * @param {string} [filterVersionContains] Filter by contains comparison of the version property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyProductVersions(productId: string, page?: PageParameters, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListPage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyProductVersions(productId, page, options);
+        async getManyProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyProductVersions(productId, pageSize, pageNumber, filterVersionEq, filterVersion, filterVersionContains, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5205,12 +5488,16 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * Returns paginated list of versions of a given product
          * @summary Get page of product versions
          * @param {string} productId Id of the product
-         * @param {PageParameters} [page] Determines which page of the entity to retrieve.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
+         * @param {string} [filterVersion] Filter by direct equality comparison (short-hand) of the version property with a supplied value.
+         * @param {string} [filterVersionContains] Filter by contains comparison of the version property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyProductVersions(productId: string, page?: PageParameters, options?: any): AxiosPromise<ProductVersionListPage> {
-            return localVarFp.getManyProductVersions(productId, page, options).then((request) => request(axios, basePath));
+        getManyProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options?: any): AxiosPromise<ProductVersionListPage> {
+            return localVarFp.getManyProductVersions(productId, pageSize, pageNumber, filterVersionEq, filterVersion, filterVersionContains, options).then((request) => request(axios, basePath));
         },
         /**
          * Return given product version
@@ -5262,11 +5549,39 @@ export interface VersionsApiGetManyProductVersionsRequest {
     readonly productId: string
 
     /**
-     * Determines which page of the entity to retrieve.
-     * @type {PageParameters}
+     * Determines the size of the page to retrieve.
+     * @type {number}
      * @memberof VersionsApiGetManyProductVersions
      */
-    readonly page?: PageParameters
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof VersionsApiGetManyProductVersions
+     */
+    readonly pageNumber?: number
+
+    /**
+     * Filter by direct equality comparison of the version property with a supplied value.
+     * @type {string}
+     * @memberof VersionsApiGetManyProductVersions
+     */
+    readonly filterVersionEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the version property with a supplied value.
+     * @type {string}
+     * @memberof VersionsApiGetManyProductVersions
+     */
+    readonly filterVersion?: string
+
+    /**
+     * Filter by contains comparison of the version property with a supplied substring
+     * @type {string}
+     * @memberof VersionsApiGetManyProductVersions
+     */
+    readonly filterVersionContains?: string
 }
 
 /**
@@ -5348,7 +5663,7 @@ export class VersionsApi extends BaseAPI {
      * @memberof VersionsApi
      */
     public getManyProductVersions(requestParameters: VersionsApiGetManyProductVersionsRequest, options?: AxiosRequestConfig) {
-        return VersionsApiFp(this.configuration).getManyProductVersions(requestParameters.productId, requestParameters.page, options).then((request) => request(this.axios, this.basePath));
+        return VersionsApiFp(this.configuration).getManyProductVersions(requestParameters.productId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterVersionEq, requestParameters.filterVersion, requestParameters.filterVersionContains, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
