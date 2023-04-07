@@ -13,7 +13,11 @@ paths:
       description: This endpoint allows the developer to list applications
       operationId: get-many-applications
       parameters:
-        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByNameContains'
       responses:
         '200':
           $ref: '#/components/responses/GetManyApplications'
@@ -115,7 +119,8 @@ paths:
       operationId: get-many-credentials
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
-        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
           $ref: '#/components/responses/GetCredentials'
@@ -230,6 +235,10 @@ paths:
       operationId: get-many-application-registrations
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/FilterByIdEquality'
+        - $ref: '#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '#/components/parameters/FilterByStatusEquality'
+        - $ref: '#/components/parameters/FilterByStatusEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/GetManyRegistrations'
@@ -335,8 +344,6 @@ paths:
           description: the password reset flow has been initiated.
         '400':
           $ref: '#/components/responses/BadRequest'
-        '500':
-          $ref: '#/components/responses/Internal'
       tags:
         - developer
   /api/v2/developer/me:
@@ -401,7 +408,16 @@ paths:
         versions and documents
       operationId: get-many-products
       parameters:
-        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByNameContains'
+        - $ref: '#/components/parameters/FilterByDescriptionEquality'
+        - $ref: '#/components/parameters/FilterByDescriptionEqualityShort'
+        - $ref: '#/components/parameters/FilterByDescriptionContains'
+        - $ref: '#/components/parameters/FilterByIdEquality'
+        - $ref: '#/components/parameters/FilterByIdEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ProductGetMany'
@@ -409,8 +425,6 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
       tags:
         - products
   /api/v2/products/{productId}:
@@ -475,7 +489,11 @@ paths:
       operationId: get-many-product-versions
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByVersionEquality'
+        - $ref: '#/components/parameters/FilterByVersionEqualityShort'
+        - $ref: '#/components/parameters/FilterByVersionContains'
       responses:
         '200':
           $ref: '#/components/responses/ProductGetManyVersions'
@@ -566,7 +584,8 @@ paths:
         - $ref: '#/components/parameters/SearchIndices'
         - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/SearchJoin'
-        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
       tags:
         - search
 components:
@@ -595,21 +614,54 @@ components:
       schema:
         type: string
         format: uuid
-    Page:
-      name: page
-      description: Determines which page of the entity to retrieve.
+    PageSize:
+      name: page[size]
+      description: Determines the size of the page to retrieve.
       required: false
       in: query
+      allowEmptyValue: true
       schema:
-        title: PageParameters
-        type: object
-        properties:
-          page[size]:
-            type: integer
-            example: 10
-          page[number]:
-            type: integer
-            example: 2
+        type: integer
+        example: 2
+    PageNumber:
+      name: page[number]
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    FilterByNameEquality:
+      name: filter[name][eq]
+      description: >-
+        Filter by direct equality comparison of the name property with a
+        supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByNameEqualityShort:
+      name: filter[name]
+      description: >-
+        Filter by direct equality comparison (short-hand) of the name property
+        with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByNameContains:
+      name: filter[name][contains]
+      description: >-
+        Filter by contains comparison of the name property with a supplied
+        substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
     ProductId:
       name: productId
       in: path
@@ -634,6 +686,86 @@ components:
       schema:
         type: string
         format: uuid
+    FilterByDescriptionEquality:
+      name: filter[description][eq]
+      description: >-
+        Filter by direct equality comparison of the description property with a
+        supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: portal
+    FilterByDescriptionEqualityShort:
+      name: filter[description]
+      description: >-
+        Filter by direct equality comparison (short-hand) of the description
+        property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: portal
+    FilterByDescriptionContains:
+      name: filter[description][contains]
+      description: >-
+        Filter by contains comparison of the description property with a
+        supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: portal
+    FilterByIdEquality:
+      name: filter[id][eq]
+      description: >-
+        Filter by direct equality comparison of the id property with a supplied
+        value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByIdEqualityShort:
+      name: filter[id]
+      description: >-
+        Filter by direct equality comparison (short-hand) of the id property
+        with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByVersionEquality:
+      name: filter[version][eq]
+      description: >-
+        Filter by direct equality comparison of the version property with a
+        supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: v2
+    FilterByVersionEqualityShort:
+      name: filter[version]
+      description: >-
+        Filter by direct equality comparison (short-hand) of the version
+        property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: v2
+    FilterByVersionContains:
+      name: filter[version][contains]
+      description: >-
+        Filter by contains comparison of the version property with a supplied
+        substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: '2'
     RegistrationId:
       name: registrationId
       in: path
@@ -642,6 +774,36 @@ components:
       schema:
         type: string
         format: uuid
+    FilterByStatusEquality:
+      name: filter[status][eq]
+      description: >-
+        Filter by direct equality comparison of the status property with a
+        supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+        example: approved
+    FilterByStatusEqualityShort:
+      name: filter[status]
+      description: >-
+        Filter by direct equality comparison (short-hand) of the status property
+        with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+        example: approved
     SearchQuery:
       name: q
       description: Determines how to filter search results
@@ -1049,6 +1211,7 @@ components:
       title: ApplicationCreationResponse
       description: Application creation response payload
       required:
+        - id
         - name
         - reference_id
         - description
@@ -1056,6 +1219,9 @@ components:
         - created_at
         - updated_at
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
         reference_id:
@@ -1110,6 +1276,7 @@ components:
       title: ApplicationUpdateResponse
       description: Application update response payload
       required:
+        - id
         - name
         - reference_id
         - description
@@ -1117,6 +1284,9 @@ components:
         - updated_at
         - created_at
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
         reference_id:
