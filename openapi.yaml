@@ -27,6 +27,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
     post:
       summary: Create Application
       description: This endpoint allows the developer to create an application
@@ -50,6 +52,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}:
     get:
       summary: Get one Application
@@ -68,6 +72,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
     delete:
       summary: Delete Application
       description: This endpoint allows the developer to delete an application they own
@@ -87,6 +93,8 @@ paths:
           $ref: '#/components/responses/TooManyRequests'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
     put:
       summary: Update Application
       description: This endpoint allows the developer to update an application they own
@@ -110,6 +118,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - applications
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/credentials:
     get:
       summary: Get Many credentials
@@ -126,14 +136,16 @@ paths:
           $ref: '#/components/responses/GetCredentials'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
         '500':
           $ref: '#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
     post:
       summary: Post Credential
       description: >-
@@ -157,6 +169,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/credentials/{credentialId}:
     put:
       summary: Update Credential
@@ -182,6 +196,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
     delete:
       summary: Delete Credential
       description: >-
@@ -206,6 +222,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/refresh-token:
     post:
       summary: refresh token
@@ -228,6 +246,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - credentials
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/registrations:
     get:
       summary: Get application registrations
@@ -250,6 +270,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
     post:
       summary: Register an application for a product
       description: This endpoint registers an application for a product
@@ -271,6 +293,8 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/registrations/{registrationId}:
     get:
       summary: Get an application registration
@@ -290,6 +314,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
     delete:
       summary: Delete an application registration
       description: This endpoint unregister an application for a product version
@@ -306,6 +332,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
   /api/v2/developer:
     post:
       operationId: register
@@ -326,6 +354,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - developer
+      security:
+        - {}
   /api/v2/developer/forgot-password:
     post:
       operationId: forgot-password
@@ -346,6 +376,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
       tags:
         - developer
+      security:
+        - {}
   /api/v2/developer/me:
     get:
       summary: Retrieve My Account
@@ -360,6 +392,20 @@ paths:
           $ref: '#/components/responses/Internal'
       operationId: get-developer-me
       description: Returns info about the current developer.
+      security:
+        - portalAccessToken: []
+  /api/v2/portal:
+    get:
+      operationId: get-portal-context
+      summary: get portal context
+      description: return the portal context
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrievePortalContextResponse'
+      tags:
+        - portal
+      security:
+        - {}
   /api/v2/portal/appearance:
     get:
       operationId: get-portal-appearance
@@ -370,16 +416,8 @@ paths:
           $ref: '#/components/responses/RetrievePortalAppearanceResponse'
       tags:
         - portal
-  /api/v2/portal/context:
-    get:
-      operationId: get-portal-context
-      summary: get portal context
-      description: return the portal context
-      responses:
-        '200':
-          $ref: '#/components/responses/RetrievePortalContextResponse'
-      tags:
-        - portal
+      security:
+        - {}
   /api/v2/portal/stylesheet/catalog-cover:
     get:
       operationId: get-portal-catalog-cover
@@ -390,6 +428,8 @@ paths:
           $ref: '#/components/responses/RetrievePortalCoverResponse'
       tags:
         - portal
+      security:
+        - {}
   /api/v2/portal/stylesheet/logo:
     get:
       operationId: get-portal-logo
@@ -400,12 +440,12 @@ paths:
           $ref: '#/components/responses/RetrievePortalLogoResponse'
       tags:
         - portal
+      security:
+        - {}
   /api/v2/products:
     get:
       summary: Get page of products
-      description: >-
-        Returns a paginated list of published API Products, each with their
-        versions and documents
+      description: Returns a paginated list of published API Products
       operationId: get-many-products
       parameters:
         - $ref: '#/components/parameters/PageSize'
@@ -427,6 +467,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
       tags:
         - products
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}:
     get:
       summary: Get a product
@@ -445,6 +488,9 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - products
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/document-tree:
     get:
       summary: Get product document tree
@@ -463,6 +509,9 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - documentation
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/documents/{documentId}:
     get:
       summary: Get one product document
@@ -482,6 +531,9 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - documentation
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/versions:
     get:
       summary: Get page of product versions
@@ -505,6 +557,9 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/versions/{versionId}:
     get:
       summary: Get product version
@@ -524,6 +579,9 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/versions/{versionId}/operations:
     get:
       summary: Get operations in version spec
@@ -545,6 +603,9 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/products/{productId}/versions/{versionId}/spec:
     get:
       summary: Get OpenAPI spec for product version
@@ -566,6 +627,9 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/search/{indices}:
     get:
       summary: Search Portal Entities
@@ -588,15 +652,18 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
       tags:
         - search
+      security:
+        - portalAccessToken: []
+        - {}
 components:
   securitySchemes:
     portalAccessToken:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
       description: >
-        The Developer portal access token is meant to be used by the Developer
-        API to authenticate with.
+        The Developer portal cookie is meant to be used by the Developer API to
+        authenticate with.
   parameters:
     ApplicationId:
       name: applicationId
@@ -1755,10 +1822,6 @@ components:
           type: string
           example: Billing
           description: name of service
-        display_name:
-          type: string
-          example: Billing
-          description: display name used by UI for service
         description:
           type: string
           example: Api for billing functions
@@ -1802,12 +1865,6 @@ components:
         is_deprecated:
           type: boolean
           description: If true, product version is deprecated
-        tracking_id:
-          type: string
-          format: uuid
-          description: >-
-            ID used for application registration with Konnect Application Auth
-            Plugin
         registration_configs:
           description: >-
             Configurations for how the product version is able to be registered
@@ -1829,7 +1886,6 @@ components:
         - updated_at
         - version
         - is_deprecated
-        - tracking_id
         - registration_configs
     ProductVersionListPage:
       title: ProductVersionListPage
@@ -1890,7 +1946,6 @@ components:
       required:
         - id
         - slug
-        - meta
         - title
         - content
       properties:
@@ -1911,14 +1966,6 @@ components:
           example: getting-started
         content:
           $ref: '#/components/schemas/DocumentBlock'
-        meta:
-          type: object
-          description: the metadata of the document
-          additionalProperties: true
-          example:
-            title: Hello World
-            description: This is a description
-            keywords: hello, world
         title:
           type: string
           description: the title of the document
@@ -1942,7 +1989,6 @@ components:
         - id
         - title
         - slug
-        - meta
         - children
       properties:
         id:
@@ -1962,14 +2008,6 @@ components:
           type: string
           description: the slug of the document
           example: getting-started
-        meta:
-          type: object
-          description: the metadata of the document
-          additionalProperties: true
-          example:
-            author: Jane Doe
-            description: This is a description
-            keywords: hello, world
         children:
           type: array
           items:
@@ -2242,7 +2280,9 @@ components:
         - status
         - application_id
         - product_id
+        - product_name
         - product_version_id
+        - product_version_name
         - created_at
         - updated_at
       properties:
@@ -2262,10 +2302,16 @@ components:
           description: The UUID of the product registered for
           type: string
           format: uuid
+        product_name:
+          description: The name of the product registered for
+          type: string
         product_version_id:
           description: The UUID of the product version registered for
           type: string
           format: uuid
+        product_version_name:
+          description: The name of the product version registered for
+          type: string
         application_id:
           description: The UUID of the application the registration is linked to
           type: string
@@ -2433,9 +2479,6 @@ components:
             number: 2
             size: 1
             total: 4
-security:
-  - portalAccessToken: []
-  - {}
 tags:
   - name: applications
   - name: credentials
