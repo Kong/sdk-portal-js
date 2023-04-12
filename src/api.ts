@@ -854,11 +854,23 @@ export interface GetRegistrationResponse {
      */
     'product_id': string;
     /**
+     * The name of the product registered for
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'product_name': string;
+    /**
      * The UUID of the product version registered for
      * @type {string}
      * @memberof GetRegistrationResponse
      */
     'product_version_id': string;
+    /**
+     * The name of the product version registered for
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'product_version_name': string;
     /**
      * The UUID of the application the registration is linked to
      * @type {string}
@@ -1522,12 +1534,6 @@ export interface Product {
      */
     'name': string;
     /**
-     * display name used by UI for service
-     * @type {string}
-     * @memberof Product
-     */
-    'display_name'?: string;
-    /**
      * 
      * @type {string}
      * @memberof Product
@@ -1663,12 +1669,6 @@ export interface ProductDocument {
      */
     'content': DocumentBlock;
     /**
-     * the metadata of the document
-     * @type {{ [key: string]: any; }}
-     * @memberof ProductDocument
-     */
-    'meta': { [key: string]: any; };
-    /**
      * the title of the document
      * @type {string}
      * @memberof ProductDocument
@@ -1718,12 +1718,6 @@ export interface ProductDocumentTreeItem {
      * @memberof ProductDocumentTreeItem
      */
     'slug': string;
-    /**
-     * the metadata of the document
-     * @type {{ [key: string]: any; }}
-     * @memberof ProductDocumentTreeItem
-     */
-    'meta': { [key: string]: any; };
     /**
      * 
      * @type {Array<DocumentBlock>}
@@ -1786,12 +1780,6 @@ export interface ProductVersion {
      * @memberof ProductVersion
      */
     'is_deprecated': boolean;
-    /**
-     * ID used for application registration with Konnect Application Auth Plugin
-     * @type {string}
-     * @memberof ProductVersion
-     */
-    'tracking_id': string;
     /**
      * Configurations for how the product version is able to be registered for by applications
      * @type {Array<ProductVersionRegistrationConfigsInner>}
@@ -2388,8 +2376,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -2429,8 +2415,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -2468,8 +2452,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -2526,8 +2508,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -2567,8 +2547,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -2927,8 +2905,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -2972,8 +2948,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -3012,8 +2986,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -3058,8 +3030,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -3103,8 +3073,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -3467,10 +3435,6 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -3505,8 +3469,6 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -3538,10 +3500,6 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -3747,8 +3705,6 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -3785,8 +3741,6 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -3959,10 +3913,6 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3993,10 +3943,6 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4015,7 +3961,7 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
          * @throws {RequiredError}
          */
         getPortalContext: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/portal/context`;
+            const localVarPath = `/api/v2/portal`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4026,10 +3972,6 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -4060,10 +4002,6 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -4235,7 +4173,7 @@ export class PortalApi extends BaseAPI {
 export const ProductsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Returns a paginated list of published API Products, each with their versions and documents
+         * Returns a paginated list of published API Products
          * @summary Get page of products
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
@@ -4264,8 +4202,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -4342,8 +4278,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -4367,7 +4301,7 @@ export const ProductsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProductsApiAxiosParamCreator(configuration)
     return {
         /**
-         * Returns a paginated list of published API Products, each with their versions and documents
+         * Returns a paginated list of published API Products
          * @summary Get page of products
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
@@ -4408,7 +4342,7 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
     const localVarFp = ProductsApiFp(configuration)
     return {
         /**
-         * Returns a paginated list of published API Products, each with their versions and documents
+         * Returns a paginated list of published API Products
          * @summary Get page of products
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
@@ -4538,7 +4472,7 @@ export interface ProductsApiGetProductRequest {
  */
 export class ProductsApi extends BaseAPI {
     /**
-     * Returns a paginated list of published API Products, each with their versions and documents
+     * Returns a paginated list of published API Products
      * @summary Get page of products
      * @param {ProductsApiGetManyProductsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4596,8 +4530,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -4641,8 +4573,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -4683,8 +4613,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             if (filterIdEq !== undefined) {
                 localVarQueryParameter['filter[id][eq]'] = filterIdEq;
@@ -4741,8 +4669,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -5072,8 +4998,6 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             if (q !== undefined) {
                 localVarQueryParameter['q'] = q;
@@ -5252,8 +5176,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -5314,8 +5236,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -5356,8 +5276,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -5398,8 +5316,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
