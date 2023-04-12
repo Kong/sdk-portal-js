@@ -119,8 +119,29 @@ export const setSearchParams = function (url: URL, ...objects: any[]) {
  *
  * @export
  */
+export const recursiveSerializeSetToArray = function (value: any) {
+    if (value instanceof Set) {
+        return Array.from(value);
+    }
+    else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        for (const key in value) {
+            value[key] = recursiveSerializeSetToArray(value[key]);
+        }
+    }
+    return value;
+}
+
+/**
+ *
+ * @export
+ */
 export const serializeDataIfNeeded = function (value: any, requestOptions: any, configuration?: Configuration) {
     const nonString = typeof value !== 'string';
+    // if value is an object, iterate through the values, and if any of them are of type Set, convert them to Array
+    if (nonString && typeof value === 'object') {
+        value = recursiveSerializeSetToArray(value)
+    }
+
     const needsSerialization = nonString && configuration && configuration.isJsonMime
         ? configuration.isJsonMime(requestOptions.headers['Content-Type'])
         : nonString;
