@@ -1838,7 +1838,7 @@ export interface ProductVersionSpecOperations {
      * @type {Array<ProductVersionSpecOperationsOperationsInner>}
      * @memberof ProductVersionSpecOperations
      */
-    'operations'?: Array<ProductVersionSpecOperationsOperationsInner>;
+    'operations': Array<ProductVersionSpecOperationsOperationsInner>;
 }
 /**
  * 
@@ -1851,37 +1851,37 @@ export interface ProductVersionSpecOperationsOperationsInner {
      * @type {string}
      * @memberof ProductVersionSpecOperationsOperationsInner
      */
-    'path'?: string;
+    'path': string;
     /**
      * 
      * @type {string}
      * @memberof ProductVersionSpecOperationsOperationsInner
      */
-    'method'?: ProductVersionSpecOperationsOperationsInnerMethodEnum;
+    'method': ProductVersionSpecOperationsOperationsInnerMethodEnum;
     /**
      * 
      * @type {string}
      * @memberof ProductVersionSpecOperationsOperationsInner
      */
-    'opertationId'?: string;
+    'operation_id': string | null;
     /**
      * 
      * @type {Array<string>}
      * @memberof ProductVersionSpecOperationsOperationsInner
      */
-    'tags'?: Array<string>;
+    'tags': Array<string>;
     /**
      * 
      * @type {string}
      * @memberof ProductVersionSpecOperationsOperationsInner
      */
-    'summary'?: string;
+    'summary': string | null;
     /**
      * 
      * @type {boolean}
      * @memberof ProductVersionSpecOperationsOperationsInner
      */
-    'depercated'?: boolean;
+    'deprecated': boolean;
 }
 
 export const ProductVersionSpecOperationsOperationsInnerMethodEnum = {
