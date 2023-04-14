@@ -3931,7 +3931,7 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
          * @throws {RequiredError}
          */
         getPortalCatalogCover: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/portal/stylesheet/catalog-cover`;
+            const localVarPath = `/api/v2/portal/catalog-cover`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -3991,7 +3991,7 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
          * @throws {RequiredError}
          */
         getPortalLogo: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v2/portal/stylesheet/logo`;
+            const localVarPath = `/api/v2/portal/logo`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
