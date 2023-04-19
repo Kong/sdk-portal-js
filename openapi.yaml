@@ -334,6 +334,53 @@ paths:
         - registrations
       security:
         - portalAccessToken: []
+  /api/v2/authenticate:
+    post:
+      summary: Authenticate
+      description: >-
+        This endpoint allows a developer to authenticate to their portal using a
+        username and password.
+      operationId: authenticate
+      requestBody:
+        $ref: '#/components/requestBodies/AuthenticateRequest'
+      responses:
+        '204':
+          description: No Content
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: >
+                  portalaccesstoken=access12345; Path=/;
+                  Domain=example.us.portal.konghq.tech; Expires=Thu, 20 Jul 2023
+                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
+
+                  portalrefreshtoken=refresh12345; Path=/v2/refresh;
+                  Domain=example.us.portal.konghq.tech; Expires=Thu, 20 Jul 2023
+                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
+              description: The access and refresh tokens.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - authentication
+  /api/v2/authenticate/{ssoLoginPath}:
+    get:
+      summary: Authenticate SSO
+      description: >-
+        This endpoint allows a developer to authenticate to their portal using
+        an external IdP.
+      operationId: authenticate-sso
+      parameters:
+        - $ref: '#/components/parameters/ssoLoginPath'
+      responses:
+        '302':
+          description: Found
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      tags:
+        - authentication
   /api/v2/developer:
     post:
       operationId: register
@@ -394,6 +441,18 @@ paths:
       description: Returns info about the current developer.
       security:
         - portalAccessToken: []
+  /api/v2/logout:
+    post:
+      summary: Logout
+      description: >-
+        This endpoint allows a developer to logout of the portal. This operation
+        revokes all active tokens and clears the portal cookies.
+      operationId: logout
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - authentication
   /api/v2/portal:
     get:
       operationId: get-portal-context
@@ -634,6 +693,53 @@ paths:
       security:
         - portalAccessToken: []
         - {}
+  /api/v2/refresh:
+    post:
+      summary: Refresh Access Token
+      description: This endpoint allows a developer to refresh their existing access token.
+      operationId: refresh
+      responses:
+        '204':
+          description: No Content
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: >
+                  portalaccesstoken=access12345; Path=/;
+                  Domain=example.us.portal.konghq.tech; Expires=Thu, 20 Jul 2023
+                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
+
+                  portalrefreshtoken=refresh12345; Path=/v2/refresh;
+                  Domain=example.us.portal.konghq.tech; Expires=Thu, 20 Jul 2023
+                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - authentication
+  /api/v2/reset-password:
+    post:
+      summary: Reset Password
+      description: >-
+        This endpoint allows a developer to reset their password, using a reset
+        token.
+      operationId: reset-password
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+      tags:
+        - authentication
+      requestBody:
+        $ref: '#/components/requestBodies/ResetPasswordRequest'
+    parameters: []
   /api/v2/search/{indices}:
     get:
       summary: Search Portal Entities
@@ -659,6 +765,25 @@ paths:
       security:
         - portalAccessToken: []
         - {}
+  /api/v2/verify-email:
+    post:
+      summary: Verify Email
+      description: This endpoint allows a new developer to verify their email.
+      operationId: verify-email
+      responses:
+        '202':
+          $ref: '#/components/responses/VerifyEmailResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+      tags:
+        - authentication
+      requestBody:
+        $ref: '#/components/requestBodies/VerifyEmailRequest'
+    parameters: []
 components:
   securitySchemes:
     portalAccessToken:
@@ -733,6 +858,14 @@ components:
       schema:
         type: string
         example: good service
+    ssoLoginPath:
+      name: ssoLoginPath
+      in: path
+      required: true
+      schema:
+        type: string
+        example: mycompany
+      description: The login path unique to the portal for SSO.
     ProductId:
       name: productId
       in: path
@@ -925,6 +1058,30 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateCredentialPayload'
+    AuthenticateRequest:
+      description: The request schema for the authenticate endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticateRequest'
+    ResetPasswordRequest:
+      description: The request schema for the reset password endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResetPasswordRequest'
+          examples:
+            ResetPasswordRequest:
+              $ref: '#/components/examples/Reset-Password-Request'
+    VerifyEmailRequest:
+      description: The request schema for the verify email endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyEmailRequest'
+          examples:
+            VerifyEmailRequest:
+              $ref: '#/components/examples/Verify-Email-Request'
     CreateRegistration:
       description: Create an application registration
       required: true
@@ -987,6 +1144,9 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
+          examples:
+            400-Invalid-Token:
+              $ref: '#/components/examples/400-Invalid-Token'
     Unauthorized:
       description: Unauthorized
       content:
@@ -1005,6 +1165,9 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
+          examples:
+            404-Token-Not-Found:
+              $ref: '#/components/examples/404-Token-Not-Found'
     Conflict:
       description: Conflict
       content:
@@ -1017,6 +1180,24 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/InternalError'
+    Gone:
+      description: Gone
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GoneError'
+          examples:
+            410-Expired-Token:
+              $ref: '#/components/examples/410-Expired-Token'
+    VerifyEmailResponse:
+      description: The response schema for the verify email endpoint.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyEmailResponse'
+          examples:
+            VerifyEmailResponse:
+              $ref: '#/components/examples/Verify-Email-Response'
     MeResponse:
       description: Response from me endpoint.
       content:
@@ -1583,6 +1764,7 @@ components:
         - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
     UnauthorizedError:
       type: object
       properties:
@@ -1597,6 +1779,7 @@ components:
         detail:
           example: Invalid credentials
       allOf:
+        - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
@@ -1634,6 +1817,7 @@ components:
         - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
     ConflictError:
       type: object
       properties:
@@ -1653,6 +1837,104 @@ components:
     InternalError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+    AuthenticateRequest:
+      type: object
+      additionalProperties: false
+      x-examples:
+        $ref: '#/components/examples/Authenticate-Request'
+      title: AuthenticateRequest
+      description: The request schema for the authenticate endpoint.
+      properties:
+        username:
+          type: string
+          format: email
+          example: developer@example.com
+          writeOnly: true
+        password:
+          type: string
+          format: password
+          example: <!N0taP@$$w0rd!>
+          writeOnly: true
+      required:
+        - username
+        - password
+    ResetPasswordRequest:
+      title: ResetPasswordRequest
+      type: object
+      additionalProperties: false
+      description: The request schema for the reset password endpoint.
+      x-examples:
+        $ref:
+          value:
+            password: <!D3finitelyN0taP@$$w0rd!>
+            token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        password:
+          type: string
+          format: password
+          example: <!N0taP@$$w0rd!>
+          writeOnly: true
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          writeOnly: true
+      required:
+        - password
+        - token
+    VerifyEmailRequest:
+      title: VerifyEmailRequest
+      type: object
+      additionalProperties: false
+      description: The request schema for the verify email endpoint.
+      x-examples:
+        $ref:
+          value:
+            token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          writeOnly: true
+      required:
+        - token
+    VerifyEmailResponse:
+      title: VerifyEmailResponse
+      type: object
+      additionalProperties: false
+      description: The response schema for the verify email endpoint.
+      x-examples:
+        $ref:
+          value:
+            email: developer@example.com
+            token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      properties:
+        email:
+          type: string
+          format: email
+          example: developer@example.com
+          readOnly: true
+        token:
+          type: string
+          format: uuid
+          example: c8efd006-d8e1-4743-b91b-f163b9eae06a
+          readOnly: true
+    GoneError:
+      type: object
+      properties:
+        status:
+          example: 410
+        title:
+          example: Gone
+        type:
+          example: https://httpstatuses.com/410
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Gone
+      allOf:
         - $ref: '#/components/schemas/BaseError'
     Developer:
       title: Developer
@@ -1778,25 +2060,38 @@ components:
           type: string
         basic_auth_enabled:
           type: boolean
-        is_public:
-          type: boolean
-        rbac_enabled:
-          type: boolean
-          description: Is the portal protected with role base access
-        is_dcr:
-          type: boolean
-          description: Is the portal using DCR application registration
+          description: Whether the portal can be accessed via email and password
         oidc_auth_enabled:
           type: boolean
+          description: >-
+            Whether the portal can be accessed via authentication with Single
+            Sign On (SSO) through OpenID Connect (OIDC) from a third-party
+            Identity Provider
+        is_public:
+          type: boolean
+          description: >-
+            Whether the portal catalog can be accessed by non-authenticated
+            users
+        rbac_enabled:
+          type: boolean
+          description: Whether the portal is protected with Role-Based Access Control
+        dcr_provider_ids:
+          type: array
+          description: >-
+            The unique identifiers of each available client provider when using
+            Dynamic Client Registration
+          items:
+            type: string
+            format: uuid
       required:
         - portal_id
         - org_id
         - is_public
         - featureset_id
         - basic_auth_enabled
-        - rbac_enabled
-        - is_dcr
         - oidc_auth_enabled
+        - rbac_enabled
+        - dcr_provider_ids
     Product:
       title: Product
       type: object
@@ -1902,16 +2197,27 @@ components:
           items:
             $ref: '#/components/schemas/ProductVersion'
     ProductVersionSpec:
-      type: string
+      type: object
       title: Product Version Spec Document
-      description: Open API specification
+      description: API specification
+      properties:
+        api_type:
+          $ref: '#/components/schemas/ApiTypeEnum'
+        content:
+          type: string
+      required:
+        - api_type
+        - content
     ProductVersionSpecOperations:
       type: object
       title: Operations in product version spec document
       description: List of every operation detailed in the product version spec document
       required:
+        - api_type
         - operations
       properties:
+        api_type:
+          $ref: '#/components/schemas/ApiTypeEnum'
         operations:
           type: array
           items:
@@ -1954,6 +2260,10 @@ components:
                 example: Add a new Pet to the store
               deprecated:
                 type: boolean
+    ApiTypeEnum:
+      type: string
+      enum:
+        - openapi
     ProductDocument:
       type: object
       title: Document
@@ -2381,13 +2691,9 @@ components:
           readOnly: true
         name:
           type: string
-          example: nice_product
-          description: the name of the product
-          readOnly: true
-        display_name:
-          type: string
           example: Nice Product
-          description: the displayable name of the product
+          description: the name of the product
+          nullable: true
           readOnly: true
         description:
           type: string
@@ -2461,11 +2767,48 @@ components:
     SearchJoinParameters:
       title: SearchJoinParameters
       type: string
-      enum:
-        - versions
-        - versions.documents
-      example: versions.documents
+      description: >-
+        Accepted values are `versions` and `versions.documents`. Use commas to
+        separate multiple values.
+      example: versions,versions.documents
   examples:
+    Authenticate-Request:
+      value:
+        username: developer@example.com
+        password: <!N0taP@$$w0rd!>
+        portal_id: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    Reset-Password-Request:
+      value:
+        password: <!D3finitelyN0taP@$$w0rd!>
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    Verify-Email-Request:
+      value:
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    Verify-Email-Response:
+      value:
+        email: developer@example.com
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+    400-Invalid-Token:
+      value:
+        status: 400
+        title: Bad Request
+        instance: konnect:trace:8988732526256293040
+        detail: The provided token is invalid
+        invalid_parameters:
+          - field: token
+            reason: invalid ID format
+    404-Token-Not-Found:
+      value:
+        status: 400
+        title: Not Found
+        instance: konnect:trace:8988732526256293040
+        detail: The provided token was not found
+    410-Expired-Token:
+      value:
+        status: 410
+        title: Gone
+        instance: konnect:trace:8988732526256293040
+        detail: The token has expired
     SearchResponseExample:
       value:
         data:
@@ -2474,8 +2817,7 @@ components:
               created_at: '2023-01-19T17:41:55.896Z'
               updated_at: '2023-01-20T17:41:55.896Z'
               id: e35b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
-              name: great_product
-              display_name: Great Product
+              name: Great Product
               description: Great products are built with great care
               has_documentation: true
               versions:
@@ -2497,6 +2839,7 @@ components:
 tags:
   - name: applications
   - name: credentials
+  - name: authentication
   - name: developer
     description: Portal Developer API
   - name: portal
