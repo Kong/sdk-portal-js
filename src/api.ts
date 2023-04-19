@@ -44,6 +44,19 @@ export type AlignmentKind = typeof AlignmentKind[keyof typeof AlignmentKind];
 export type AnyNode = { type: 'blockquote' } & BlockQuoteBlock | { type: 'break' } & BreakBlock | { type: 'code' } & Code | { type: 'code_block' } & CodeBlock | { type: 'document' } & DocumentBlock | { type: 'emphasis' } & Emphasis | { type: 'heading' } & HeadingBlock | { type: 'image' } & Image | { type: 'link' } & Link | { type: 'list' } & ListBlock | { type: 'list_item' } & ListItemBlock | { type: 'paragraph' } & ParagraphBlock | { type: 'strikethrough' } & StrikeThrough | { type: 'table' } & TableBlock | { type: 'table_cell' } & TableCellBlock | { type: 'table_header' } & TableHeaderBlock | { type: 'table_row' } & TableRowBlock | { type: 'task_checkbox' } & TaskCheckbox | { type: 'text' } & Text | { type: 'text_block' } & TextBlock;
 
 /**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const ApiTypeEnum = {
+    Openapi: 'openapi'
+} as const;
+
+export type ApiTypeEnum = typeof ApiTypeEnum[keyof typeof ApiTypeEnum];
+
+
+/**
  * Application creation response payload
  * @export
  * @interface ApplicationCreationResponse
@@ -177,6 +190,25 @@ export interface ApplicationUpdateResponse {
      * @memberof ApplicationUpdateResponse
      */
     'updated_at': string;
+}
+/**
+ * The request schema for the authenticate endpoint.
+ * @export
+ * @interface AuthenticateRequest
+ */
+export interface AuthenticateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthenticateRequest
+     */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthenticateRequest
+     */
+    'password': string;
 }
 /**
  * 
@@ -903,6 +935,43 @@ export type GetRegistrationResponseStatusEnum = typeof GetRegistrationResponseSt
 /**
  * 
  * @export
+ * @interface GoneError
+ */
+export interface GoneError {
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneError
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneError
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneError
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneError
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneError
+     */
+    'detail'?: any;
+}
+/**
+ * 
+ * @export
  * @interface HeadingBlock
  */
 export interface HeadingBlock {
@@ -1473,35 +1542,35 @@ export interface PortalContext {
      */
     'featureset_id': string;
     /**
-     * 
+     * Whether the portal can be accessed via email and password
      * @type {boolean}
      * @memberof PortalContext
      */
     'basic_auth_enabled': boolean;
     /**
-     * 
+     * Whether the portal can be accessed via authentication with Single Sign On (SSO) through OpenID Connect (OIDC) from a third-party Identity Provider
+     * @type {boolean}
+     * @memberof PortalContext
+     */
+    'oidc_auth_enabled': boolean;
+    /**
+     * Whether the portal catalog can be accessed by non-authenticated users
      * @type {boolean}
      * @memberof PortalContext
      */
     'is_public': boolean;
     /**
-     * Is the portal protected with role base access
+     * Whether the portal is protected with Role-Based Access Control
      * @type {boolean}
      * @memberof PortalContext
      */
     'rbac_enabled': boolean;
     /**
-     * Is the portal using DCR application registration
-     * @type {boolean}
+     * The unique identifiers of each available client provider when using Dynamic Client Registration
+     * @type {Array<string>}
      * @memberof PortalContext
      */
-    'is_dcr': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PortalContext
-     */
-    'oidc_auth_enabled': boolean;
+    'dcr_provider_ids': Array<string>;
 }
 /**
  * 
@@ -1563,13 +1632,7 @@ export interface ProductCatalogIndexSource {
      * @type {string}
      * @memberof ProductCatalogIndexSource
      */
-    'name': string;
-    /**
-     * the displayable name of the product
-     * @type {string}
-     * @memberof ProductCatalogIndexSource
-     */
-    'display_name'?: string;
+    'name': string | null;
     /**
      * a description of the product
      * @type {string}
@@ -1828,11 +1891,36 @@ export const ProductVersionRegistrationConfigsInnerNameEnum = {
 export type ProductVersionRegistrationConfigsInnerNameEnum = typeof ProductVersionRegistrationConfigsInnerNameEnum[keyof typeof ProductVersionRegistrationConfigsInnerNameEnum];
 
 /**
+ * API specification
+ * @export
+ * @interface ProductVersionSpec
+ */
+export interface ProductVersionSpec {
+    /**
+     * 
+     * @type {ApiTypeEnum}
+     * @memberof ProductVersionSpec
+     */
+    'api_type': ApiTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductVersionSpec
+     */
+    'content': string;
+}
+/**
  * List of every operation detailed in the product version spec document
  * @export
  * @interface ProductVersionSpecOperations
  */
 export interface ProductVersionSpecOperations {
+    /**
+     * 
+     * @type {ApiTypeEnum}
+     * @memberof ProductVersionSpecOperations
+     */
+    'api_type': ApiTypeEnum;
     /**
      * 
      * @type {Array<ProductVersionSpecOperationsOperationsInner>}
@@ -1949,6 +2037,25 @@ export interface ResetPasswordPayload {
     'email': string;
 }
 /**
+ * The request schema for the reset password endpoint.
+ * @export
+ * @interface ResetPasswordRequest
+ */
+export interface ResetPasswordRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ResetPasswordRequest
+     */
+    'password': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ResetPasswordRequest
+     */
+    'token': string;
+}
+/**
  * 
  * @export
  * @enum {string}
@@ -1959,20 +2066,6 @@ export const SearchIndicesParameters = {
 } as const;
 
 export type SearchIndicesParameters = typeof SearchIndicesParameters[keyof typeof SearchIndicesParameters];
-
-
-/**
- * 
- * @export
- * @enum {string}
- */
-
-export const SearchJoinParameters = {
-    Versions: 'versions',
-    VersionsDocuments: 'versions.documents'
-} as const;
-
-export type SearchJoinParameters = typeof SearchJoinParameters[keyof typeof SearchJoinParameters];
 
 
 /**
@@ -2345,6 +2438,38 @@ export interface UpdateCredentialPayload {
      * @memberof UpdateCredentialPayload
      */
     'display_name': string;
+}
+/**
+ * The request schema for the verify email endpoint.
+ * @export
+ * @interface VerifyEmailRequest
+ */
+export interface VerifyEmailRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof VerifyEmailRequest
+     */
+    'token': string;
+}
+/**
+ * The response schema for the verify email endpoint.
+ * @export
+ * @interface VerifyEmailResponse
+ */
+export interface VerifyEmailResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof VerifyEmailResponse
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VerifyEmailResponse
+     */
+    'token'?: string;
 }
 
 /**
@@ -2870,6 +2995,488 @@ export class ApplicationsApi extends BaseAPI {
      */
     public updateApplication(requestParameters: ApplicationsApiUpdateApplicationRequest, options?: AxiosRequestConfig) {
         return ApplicationsApiFp(this.configuration).updateApplication(requestParameters.applicationId, requestParameters.updateApplicationPayload, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * AuthenticationApi - axios parameter creator
+ * @export
+ */
+export const AuthenticationApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * This endpoint allows a developer to authenticate to their portal using a username and password.
+         * @summary Authenticate
+         * @param {AuthenticateRequest} [authenticateRequest] The request schema for the authenticate endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authenticate: async (authenticateRequest?: AuthenticateRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/authenticate`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(authenticateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a developer to authenticate to their portal using an external IdP.
+         * @summary Authenticate SSO
+         * @param {string} ssoLoginPath The login path unique to the portal for SSO.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authenticateSso: async (ssoLoginPath: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ssoLoginPath' is not null or undefined
+            assertParamExists('authenticateSso', 'ssoLoginPath', ssoLoginPath)
+            const localVarPath = `/api/v2/authenticate/{ssoLoginPath}`
+                .replace(`{${"ssoLoginPath"}}`, encodeURIComponent(String(ssoLoginPath)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/logout`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a developer to refresh their existing access token.
+         * @summary Refresh Access Token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refresh: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/refresh`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a developer to reset their password, using a reset token.
+         * @summary Reset Password
+         * @param {ResetPasswordRequest} [resetPasswordRequest] The request schema for the reset password endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        resetPassword: async (resetPasswordRequest?: ResetPasswordRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/reset-password`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(resetPasswordRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a new developer to verify their email.
+         * @summary Verify Email
+         * @param {VerifyEmailRequest} [verifyEmailRequest] The request schema for the verify email endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyEmail: async (verifyEmailRequest?: VerifyEmailRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/verify-email`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(verifyEmailRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AuthenticationApi - functional programming interface
+ * @export
+ */
+export const AuthenticationApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AuthenticationApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * This endpoint allows a developer to authenticate to their portal using a username and password.
+         * @summary Authenticate
+         * @param {AuthenticateRequest} [authenticateRequest] The request schema for the authenticate endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async authenticate(authenticateRequest?: AuthenticateRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.authenticate(authenticateRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a developer to authenticate to their portal using an external IdP.
+         * @summary Authenticate SSO
+         * @param {string} ssoLoginPath The login path unique to the portal for SSO.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async authenticateSso(ssoLoginPath: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.authenticateSso(ssoLoginPath, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async logout(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logout(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a developer to refresh their existing access token.
+         * @summary Refresh Access Token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refresh(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refresh(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a developer to reset their password, using a reset token.
+         * @summary Reset Password
+         * @param {ResetPasswordRequest} [resetPasswordRequest] The request schema for the reset password endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async resetPassword(resetPasswordRequest?: ResetPasswordRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.resetPassword(resetPasswordRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a new developer to verify their email.
+         * @summary Verify Email
+         * @param {VerifyEmailRequest} [verifyEmailRequest] The request schema for the verify email endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifyEmail(verifyEmailRequest?: VerifyEmailRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VerifyEmailResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyEmail(verifyEmailRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * AuthenticationApi - factory interface
+ * @export
+ */
+export const AuthenticationApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AuthenticationApiFp(configuration)
+    return {
+        /**
+         * This endpoint allows a developer to authenticate to their portal using a username and password.
+         * @summary Authenticate
+         * @param {AuthenticateRequest} [authenticateRequest] The request schema for the authenticate endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authenticate(authenticateRequest?: AuthenticateRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.authenticate(authenticateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a developer to authenticate to their portal using an external IdP.
+         * @summary Authenticate SSO
+         * @param {string} ssoLoginPath The login path unique to the portal for SSO.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authenticateSso(ssoLoginPath: string, options?: any): AxiosPromise<void> {
+            return localVarFp.authenticateSso(ssoLoginPath, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout(options?: any): AxiosPromise<void> {
+            return localVarFp.logout(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a developer to refresh their existing access token.
+         * @summary Refresh Access Token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refresh(options?: any): AxiosPromise<void> {
+            return localVarFp.refresh(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a developer to reset their password, using a reset token.
+         * @summary Reset Password
+         * @param {ResetPasswordRequest} [resetPasswordRequest] The request schema for the reset password endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        resetPassword(resetPasswordRequest?: ResetPasswordRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.resetPassword(resetPasswordRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a new developer to verify their email.
+         * @summary Verify Email
+         * @param {VerifyEmailRequest} [verifyEmailRequest] The request schema for the verify email endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyEmail(verifyEmailRequest?: VerifyEmailRequest, options?: any): AxiosPromise<VerifyEmailResponse> {
+            return localVarFp.verifyEmail(verifyEmailRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for authenticate operation in AuthenticationApi.
+ * @export
+ * @interface AuthenticationApiAuthenticateRequest
+ */
+export interface AuthenticationApiAuthenticateRequest {
+    /**
+     * The request schema for the authenticate endpoint.
+     * @type {AuthenticateRequest}
+     * @memberof AuthenticationApiAuthenticate
+     */
+    readonly authenticateRequest?: AuthenticateRequest
+}
+
+/**
+ * Request parameters for authenticateSso operation in AuthenticationApi.
+ * @export
+ * @interface AuthenticationApiAuthenticateSsoRequest
+ */
+export interface AuthenticationApiAuthenticateSsoRequest {
+    /**
+     * The login path unique to the portal for SSO.
+     * @type {string}
+     * @memberof AuthenticationApiAuthenticateSso
+     */
+    readonly ssoLoginPath: string
+}
+
+/**
+ * Request parameters for resetPassword operation in AuthenticationApi.
+ * @export
+ * @interface AuthenticationApiResetPasswordRequest
+ */
+export interface AuthenticationApiResetPasswordRequest {
+    /**
+     * The request schema for the reset password endpoint.
+     * @type {ResetPasswordRequest}
+     * @memberof AuthenticationApiResetPassword
+     */
+    readonly resetPasswordRequest?: ResetPasswordRequest
+}
+
+/**
+ * Request parameters for verifyEmail operation in AuthenticationApi.
+ * @export
+ * @interface AuthenticationApiVerifyEmailRequest
+ */
+export interface AuthenticationApiVerifyEmailRequest {
+    /**
+     * The request schema for the verify email endpoint.
+     * @type {VerifyEmailRequest}
+     * @memberof AuthenticationApiVerifyEmail
+     */
+    readonly verifyEmailRequest?: VerifyEmailRequest
+}
+
+/**
+ * AuthenticationApi - object-oriented interface
+ * @export
+ * @class AuthenticationApi
+ * @extends {BaseAPI}
+ */
+export class AuthenticationApi extends BaseAPI {
+    /**
+     * This endpoint allows a developer to authenticate to their portal using a username and password.
+     * @summary Authenticate
+     * @param {AuthenticationApiAuthenticateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthenticationApi
+     */
+    public authenticate(requestParameters: AuthenticationApiAuthenticateRequest = {}, options?: AxiosRequestConfig) {
+        return AuthenticationApiFp(this.configuration).authenticate(requestParameters.authenticateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a developer to authenticate to their portal using an external IdP.
+     * @summary Authenticate SSO
+     * @param {AuthenticationApiAuthenticateSsoRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthenticationApi
+     */
+    public authenticateSso(requestParameters: AuthenticationApiAuthenticateSsoRequest, options?: AxiosRequestConfig) {
+        return AuthenticationApiFp(this.configuration).authenticateSso(requestParameters.ssoLoginPath, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
+     * @summary Logout
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthenticationApi
+     */
+    public logout(options?: AxiosRequestConfig) {
+        return AuthenticationApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a developer to refresh their existing access token.
+     * @summary Refresh Access Token
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthenticationApi
+     */
+    public refresh(options?: AxiosRequestConfig) {
+        return AuthenticationApiFp(this.configuration).refresh(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a developer to reset their password, using a reset token.
+     * @summary Reset Password
+     * @param {AuthenticationApiResetPasswordRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthenticationApi
+     */
+    public resetPassword(requestParameters: AuthenticationApiResetPasswordRequest = {}, options?: AxiosRequestConfig) {
+        return AuthenticationApiFp(this.configuration).resetPassword(requestParameters.resetPasswordRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a new developer to verify their email.
+     * @summary Verify Email
+     * @param {AuthenticationApiVerifyEmailRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthenticationApi
+     */
+    public verifyEmail(requestParameters: AuthenticationApiVerifyEmailRequest = {}, options?: AxiosRequestConfig) {
+        return AuthenticationApiFp(this.configuration).verifyEmail(requestParameters.verifyEmailRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -4975,13 +5582,13 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
-         * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
+         * @param {string} [join] Determines which sub-entities to include in search results
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchPortalEntities: async (indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchPortalEntities: async (indices: SearchIndicesParameters, q?: string, join?: string, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'indices' is not null or undefined
             assertParamExists('searchPortalEntities', 'indices', indices)
             const localVarPath = `/api/v2/search/{indices}`
@@ -5041,13 +5648,13 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
-         * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
+         * @param {string} [join] Determines which sub-entities to include in search results
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResults>> {
+        async searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: string, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResults>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.searchPortalEntities(indices, q, join, pageSize, pageNumber, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -5066,13 +5673,13 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
-         * @param {SearchJoinParameters} [join] Determines which sub-entities to include in search results
+         * @param {string} [join] Determines which sub-entities to include in search results
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: SearchJoinParameters, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<SearchResults> {
+        searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: string, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<SearchResults> {
             return localVarFp.searchPortalEntities(indices, q, join, pageSize, pageNumber, options).then((request) => request(axios, basePath));
         },
     };
@@ -5100,10 +5707,10 @@ export interface SearchApiSearchPortalEntitiesRequest {
 
     /**
      * Determines which sub-entities to include in search results
-     * @type {SearchJoinParameters}
+     * @type {string}
      * @memberof SearchApiSearchPortalEntities
      */
-    readonly join?: SearchJoinParameters
+    readonly join?: string
 
     /**
      * Determines the size of the page to retrieve.
@@ -5374,7 +5981,7 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductVersionSpec(productId: string, versionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async getProductVersionSpec(productId: string, versionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionSpec>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersionSpec(productId, versionId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -5434,7 +6041,7 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductVersionSpec(productId: string, versionId: string, options?: any): AxiosPromise<string> {
+        getProductVersionSpec(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpec> {
             return localVarFp.getProductVersionSpec(productId, versionId, options).then((request) => request(axios, basePath));
         },
         /**
