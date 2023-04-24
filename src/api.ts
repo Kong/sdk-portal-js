@@ -94,12 +94,6 @@ export interface ApplicationCreationResponse {
     'redirect_uri'?: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof ApplicationCreationResponse
-     */
-    'is_dcr': boolean;
-    /**
-     * 
      * @type {ApplicationCreationResponseCredentials}
      * @memberof ApplicationCreationResponse
      */
@@ -172,12 +166,6 @@ export interface ApplicationUpdateResponse {
      * @memberof ApplicationUpdateResponse
      */
     'redirect_uri'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ApplicationUpdateResponse
-     */
-    'is_dcr': boolean;
     /**
      * An ISO-8601 timestamp representation of application creation date.
      * @type {string}
@@ -627,6 +615,63 @@ export interface DocumentBlockAllOf {
 /**
  * 
  * @export
+ * @enum {string}
+ */
+
+export const DocumentContentTypeEnum = {
+    Json: 'application/json',
+    KonnectDocumentTreejson: 'application/konnect.document-tree+json'
+} as const;
+
+export type DocumentContentTypeEnum = typeof DocumentContentTypeEnum[keyof typeof DocumentContentTypeEnum];
+
+
+/**
+ * a document tree
+ * @export
+ * @interface DocumentTree
+ */
+export interface DocumentTree {
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentTree
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentTree
+     */
+    'parent_document_id'?: string | null;
+    /**
+     * the title of the document
+     * @type {string}
+     * @memberof DocumentTree
+     */
+    'title': string;
+    /**
+     * the slug of the document
+     * @type {string}
+     * @memberof DocumentTree
+     */
+    'slug': string;
+    /**
+     * the metadata of the document
+     * @type {object}
+     * @memberof DocumentTree
+     */
+    'meta': object;
+    /**
+     * 
+     * @type {Array<DocumentTree>}
+     * @memberof DocumentTree
+     */
+    'children': Array<DocumentTree>;
+}
+/**
+ * 
+ * @export
  * @interface Emphasis
  */
 export interface Emphasis {
@@ -767,12 +812,6 @@ export interface GetApplicationResponse {
      */
     'redirect_uri'?: string;
     /**
-     * 
-     * @type {boolean}
-     * @memberof GetApplicationResponse
-     */
-    'is_dcr': boolean;
-    /**
      * An ISO-8601 timestamp representation of application creation date.
      * @type {string}
      * @memberof GetApplicationResponse
@@ -841,6 +880,44 @@ export interface GetManyApplicationsResponse {
      * @memberof GetManyApplicationsResponse
      */
     'data': Array<GetApplicationResponse>;
+}
+/**
+ * 
+ * @export
+ * @interface GetManyDocumentTrees
+ */
+export interface GetManyDocumentTrees {
+    /**
+     * 
+     * @type {PaginatedMeta}
+     * @memberof GetManyDocumentTrees
+     */
+    'meta': PaginatedMeta;
+    /**
+     * 
+     * @type {Array<DocumentTree>}
+     * @memberof GetManyDocumentTrees
+     */
+    'data': Array<DocumentTree>;
+}
+/**
+ * 
+ * @export
+ * @interface GetManyDocuments
+ */
+export interface GetManyDocuments {
+    /**
+     * 
+     * @type {PaginatedMeta}
+     * @memberof GetManyDocuments
+     */
+    'meta': PaginatedMeta;
+    /**
+     * 
+     * @type {Array<ListDocumentsItem>}
+     * @memberof GetManyDocuments
+     */
+    'data': Array<ListDocumentsItem>;
 }
 /**
  * 
@@ -1232,6 +1309,37 @@ export interface ListBlockAllOf {
      * @memberof ListBlockAllOf
      */
     'isOrdered'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface ListDocumentsItem
+ */
+export interface ListDocumentsItem {
+    /**
+     * the id of the document
+     * @type {string}
+     * @memberof ListDocumentsItem
+     */
+    'id': string;
+    /**
+     * the id of the parent document
+     * @type {string}
+     * @memberof ListDocumentsItem
+     */
+    'parent_document_id': string | null;
+    /**
+     * the slug of the document
+     * @type {string}
+     * @memberof ListDocumentsItem
+     */
+    'slug': string;
+    /**
+     * the title of the document
+     * @type {string}
+     * @memberof ListDocumentsItem
+     */
+    'title': string;
 }
 /**
  * 
@@ -1739,56 +1847,6 @@ export interface ProductDocument {
     'title': string;
 }
 /**
- * a list of top-level documents in a document tree, each with their children
- * @export
- * @interface ProductDocumentTree
- */
-export interface ProductDocumentTree {
-    /**
-     * 
-     * @type {ProductDocumentTreeItem}
-     * @memberof ProductDocumentTree
-     */
-    'tree': ProductDocumentTreeItem;
-}
-/**
- * an item in a document tree attached to a product
- * @export
- * @interface ProductDocumentTreeItem
- */
-export interface ProductDocumentTreeItem {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductDocumentTreeItem
-     */
-    'id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductDocumentTreeItem
-     */
-    'parent_document_id'?: string | null;
-    /**
-     * the title of the document
-     * @type {string}
-     * @memberof ProductDocumentTreeItem
-     */
-    'title': string;
-    /**
-     * the slug of the document
-     * @type {string}
-     * @memberof ProductDocumentTreeItem
-     */
-    'slug': string;
-    /**
-     * 
-     * @type {Array<DocumentBlock>}
-     * @memberof ProductDocumentTreeItem
-     */
-    'children': Array<DocumentBlock>;
-}
-/**
  * 
  * @export
  * @interface ProductListPage
@@ -2130,7 +2188,7 @@ export interface TableAlignments {
      * @type {Array<AlignmentKind>}
      * @memberof TableAlignments
      */
-    'alignments': Array<AlignmentKind>;
+    'alignments': Array<AlignmentKind> | null;
 }
 /**
  * 
@@ -2155,7 +2213,7 @@ export interface TableBlock {
      * @type {Array<AlignmentKind>}
      * @memberof TableBlock
      */
-    'alignments': Array<AlignmentKind>;
+    'alignments': Array<AlignmentKind> | null;
 }
 /**
  * 
@@ -2218,7 +2276,7 @@ export interface TableHeaderBlock {
      * @type {Array<AlignmentKind>}
      * @memberof TableHeaderBlock
      */
-    'alignments': Array<AlignmentKind>;
+    'alignments': Array<AlignmentKind> | null;
 }
 /**
  * 
@@ -2243,7 +2301,7 @@ export interface TableRowBlock {
      * @type {Array<AlignmentKind>}
      * @memberof TableRowBlock
      */
-    'alignments': Array<AlignmentKind>;
+    'alignments': Array<AlignmentKind> | null;
 }
 /**
  * 
@@ -4325,16 +4383,19 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * Return the entire documentation tree of a product
-         * @summary Get product document tree
+         * Return the documentation tree of a product
+         * @summary Get product documentation
          * @param {string} productId Id of the product
+         * @param {DocumentContentTypeEnum} [accept] 
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductDocumentTree: async (productId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProductDocuments: async (productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
-            assertParamExists('getProductDocumentTree', 'productId', productId)
-            const localVarPath = `/api/v2/products/{productId}/document-tree`
+            assertParamExists('getProductDocuments', 'productId', productId)
+            const localVarPath = `/api/v2/products/{productId}/documents`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4348,6 +4409,20 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
+            }
+
+            if (accept != null) {
+                localVarHeaderParameter['Accept'] = typeof accept === 'string' 
+                    ? accept 
+                    : JSON.stringify(accept);
+            }
 
 
     
@@ -4383,14 +4458,17 @@ export const DocumentationApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Return the entire documentation tree of a product
-         * @summary Get product document tree
+         * Return the documentation tree of a product
+         * @summary Get product documentation
          * @param {string} productId Id of the product
+         * @param {DocumentContentTypeEnum} [accept] 
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductDocumentTree(productId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDocumentTree>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductDocumentTree(productId, options);
+        async getProductDocuments(productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyDocuments>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductDocuments(productId, accept, pageSize, pageNumber, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -4415,14 +4493,17 @@ export const DocumentationApiFactory = function (configuration?: Configuration, 
             return localVarFp.getProductDocument(productId, documentId, options).then((request) => request(axios, basePath));
         },
         /**
-         * Return the entire documentation tree of a product
-         * @summary Get product document tree
+         * Return the documentation tree of a product
+         * @summary Get product documentation
          * @param {string} productId Id of the product
+         * @param {DocumentContentTypeEnum} [accept] 
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductDocumentTree(productId: string, options?: any): AxiosPromise<ProductDocumentTree> {
-            return localVarFp.getProductDocumentTree(productId, options).then((request) => request(axios, basePath));
+        getProductDocuments(productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<GetManyDocuments> {
+            return localVarFp.getProductDocuments(productId, accept, pageSize, pageNumber, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -4449,17 +4530,38 @@ export interface DocumentationApiGetProductDocumentRequest {
 }
 
 /**
- * Request parameters for getProductDocumentTree operation in DocumentationApi.
+ * Request parameters for getProductDocuments operation in DocumentationApi.
  * @export
- * @interface DocumentationApiGetProductDocumentTreeRequest
+ * @interface DocumentationApiGetProductDocumentsRequest
  */
-export interface DocumentationApiGetProductDocumentTreeRequest {
+export interface DocumentationApiGetProductDocumentsRequest {
     /**
      * Id of the product
      * @type {string}
-     * @memberof DocumentationApiGetProductDocumentTree
+     * @memberof DocumentationApiGetProductDocuments
      */
     readonly productId: string
+
+    /**
+     * 
+     * @type {DocumentContentTypeEnum}
+     * @memberof DocumentationApiGetProductDocuments
+     */
+    readonly accept?: DocumentContentTypeEnum
+
+    /**
+     * Determines the size of the page to retrieve.
+     * @type {number}
+     * @memberof DocumentationApiGetProductDocuments
+     */
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof DocumentationApiGetProductDocuments
+     */
+    readonly pageNumber?: number
 }
 
 /**
@@ -4482,15 +4584,15 @@ export class DocumentationApi extends BaseAPI {
     }
 
     /**
-     * Return the entire documentation tree of a product
-     * @summary Get product document tree
-     * @param {DocumentationApiGetProductDocumentTreeRequest} requestParameters Request parameters.
+     * Return the documentation tree of a product
+     * @summary Get product documentation
+     * @param {DocumentationApiGetProductDocumentsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DocumentationApi
      */
-    public getProductDocumentTree(requestParameters: DocumentationApiGetProductDocumentTreeRequest, options?: AxiosRequestConfig) {
-        return DocumentationApiFp(this.configuration).getProductDocumentTree(requestParameters.productId, options).then((request) => request(this.axios, this.basePath));
+    public getProductDocuments(requestParameters: DocumentationApiGetProductDocumentsRequest, options?: AxiosRequestConfig) {
+        return DocumentationApiFp(this.configuration).getProductDocuments(requestParameters.productId, requestParameters.accept, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -5908,7 +6010,7 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             assertParamExists('getProductVersionSpecOperations', 'productId', productId)
             // verify required parameter 'versionId' is not null or undefined
             assertParamExists('getProductVersionSpecOperations', 'versionId', versionId)
-            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/operations`
+            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/spec/operations`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
                 .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
