@@ -550,16 +550,29 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/document-tree:
+  /api/v2/products/{productId}/documents:
     get:
-      summary: Get product document tree
-      description: Return the entire documentation tree of a product
-      operationId: get-product-document-tree
+      summary: Get product documentation
+      description: Return the documentation tree of a product
+      operationId: get-product-documents
       parameters:
         - $ref: '#/components/parameters/ProductId'
+        - in: header
+          name: Accept
+          schema:
+            $ref: '#/components/schemas/DocumentContentTypeEnum'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
-          $ref: '#/components/responses/ProductDocumentTreeGet'
+          description: Tree of documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetManyDocuments'
+            application/konnect.document-tree+json:
+              schema:
+                $ref: '#/components/schemas/GetManyDocumentTrees'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -641,7 +654,31 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/products/{productId}/versions/{versionId}/operations:
+  /api/v2/products/{productId}/versions/{versionId}/spec:
+    get:
+      summary: Get OpenAPI spec for product version
+      description: >-
+        Returns the OpenAPI specification document attached to given product
+        version
+      operationId: get-product-version-spec
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionSpecGet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - versions
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v2/products/{productId}/versions/{versionId}/spec/operations:
     get:
       summary: Get operations in version spec
       description: >-
@@ -658,30 +695,6 @@ paths:
           description: >-
             Response when there are no operations to send because no spec is
             defined for the version
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - versions
-      security:
-        - portalAccessToken: []
-        - {}
-  /api/v2/products/{productId}/versions/{versionId}/spec:
-    get:
-      summary: Get OpenAPI spec for product version
-      description: >-
-        Returns the OpenAPI specification document attached to given product
-        version
-      operationId: get-product-version-spec
-      parameters:
-        - $ref: '#/components/parameters/ProductId'
-        - $ref: '#/components/parameters/ProductVersionId'
-      responses:
-        '200':
-          $ref: '#/components/responses/ProductVersionSpecGet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -1280,12 +1293,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductDocument'
-    ProductDocumentTreeGet:
-      description: Response for getting product documentation tree
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProductDocumentTree'
     CreateRegistration:
       description: Registration creation response
       content:
@@ -1358,8 +1365,6 @@ components:
           type: string
         redirect_uri:
           type: string
-        is_dcr:
-          type: boolean
         created_at:
           type: string
           format: date-time
@@ -1379,7 +1384,6 @@ components:
         - name
         - reference_id
         - description
-        - is_dcr
         - updated_at
         - created_at
     GetCredentialsResponse:
@@ -1467,7 +1471,6 @@ components:
         - name
         - reference_id
         - description
-        - is_dcr
         - created_at
         - updated_at
       properties:
@@ -1482,8 +1485,6 @@ components:
           type: string
         redirect_uri:
           type: string
-        is_dcr:
-          type: boolean
         credentials:
           type: object
           required:
@@ -1532,7 +1533,6 @@ components:
         - name
         - reference_id
         - description
-        - is_dcr
         - updated_at
         - created_at
       properties:
@@ -1547,8 +1547,6 @@ components:
           type: string
         redirect_uri:
           type: string
-        is_dcr:
-          type: boolean
         created_at:
           type: string
           format: date-time
@@ -1567,13 +1565,12 @@ components:
       type: object
       title: Error
       description: standard error
-      x-examples:
-        Example 1:
-          status: 404
-          title: Not Found
-          type: https://kongapi.info/konnect/not-found
-          instance: portal:trace:2287285207635123011
-          detail: The requested document was not found
+      example:
+        status: 404
+        title: Not Found
+        type: https://kongapi.info/konnect/not-found
+        instance: portal:trace:2287285207635123011
+        detail: The requested document was not found
       required:
         - status
         - title
@@ -1841,8 +1838,9 @@ components:
     AuthenticateRequest:
       type: object
       additionalProperties: false
-      x-examples:
-        $ref: '#/components/examples/Authenticate-Request'
+      example:
+        username: developer@example.com
+        password: <!N0taP@$$w0rd!>
       title: AuthenticateRequest
       description: The request schema for the authenticate endpoint.
       properties:
@@ -1864,11 +1862,9 @@ components:
       type: object
       additionalProperties: false
       description: The request schema for the reset password endpoint.
-      x-examples:
-        $ref:
-          value:
-            password: <!D3finitelyN0taP@$$w0rd!>
-            token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      example:
+        password: <!D3finitelyN0taP@$$w0rd!>
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
       properties:
         password:
           type: string
@@ -1888,10 +1884,8 @@ components:
       type: object
       additionalProperties: false
       description: The request schema for the verify email endpoint.
-      x-examples:
-        $ref:
-          value:
-            token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      example:
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
       properties:
         token:
           type: string
@@ -1905,11 +1899,9 @@ components:
       type: object
       additionalProperties: false
       description: The response schema for the verify email endpoint.
-      x-examples:
-        $ref:
-          value:
-            email: developer@example.com
-            token: c8efd006-d8e1-4743-b91b-f163b9eae06a
+      example:
+        email: developer@example.com
+        token: c8efd006-d8e1-4743-b91b-f163b9eae06a
       properties:
         email:
           type: string
@@ -2295,25 +2287,61 @@ components:
           type: string
           description: the title of the document
           example: Hello World
-    ProductDocumentTree:
+    DocumentContentTypeEnum:
+      type: string
+      default: application/json
+      enum:
+        - application/json
+        - application/konnect.document-tree+json
+    ListDocumentsItem:
       type: object
-      title: ProductDocumentTree
-      description: >-
-        a list of top-level documents in a document tree, each with their
-        children
+      title: Document item
       required:
-        - tree
+        - id
+        - parent_document_id
+        - slug
+        - title
       properties:
-        tree:
-          $ref: '#/components/schemas/ProductDocumentTreeItem'
-    ProductDocumentTreeItem:
+        id:
+          type: string
+          format: uuid
+          description: the id of the document
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          description: the id of the parent document
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        title:
+          type: string
+          description: the title of the document
+          example: Getting Started
+    GetManyDocuments:
       type: object
-      title: ProductDocumentTreeItem
-      description: an item in a document tree attached to a product
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListDocumentsItem'
+    DocumentTree:
+      type: object
+      title: DocumentTree
+      description: a document tree
       required:
         - id
         - title
         - slug
+        - meta
         - children
       properties:
         id:
@@ -2333,10 +2361,29 @@ components:
           type: string
           description: the slug of the document
           example: getting-started
+        meta:
+          type: object
+          description: the metadata of the document
+          example:
+            author: Jane Doe
+            description: This is a description
+            keywords: hello, world
         children:
           type: array
           items:
-            $ref: '#/components/schemas/DocumentBlock'
+            $ref: '#/components/schemas/DocumentTree'
+    GetManyDocumentTrees:
+      type: object
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentTree'
     BaseNode:
       type: object
       required:
@@ -2504,6 +2551,7 @@ components:
       properties:
         alignments:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/AlignmentKind'
       required:
@@ -2776,7 +2824,6 @@ components:
       value:
         username: developer@example.com
         password: <!N0taP@$$w0rd!>
-        portal_id: c8efd006-d8e1-4743-b91b-f163b9eae06a
     Reset-Password-Request:
       value:
         password: <!D3finitelyN0taP@$$w0rd!>
@@ -2833,7 +2880,7 @@ components:
                   deprecated: false
         meta:
           page:
-            number: 2
+            number: 1
             size: 1
             total: 4
 tags:
