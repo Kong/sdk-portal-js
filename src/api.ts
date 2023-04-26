@@ -5298,6 +5298,8 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
          * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
@@ -5305,7 +5307,7 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplicationRegistrations: async (applicationId: string, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getManyApplicationRegistrations: async (applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
             assertParamExists('getManyApplicationRegistrations', 'applicationId', applicationId)
             const localVarPath = `/api/v2/applications/{applicationId}/registrations`
@@ -5322,6 +5324,14 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
+            }
 
             if (filterIdEq !== undefined) {
                 localVarQueryParameter['filter[id][eq]'] = filterIdEq;
@@ -5428,6 +5438,8 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
          * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
@@ -5435,8 +5447,8 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyApplicationRegistrations(applicationId: string, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyRegistrationsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyApplicationRegistrations(applicationId, filterIdEq, filterId, filterStatusEq, filterStatus, options);
+        async getManyApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyRegistrationsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5487,6 +5499,8 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
          * This endpoint lists product registrations for an application
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
@@ -5494,8 +5508,8 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplicationRegistrations(applicationId: string, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: any): AxiosPromise<GetManyRegistrationsResponse> {
-            return localVarFp.getManyApplicationRegistrations(applicationId, filterIdEq, filterId, filterStatusEq, filterStatus, options).then((request) => request(axios, basePath));
+        getManyApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: any): AxiosPromise<GetManyRegistrationsResponse> {
+            return localVarFp.getManyApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint retrieves the specified product registration for an application
@@ -5565,6 +5579,20 @@ export interface RegistrationsApiGetManyApplicationRegistrationsRequest {
      * @memberof RegistrationsApiGetManyApplicationRegistrations
      */
     readonly applicationId: string
+
+    /**
+     * Determines the size of the page to retrieve.
+     * @type {number}
+     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     */
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     */
+    readonly pageNumber?: number
 
     /**
      * Filter by direct equality comparison of the id property with a supplied value.
@@ -5656,7 +5684,7 @@ export class RegistrationsApi extends BaseAPI {
      * @memberof RegistrationsApi
      */
     public getManyApplicationRegistrations(requestParameters: RegistrationsApiGetManyApplicationRegistrationsRequest, options?: AxiosRequestConfig) {
-        return RegistrationsApiFp(this.configuration).getManyApplicationRegistrations(requestParameters.applicationId, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, options).then((request) => request(this.axios, this.basePath));
+        return RegistrationsApiFp(this.configuration).getManyApplicationRegistrations(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
