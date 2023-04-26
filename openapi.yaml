@@ -255,6 +255,8 @@ paths:
       operationId: get-many-application-registrations
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/FilterByIdEquality'
         - $ref: '#/components/parameters/FilterByIdEqualityShort'
         - $ref: '#/components/parameters/FilterByStatusEquality'
@@ -667,6 +669,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionSpecGet'
+        '204':
+          description: No specification is defined for the version
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
