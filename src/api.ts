@@ -1900,7 +1900,7 @@ export interface ProductVersion {
      * @type {boolean}
      * @memberof ProductVersion
      */
-    'is_deprecated': boolean;
+    'deprecated': boolean;
     /**
      * Configurations for how the product version is able to be registered for by applications
      * @type {Array<ProductVersionRegistrationConfigsInner>}
