@@ -63,7 +63,7 @@ export type ApiTypeEnum = typeof ApiTypeEnum[keyof typeof ApiTypeEnum];
  */
 export interface ApplicationCreationResponse {
     /**
-     * 
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
@@ -75,7 +75,7 @@ export interface ApplicationCreationResponse {
      */
     'name': string;
     /**
-     * 
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
@@ -99,13 +99,13 @@ export interface ApplicationCreationResponse {
      */
     'credentials'?: ApplicationCreationResponseCredentials;
     /**
-     * An ISO-8601 timestamp representation of application creation date.
+     * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
     'created_at': string;
     /**
-     * An ISO-8601 timestamp representation of application last updated at date.
+     * An ISO-8601 timestamp representation of entity update date.
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
@@ -137,7 +137,7 @@ export interface ApplicationCreationResponseCredentials {
  */
 export interface ApplicationUpdateResponse {
     /**
-     * 
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
@@ -149,7 +149,7 @@ export interface ApplicationUpdateResponse {
      */
     'name': string;
     /**
-     * 
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
@@ -167,13 +167,13 @@ export interface ApplicationUpdateResponse {
      */
     'redirect_uri'?: string;
     /**
-     * An ISO-8601 timestamp representation of application creation date.
+     * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
     'created_at': string;
     /**
-     * An ISO-8601 timestamp representation of application last updated at date.
+     * An ISO-8601 timestamp representation of entity update date.
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
@@ -456,7 +456,7 @@ export interface ConflictError {
     'detail'?: any;
 }
 /**
- * an application payload
+ * Application creation payload
  * @export
  * @interface CreateApplicationPayload
  */
@@ -500,13 +500,13 @@ export interface CreateCredentialPayload {
     'display_name'?: string;
 }
 /**
- * an application registration payload
+ * The payload to create a registration.
  * @export
  * @interface CreateRegistrationPayload
  */
 export interface CreateRegistrationPayload {
     /**
-     * The UUID of the product version to register for
+     * The product version id required for registration.
      * @type {string}
      * @memberof CreateRegistrationPayload
      */
@@ -525,7 +525,7 @@ export interface CredentialCreationResponse {
      */
     'credential': string;
     /**
-     * 
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof CredentialCreationResponse
      */
@@ -538,13 +538,13 @@ export interface CredentialCreationResponse {
     'display_name': string;
 }
 /**
- * A developer is an individual who can use a developer portal.
+ * A user who can use a developer portal
  * @export
  * @interface Developer
  */
 export interface Developer {
     /**
-     * 
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof Developer
      */
@@ -562,13 +562,13 @@ export interface Developer {
      */
     'full_name': string;
     /**
-     * 
+     * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof Developer
      */
     'created_at'?: string;
     /**
-     * 
+     * An ISO-8601 timestamp representation of entity update date.
      * @type {string}
      * @memberof Developer
      */
@@ -626,6 +626,37 @@ export const DocumentContentTypeEnum = {
 export type DocumentContentTypeEnum = typeof DocumentContentTypeEnum[keyof typeof DocumentContentTypeEnum];
 
 
+/**
+ * 
+ * @export
+ * @interface DocumentItem
+ */
+export interface DocumentItem {
+    /**
+     * the id of the document
+     * @type {string}
+     * @memberof DocumentItem
+     */
+    'id': string;
+    /**
+     * the id of the parent document
+     * @type {string}
+     * @memberof DocumentItem
+     */
+    'parent_document_id': string | null;
+    /**
+     * the slug of the document
+     * @type {string}
+     * @memberof DocumentItem
+     */
+    'slug': string;
+    /**
+     * the title of the document
+     * @type {string}
+     * @memberof DocumentItem
+     */
+    'title': string;
+}
 /**
  * a document tree
  * @export
@@ -710,37 +741,6 @@ export interface EmphasisAllOf {
 /**
  * 
  * @export
- * @interface ErrorInvalidParametersInner
- */
-export interface ErrorInvalidParametersInner {
-    /**
-     * The name of the invalid parameter.
-     * @type {string}
-     * @memberof ErrorInvalidParametersInner
-     */
-    'name'?: string;
-    /**
-     * The reason the parameter is invalid.
-     * @type {string}
-     * @memberof ErrorInvalidParametersInner
-     */
-    'reason'?: string;
-    /**
-     * The field that caused the error.
-     * @type {string}
-     * @memberof ErrorInvalidParametersInner
-     */
-    'field'?: string;
-    /**
-     * The rule that caused the error.
-     * @type {string}
-     * @memberof ErrorInvalidParametersInner
-     */
-    'rule'?: string;
-}
-/**
- * 
- * @export
  * @interface ForbiddenError
  */
 export interface ForbiddenError {
@@ -782,7 +782,7 @@ export interface ForbiddenError {
  */
 export interface GetApplicationResponse {
     /**
-     * 
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof GetApplicationResponse
      */
@@ -794,7 +794,7 @@ export interface GetApplicationResponse {
      */
     'name': string;
     /**
-     * 
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
      * @type {string}
      * @memberof GetApplicationResponse
      */
@@ -812,131 +812,17 @@ export interface GetApplicationResponse {
      */
     'redirect_uri'?: string;
     /**
-     * An ISO-8601 timestamp representation of application creation date.
+     * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof GetApplicationResponse
      */
     'created_at': string;
     /**
-     * An ISO-8601 timestamp representation of application last updated at date.
+     * An ISO-8601 timestamp representation of entity update date.
      * @type {string}
      * @memberof GetApplicationResponse
      */
     'updated_at': string;
-}
-/**
- * 
- * @export
- * @interface GetCredentialsResponse
- */
-export interface GetCredentialsResponse {
-    /**
-     * 
-     * @type {PaginatedMeta}
-     * @memberof GetCredentialsResponse
-     */
-    'meta': PaginatedMeta;
-    /**
-     * 
-     * @type {Array<GetCredentialsResponseDataInner>}
-     * @memberof GetCredentialsResponse
-     */
-    'data': Array<GetCredentialsResponseDataInner>;
-}
-/**
- * 
- * @export
- * @interface GetCredentialsResponseDataInner
- */
-export interface GetCredentialsResponseDataInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetCredentialsResponseDataInner
-     */
-    'id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetCredentialsResponseDataInner
-     */
-    'display_name': string;
-}
-/**
- * 
- * @export
- * @interface GetManyApplicationsResponse
- */
-export interface GetManyApplicationsResponse {
-    /**
-     * 
-     * @type {PaginatedMeta}
-     * @memberof GetManyApplicationsResponse
-     */
-    'meta': PaginatedMeta;
-    /**
-     * 
-     * @type {Array<GetApplicationResponse>}
-     * @memberof GetManyApplicationsResponse
-     */
-    'data': Array<GetApplicationResponse>;
-}
-/**
- * 
- * @export
- * @interface GetManyDocumentTrees
- */
-export interface GetManyDocumentTrees {
-    /**
-     * 
-     * @type {PaginatedMeta}
-     * @memberof GetManyDocumentTrees
-     */
-    'meta': PaginatedMeta;
-    /**
-     * 
-     * @type {Array<DocumentTree>}
-     * @memberof GetManyDocumentTrees
-     */
-    'data': Array<DocumentTree>;
-}
-/**
- * 
- * @export
- * @interface GetManyDocuments
- */
-export interface GetManyDocuments {
-    /**
-     * 
-     * @type {PaginatedMeta}
-     * @memberof GetManyDocuments
-     */
-    'meta': PaginatedMeta;
-    /**
-     * 
-     * @type {Array<ListDocumentsItem>}
-     * @memberof GetManyDocuments
-     */
-    'data': Array<ListDocumentsItem>;
-}
-/**
- * 
- * @export
- * @interface GetManyRegistrationsResponse
- */
-export interface GetManyRegistrationsResponse {
-    /**
-     * 
-     * @type {PaginatedMeta}
-     * @memberof GetManyRegistrationsResponse
-     */
-    'meta': PaginatedMeta;
-    /**
-     * 
-     * @type {Array<GetRegistrationResponse>}
-     * @memberof GetManyRegistrationsResponse
-     */
-    'data': Array<GetRegistrationResponse>;
 }
 /**
  * 
@@ -945,59 +831,59 @@ export interface GetManyRegistrationsResponse {
  */
 export interface GetRegistrationResponse {
     /**
-     * The UUID of the registration
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof GetRegistrationResponse
      */
     'id': string;
     /**
-     * The approval status of the registration
-     * @type {string}
-     * @memberof GetRegistrationResponse
-     */
-    'status': GetRegistrationResponseStatusEnum;
-    /**
-     * The UUID of the product registered for
-     * @type {string}
-     * @memberof GetRegistrationResponse
-     */
-    'product_id': string;
-    /**
-     * The name of the product registered for
-     * @type {string}
-     * @memberof GetRegistrationResponse
-     */
-    'product_name': string;
-    /**
-     * The UUID of the product version registered for
-     * @type {string}
-     * @memberof GetRegistrationResponse
-     */
-    'product_version_id': string;
-    /**
-     * The name of the product version registered for
-     * @type {string}
-     * @memberof GetRegistrationResponse
-     */
-    'product_version_name': string;
-    /**
-     * The UUID of the application the registration is linked to
-     * @type {string}
-     * @memberof GetRegistrationResponse
-     */
-    'application_id': string;
-    /**
-     * ISO timestamp the registration record was created
+     * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof GetRegistrationResponse
      */
     'created_at': string;
     /**
-     * ISO timestamp the registration record was last updated
+     * An ISO-8601 timestamp representation of entity update date.
      * @type {string}
      * @memberof GetRegistrationResponse
      */
     'updated_at': string;
+    /**
+     * The approval status of the registration.
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'status': GetRegistrationResponseStatusEnum;
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'product_id': string;
+    /**
+     * The name of the product. This is the name that is displayed in the developer portal.
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'product_name': string;
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'product_version_id': string;
+    /**
+     * The name of the product version. This is the version label that is displayed in the developer portal.
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'product_version_name': string;
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof GetRegistrationResponse
+     */
+    'application_id': string;
 }
 
 export const GetRegistrationResponseStatusEnum = {
@@ -1275,6 +1161,25 @@ export interface LinkAllOf {
 /**
  * 
  * @export
+ * @interface ListApplicationsResponse
+ */
+export interface ListApplicationsResponse {
+    /**
+     * 
+     * @type {PaginatedMeta}
+     * @memberof ListApplicationsResponse
+     */
+    'meta': PaginatedMeta;
+    /**
+     * 
+     * @type {Array<GetApplicationResponse>}
+     * @memberof ListApplicationsResponse
+     */
+    'data': Array<GetApplicationResponse>;
+}
+/**
+ * 
+ * @export
  * @interface ListBlock
  */
 export interface ListBlock {
@@ -1313,33 +1218,78 @@ export interface ListBlockAllOf {
 /**
  * 
  * @export
- * @interface ListDocumentsItem
+ * @interface ListCredentialsResponse
  */
-export interface ListDocumentsItem {
+export interface ListCredentialsResponse {
     /**
-     * the id of the document
+     * 
+     * @type {PaginatedMeta}
+     * @memberof ListCredentialsResponse
+     */
+    'meta': PaginatedMeta;
+    /**
+     * 
+     * @type {Array<ListCredentialsResponseDataInner>}
+     * @memberof ListCredentialsResponse
+     */
+    'data': Array<ListCredentialsResponseDataInner>;
+}
+/**
+ * 
+ * @export
+ * @interface ListCredentialsResponseDataInner
+ */
+export interface ListCredentialsResponseDataInner {
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
-     * @memberof ListDocumentsItem
+     * @memberof ListCredentialsResponseDataInner
      */
     'id': string;
     /**
-     * the id of the parent document
+     * 
      * @type {string}
-     * @memberof ListDocumentsItem
+     * @memberof ListCredentialsResponseDataInner
      */
-    'parent_document_id': string | null;
+    'display_name': string;
+}
+/**
+ * 
+ * @export
+ * @interface ListDocuments
+ */
+export interface ListDocuments {
     /**
-     * the slug of the document
-     * @type {string}
-     * @memberof ListDocumentsItem
+     * 
+     * @type {PaginatedMeta}
+     * @memberof ListDocuments
      */
-    'slug': string;
+    'meta': PaginatedMeta;
     /**
-     * the title of the document
-     * @type {string}
-     * @memberof ListDocumentsItem
+     * 
+     * @type {Array<DocumentItem>}
+     * @memberof ListDocuments
      */
-    'title': string;
+    'data': Array<DocumentItem>;
+}
+/**
+ * 
+ * @export
+ * @interface ListDocumentsTree
+ */
+export interface ListDocumentsTree {
+    /**
+     * 
+     * @type {PaginatedMeta}
+     * @memberof ListDocumentsTree
+     */
+    'meta': PaginatedMeta;
+    /**
+     * 
+     * @type {Array<DocumentTree>}
+     * @memberof ListDocumentsTree
+     */
+    'data': Array<DocumentTree>;
 }
 /**
  * 
@@ -1361,47 +1311,23 @@ export interface ListItemBlock {
     'children'?: Array<AnyNode>;
 }
 /**
- * standard error
+ * 
  * @export
- * @interface ModelError
+ * @interface ListRegistrationsResponse
  */
-export interface ModelError {
+export interface ListRegistrationsResponse {
     /**
-     * The HTTP status code.
-     * @type {number}
-     * @memberof ModelError
+     * 
+     * @type {PaginatedMeta}
+     * @memberof ListRegistrationsResponse
      */
-    'status': number;
+    'meta': PaginatedMeta;
     /**
-     * The error response code.
-     * @type {string}
-     * @memberof ModelError
+     * 
+     * @type {Array<GetRegistrationResponse>}
+     * @memberof ListRegistrationsResponse
      */
-    'title': string;
-    /**
-     * The error type.
-     * @type {string}
-     * @memberof ModelError
-     */
-    'type'?: string;
-    /**
-     * The portal traceback code
-     * @type {string}
-     * @memberof ModelError
-     */
-    'instance': string;
-    /**
-     * An array of invalid parameters.
-     * @type {Array<ErrorInvalidParametersInner>}
-     * @memberof ModelError
-     */
-    'invalid_parameters'?: Array<ErrorInvalidParametersInner>;
-    /**
-     * Details about the error.
-     * @type {string}
-     * @memberof ModelError
-     */
-    'detail'?: string;
+    'data': Array<GetRegistrationResponse>;
 }
 /**
  * 
@@ -1687,25 +1613,25 @@ export interface PortalContext {
  */
 export interface Product {
     /**
-     * 
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof Product
      */
     'id': string;
     /**
-     * An ISO-8604 timestamp representation of product creation date.
+     * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof Product
      */
     'created_at': string;
     /**
-     * An ISO-8604 timestamp representation of product update date.
+     * An ISO-8601 timestamp representation of entity update date.
      * @type {string}
      * @memberof Product
      */
     'updated_at': string;
     /**
-     * name of service
+     * Name of product.
      * @type {string}
      * @memberof Product
      */
@@ -1730,7 +1656,7 @@ export interface Product {
  */
 export interface ProductCatalogIndexSource {
     /**
-     * The entity ID.
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof ProductCatalogIndexSource
      */
@@ -1748,7 +1674,7 @@ export interface ProductCatalogIndexSource {
      */
     'description'?: string;
     /**
-     * whether the product has documents associated with it
+     * Whether the product has documents associated with it.
      * @type {boolean}
      * @memberof ProductCatalogIndexSource
      */
@@ -1779,7 +1705,7 @@ export interface ProductCatalogIndexSource {
  */
 export interface ProductCatalogIndexSourceVersionsInner {
     /**
-     * the entity id
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof ProductCatalogIndexSourceVersionsInner
      */
@@ -1797,38 +1723,38 @@ export interface ProductCatalogIndexSourceVersionsInner {
      */
     'updated_at': string;
     /**
-     * the name of the version
+     * Name of product version.
      * @type {string}
      * @memberof ProductCatalogIndexSourceVersionsInner
      */
     'version': string;
     /**
-     * 
+     * Whether the version is deprecated.
      * @type {boolean}
      * @memberof ProductCatalogIndexSourceVersionsInner
      */
     'deprecated': boolean;
 }
 /**
- * a document
+ * A document for a product. This is a document that is not a part of the API specification.
  * @export
  * @interface ProductDocument
  */
 export interface ProductDocument {
     /**
-     * the id of the document
+     * 
      * @type {string}
      * @memberof ProductDocument
      */
     'id': string;
     /**
-     * the id of the parent document
+     * Contains a unique identifier used by the DocumentHub service for this resource.
      * @type {string}
      * @memberof ProductDocument
      */
     'parent_document_id'?: string | null;
     /**
-     * the slug of the document
+     * Slug of the document. This is used in the URL to identify the document.
      * @type {string}
      * @memberof ProductDocument
      */
@@ -1840,7 +1766,7 @@ export interface ProductDocument {
      */
     'content': DocumentBlock;
     /**
-     * the title of the document
+     * Title of the document. This is used in the Portal UI to identify the document.
      * @type {string}
      * @memberof ProductDocument
      */
@@ -1872,37 +1798,37 @@ export interface ProductListPage {
  */
 export interface ProductVersion {
     /**
-     * 
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof ProductVersion
      */
     'id': string;
     /**
-     * An ISO-8604 timestamp representation of product version creation date.
+     * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof ProductVersion
      */
     'created_at': string;
     /**
-     * An ISO-8604 timestamp representation of product version update date.
+     * An ISO-8601 timestamp representation of entity update date.
      * @type {string}
      * @memberof ProductVersion
      */
     'updated_at': string;
     /**
-     * Name of product version
+     * Name of product version.
      * @type {string}
      * @memberof ProductVersion
      */
     'version': string;
     /**
-     * If true, product version is deprecated
+     * If true, product version is deprecated.
      * @type {boolean}
      * @memberof ProductVersion
      */
     'deprecated': boolean;
     /**
-     * Configurations for how the product version is able to be registered for by applications
+     * Configurations for how the product version is able to be registered for by applications.
      * @type {Array<ProductVersionRegistrationConfigsInner>}
      * @memberof ProductVersion
      */
@@ -1949,7 +1875,7 @@ export const ProductVersionRegistrationConfigsInnerNameEnum = {
 export type ProductVersionRegistrationConfigsInnerNameEnum = typeof ProductVersionRegistrationConfigsInnerNameEnum[keyof typeof ProductVersionRegistrationConfigsInnerNameEnum];
 
 /**
- * API specification
+ * API specification document for a product version.
  * @export
  * @interface ProductVersionSpec
  */
@@ -1968,7 +1894,7 @@ export interface ProductVersionSpec {
     'content': string;
 }
 /**
- * List of every operation detailed in the product version spec document
+ * List of every operation detailed in a product version spec document.
  * @export
  * @interface ProductVersionSpecOperations
  */
@@ -2419,6 +2345,43 @@ export interface TextBlock {
 /**
  * 
  * @export
+ * @interface TooManyRequestsError
+ */
+export interface TooManyRequestsError {
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsError
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsError
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsError
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsError
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsError
+     */
+    'detail'?: any;
+}
+/**
+ * 
+ * @export
  * @interface UnauthorizedError
  */
 export interface UnauthorizedError {
@@ -2466,7 +2429,7 @@ export interface UpdateApplicationPayload {
      */
     'name'?: string;
     /**
-     * 
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
      * @type {string}
      * @memberof UpdateApplicationPayload
      */
@@ -2537,8 +2500,8 @@ export interface VerifyEmailResponse {
 export const ApplicationsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * This endpoint allows the developer to create an application
-         * @summary Create Application
+         * Creates a new Application.
+         * @summary Create an Application
          * @param {CreateApplicationPayload} createApplicationPayload Create an application
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2575,7 +2538,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * This endpoint allows the developer to delete an application they own
+         * Deletes an application and all of its associated entities (registrations).
          * @summary Delete Application
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
@@ -2611,8 +2574,44 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * This endpoint allows the developer to list applications
-         * @summary Get many applications
+         * Gets the details for an existing application. You need only supply the unique application identifier that was returned upon application creation or by the list-applications endpoint.
+         * @summary Get an Application
+         * @param {string} applicationId Id of the targeted application
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplication: async (applicationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'applicationId' is not null or undefined
+            assertParamExists('getApplication', 'applicationId', applicationId)
+            const localVarPath = `/api/v2/applications/{applicationId}`
+                .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List applications owned by the developer currently logged in.
+         * @summary List Applications
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -2621,7 +2620,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplications: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listApplications: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/applications`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2668,43 +2667,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * This endpoint allows the developer to get an application
-         * @summary Get one Application
-         * @param {string} applicationId Id of the targeted application
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getOneApplication: async (applicationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'applicationId' is not null or undefined
-            assertParamExists('getOneApplication', 'applicationId', applicationId)
-            const localVarPath = `/api/v2/applications/{applicationId}`
-                .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * This endpoint allows the developer to update an application they own
+         * Updates an application, replacing the object with the new values supplied in the request body.
          * @summary Update Application
          * @param {string} applicationId Id of the targeted application
          * @param {UpdateApplicationPayload} updateApplicationPayload Update an application
@@ -2756,8 +2719,8 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ApplicationsApiAxiosParamCreator(configuration)
     return {
         /**
-         * This endpoint allows the developer to create an application
-         * @summary Create Application
+         * Creates a new Application.
+         * @summary Create an Application
          * @param {CreateApplicationPayload} createApplicationPayload Create an application
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2767,7 +2730,7 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint allows the developer to delete an application they own
+         * Deletes an application and all of its associated entities (registrations).
          * @summary Delete Application
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
@@ -2778,8 +2741,19 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint allows the developer to list applications
-         * @summary Get many applications
+         * Gets the details for an existing application. You need only supply the unique application identifier that was returned upon application creation or by the list-applications endpoint.
+         * @summary Get an Application
+         * @param {string} applicationId Id of the targeted application
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApplication(applicationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApplicationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplication(applicationId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * List applications owned by the developer currently logged in.
+         * @summary List Applications
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -2788,23 +2762,12 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyApplicationsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options);
+        async listApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListApplicationsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint allows the developer to get an application
-         * @summary Get one Application
-         * @param {string} applicationId Id of the targeted application
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getOneApplication(applicationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetApplicationResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getOneApplication(applicationId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * This endpoint allows the developer to update an application they own
+         * Updates an application, replacing the object with the new values supplied in the request body.
          * @summary Update Application
          * @param {string} applicationId Id of the targeted application
          * @param {UpdateApplicationPayload} updateApplicationPayload Update an application
@@ -2826,8 +2789,8 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
     const localVarFp = ApplicationsApiFp(configuration)
     return {
         /**
-         * This endpoint allows the developer to create an application
-         * @summary Create Application
+         * Creates a new Application.
+         * @summary Create an Application
          * @param {CreateApplicationPayload} createApplicationPayload Create an application
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2836,7 +2799,7 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
             return localVarFp.createApplication(createApplicationPayload, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint allows the developer to delete an application they own
+         * Deletes an application and all of its associated entities (registrations).
          * @summary Delete Application
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
@@ -2846,8 +2809,18 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
             return localVarFp.deleteApplication(applicationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint allows the developer to list applications
-         * @summary Get many applications
+         * Gets the details for an existing application. You need only supply the unique application identifier that was returned upon application creation or by the list-applications endpoint.
+         * @summary Get an Application
+         * @param {string} applicationId Id of the targeted application
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplication(applicationId: string, options?: any): AxiosPromise<GetApplicationResponse> {
+            return localVarFp.getApplication(applicationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List applications owned by the developer currently logged in.
+         * @summary List Applications
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -2856,21 +2829,11 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: any): AxiosPromise<GetManyApplicationsResponse> {
-            return localVarFp.getManyApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options).then((request) => request(axios, basePath));
+        listApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: any): AxiosPromise<ListApplicationsResponse> {
+            return localVarFp.listApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint allows the developer to get an application
-         * @summary Get one Application
-         * @param {string} applicationId Id of the targeted application
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getOneApplication(applicationId: string, options?: any): AxiosPromise<GetApplicationResponse> {
-            return localVarFp.getOneApplication(applicationId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * This endpoint allows the developer to update an application they own
+         * Updates an application, replacing the object with the new values supplied in the request body.
          * @summary Update Application
          * @param {string} applicationId Id of the targeted application
          * @param {UpdateApplicationPayload} updateApplicationPayload Update an application
@@ -2912,59 +2875,59 @@ export interface ApplicationsApiDeleteApplicationRequest {
 }
 
 /**
- * Request parameters for getManyApplications operation in ApplicationsApi.
+ * Request parameters for getApplication operation in ApplicationsApi.
  * @export
- * @interface ApplicationsApiGetManyApplicationsRequest
+ * @interface ApplicationsApiGetApplicationRequest
  */
-export interface ApplicationsApiGetManyApplicationsRequest {
+export interface ApplicationsApiGetApplicationRequest {
+    /**
+     * Id of the targeted application
+     * @type {string}
+     * @memberof ApplicationsApiGetApplication
+     */
+    readonly applicationId: string
+}
+
+/**
+ * Request parameters for listApplications operation in ApplicationsApi.
+ * @export
+ * @interface ApplicationsApiListApplicationsRequest
+ */
+export interface ApplicationsApiListApplicationsRequest {
     /**
      * Determines the size of the page to retrieve.
      * @type {number}
-     * @memberof ApplicationsApiGetManyApplications
+     * @memberof ApplicationsApiListApplications
      */
     readonly pageSize?: number
 
     /**
      * Determines which page of the entities to retrieve.
      * @type {number}
-     * @memberof ApplicationsApiGetManyApplications
+     * @memberof ApplicationsApiListApplications
      */
     readonly pageNumber?: number
 
     /**
      * Filter by direct equality comparison of the name property with a supplied value.
      * @type {string}
-     * @memberof ApplicationsApiGetManyApplications
+     * @memberof ApplicationsApiListApplications
      */
     readonly filterNameEq?: string
 
     /**
      * Filter by direct equality comparison (short-hand) of the name property with a supplied value.
      * @type {string}
-     * @memberof ApplicationsApiGetManyApplications
+     * @memberof ApplicationsApiListApplications
      */
     readonly filterName?: string
 
     /**
      * Filter by contains comparison of the name property with a supplied substring
      * @type {string}
-     * @memberof ApplicationsApiGetManyApplications
+     * @memberof ApplicationsApiListApplications
      */
     readonly filterNameContains?: string
-}
-
-/**
- * Request parameters for getOneApplication operation in ApplicationsApi.
- * @export
- * @interface ApplicationsApiGetOneApplicationRequest
- */
-export interface ApplicationsApiGetOneApplicationRequest {
-    /**
-     * Id of the targeted application
-     * @type {string}
-     * @memberof ApplicationsApiGetOneApplication
-     */
-    readonly applicationId: string
 }
 
 /**
@@ -2996,8 +2959,8 @@ export interface ApplicationsApiUpdateApplicationRequest {
  */
 export class ApplicationsApi extends BaseAPI {
     /**
-     * This endpoint allows the developer to create an application
-     * @summary Create Application
+     * Creates a new Application.
+     * @summary Create an Application
      * @param {ApplicationsApiCreateApplicationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3008,7 +2971,7 @@ export class ApplicationsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint allows the developer to delete an application they own
+     * Deletes an application and all of its associated entities (registrations).
      * @summary Delete Application
      * @param {ApplicationsApiDeleteApplicationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -3020,31 +2983,31 @@ export class ApplicationsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint allows the developer to list applications
-     * @summary Get many applications
-     * @param {ApplicationsApiGetManyApplicationsRequest} requestParameters Request parameters.
+     * Gets the details for an existing application. You need only supply the unique application identifier that was returned upon application creation or by the list-applications endpoint.
+     * @summary Get an Application
+     * @param {ApplicationsApiGetApplicationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ApplicationsApi
      */
-    public getManyApplications(requestParameters: ApplicationsApiGetManyApplicationsRequest = {}, options?: AxiosRequestConfig) {
-        return ApplicationsApiFp(this.configuration).getManyApplications(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, options).then((request) => request(this.axios, this.basePath));
+    public getApplication(requestParameters: ApplicationsApiGetApplicationRequest, options?: AxiosRequestConfig) {
+        return ApplicationsApiFp(this.configuration).getApplication(requestParameters.applicationId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * This endpoint allows the developer to get an application
-     * @summary Get one Application
-     * @param {ApplicationsApiGetOneApplicationRequest} requestParameters Request parameters.
+     * List applications owned by the developer currently logged in.
+     * @summary List Applications
+     * @param {ApplicationsApiListApplicationsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ApplicationsApi
      */
-    public getOneApplication(requestParameters: ApplicationsApiGetOneApplicationRequest, options?: AxiosRequestConfig) {
-        return ApplicationsApiFp(this.configuration).getOneApplication(requestParameters.applicationId, options).then((request) => request(this.axios, this.basePath));
+    public listApplications(requestParameters: ApplicationsApiListApplicationsRequest = {}, options?: AxiosRequestConfig) {
+        return ApplicationsApiFp(this.configuration).listApplications(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * This endpoint allows the developer to update an application they own
+     * Updates an application, replacing the object with the new values supplied in the request body.
      * @summary Update Application
      * @param {ApplicationsApiUpdateApplicationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -3546,8 +3509,8 @@ export class AuthenticationApi extends BaseAPI {
 export const CredentialsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * This endpoint allows the developer to create a credential for an application they own
-         * @summary Post Credential
+         * Allows a developer to create a credential for an application they own.
+         * @summary Create Credential for Application
          * @param {string} applicationId Id of the targeted application
          * @param {CreateCredentialPayload} [createCredentialPayload] Create a credential
          * @param {*} [options] Override http request option.
@@ -3586,7 +3549,7 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * This endpoint allows the developer to delete a credential for an application they own
+         * Deletes a credential for an application they own.
          * @summary Delete Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
@@ -3626,17 +3589,17 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * This endpoint allows the developer to list the credentials for an application they own
-         * @summary Get Many credentials
+         * Lists the credentials for an application they own.
+         * @summary List credentials
          * @param {string} applicationId Id of the targeted application
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyCredentials: async (applicationId: string, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listCredentials: async (applicationId: string, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
-            assertParamExists('getManyCredentials', 'applicationId', applicationId)
+            assertParamExists('listCredentials', 'applicationId', applicationId)
             const localVarPath = `/api/v2/applications/{applicationId}/credentials`
                 .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3672,8 +3635,8 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * This endpoint allows the developer to reset the client secret for an application they own
-         * @summary refresh token
+         * Resets the client secret for an application.
+         * @summary Refresh Client Secret
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3708,7 +3671,7 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * This endpoint allows the developer to update a credential for an application they own
+         * Updates a credential for an application owned by the current logged in developer.
          * @summary Update Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
@@ -3764,8 +3727,8 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = CredentialsApiAxiosParamCreator(configuration)
     return {
         /**
-         * This endpoint allows the developer to create a credential for an application they own
-         * @summary Post Credential
+         * Allows a developer to create a credential for an application they own.
+         * @summary Create Credential for Application
          * @param {string} applicationId Id of the targeted application
          * @param {CreateCredentialPayload} [createCredentialPayload] Create a credential
          * @param {*} [options] Override http request option.
@@ -3776,7 +3739,7 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint allows the developer to delete a credential for an application they own
+         * Deletes a credential for an application they own.
          * @summary Delete Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
@@ -3788,21 +3751,21 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint allows the developer to list the credentials for an application they own
-         * @summary Get Many credentials
+         * Lists the credentials for an application they own.
+         * @summary List credentials
          * @param {string} applicationId Id of the targeted application
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyCredentials(applicationId: string, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetCredentialsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyCredentials(applicationId, pageSize, pageNumber, options);
+        async listCredentials(applicationId: string, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListCredentialsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listCredentials(applicationId, pageSize, pageNumber, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint allows the developer to reset the client secret for an application they own
-         * @summary refresh token
+         * Resets the client secret for an application.
+         * @summary Refresh Client Secret
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3812,7 +3775,7 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint allows the developer to update a credential for an application they own
+         * Updates a credential for an application owned by the current logged in developer.
          * @summary Update Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
@@ -3835,8 +3798,8 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
     const localVarFp = CredentialsApiFp(configuration)
     return {
         /**
-         * This endpoint allows the developer to create a credential for an application they own
-         * @summary Post Credential
+         * Allows a developer to create a credential for an application they own.
+         * @summary Create Credential for Application
          * @param {string} applicationId Id of the targeted application
          * @param {CreateCredentialPayload} [createCredentialPayload] Create a credential
          * @param {*} [options] Override http request option.
@@ -3846,7 +3809,7 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.createCredential(applicationId, createCredentialPayload, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint allows the developer to delete a credential for an application they own
+         * Deletes a credential for an application they own.
          * @summary Delete Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
@@ -3857,20 +3820,20 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.deleteCredential(applicationId, credentialId, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint allows the developer to list the credentials for an application they own
-         * @summary Get Many credentials
+         * Lists the credentials for an application they own.
+         * @summary List credentials
          * @param {string} applicationId Id of the targeted application
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyCredentials(applicationId: string, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<GetCredentialsResponse> {
-            return localVarFp.getManyCredentials(applicationId, pageSize, pageNumber, options).then((request) => request(axios, basePath));
+        listCredentials(applicationId: string, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<ListCredentialsResponse> {
+            return localVarFp.listCredentials(applicationId, pageSize, pageNumber, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint allows the developer to reset the client secret for an application they own
-         * @summary refresh token
+         * Resets the client secret for an application.
+         * @summary Refresh Client Secret
          * @param {string} applicationId Id of the targeted application
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3879,7 +3842,7 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
             return localVarFp.refreshApplicationToken(applicationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint allows the developer to update a credential for an application they own
+         * Updates a credential for an application owned by the current logged in developer.
          * @summary Update Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
@@ -3936,29 +3899,29 @@ export interface CredentialsApiDeleteCredentialRequest {
 }
 
 /**
- * Request parameters for getManyCredentials operation in CredentialsApi.
+ * Request parameters for listCredentials operation in CredentialsApi.
  * @export
- * @interface CredentialsApiGetManyCredentialsRequest
+ * @interface CredentialsApiListCredentialsRequest
  */
-export interface CredentialsApiGetManyCredentialsRequest {
+export interface CredentialsApiListCredentialsRequest {
     /**
      * Id of the targeted application
      * @type {string}
-     * @memberof CredentialsApiGetManyCredentials
+     * @memberof CredentialsApiListCredentials
      */
     readonly applicationId: string
 
     /**
      * Determines the size of the page to retrieve.
      * @type {number}
-     * @memberof CredentialsApiGetManyCredentials
+     * @memberof CredentialsApiListCredentials
      */
     readonly pageSize?: number
 
     /**
      * Determines which page of the entities to retrieve.
      * @type {number}
-     * @memberof CredentialsApiGetManyCredentials
+     * @memberof CredentialsApiListCredentials
      */
     readonly pageNumber?: number
 }
@@ -4013,8 +3976,8 @@ export interface CredentialsApiUpdateCredentialRequest {
  */
 export class CredentialsApi extends BaseAPI {
     /**
-     * This endpoint allows the developer to create a credential for an application they own
-     * @summary Post Credential
+     * Allows a developer to create a credential for an application they own.
+     * @summary Create Credential for Application
      * @param {CredentialsApiCreateCredentialRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4025,7 +3988,7 @@ export class CredentialsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint allows the developer to delete a credential for an application they own
+     * Deletes a credential for an application they own.
      * @summary Delete Credential
      * @param {CredentialsApiDeleteCredentialRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4037,20 +4000,20 @@ export class CredentialsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint allows the developer to list the credentials for an application they own
-     * @summary Get Many credentials
-     * @param {CredentialsApiGetManyCredentialsRequest} requestParameters Request parameters.
+     * Lists the credentials for an application they own.
+     * @summary List credentials
+     * @param {CredentialsApiListCredentialsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CredentialsApi
      */
-    public getManyCredentials(requestParameters: CredentialsApiGetManyCredentialsRequest, options?: AxiosRequestConfig) {
-        return CredentialsApiFp(this.configuration).getManyCredentials(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
+    public listCredentials(requestParameters: CredentialsApiListCredentialsRequest, options?: AxiosRequestConfig) {
+        return CredentialsApiFp(this.configuration).listCredentials(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * This endpoint allows the developer to reset the client secret for an application they own
-     * @summary refresh token
+     * Resets the client secret for an application.
+     * @summary Refresh Client Secret
      * @param {CredentialsApiRefreshApplicationTokenRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4061,7 +4024,7 @@ export class CredentialsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint allows the developer to update a credential for an application they own
+     * Updates a credential for an application owned by the current logged in developer.
      * @summary Update Credential
      * @param {CredentialsApiUpdateCredentialRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4147,7 +4110,7 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
-         * Register to the developer portal
+         * Register to the developer portal.
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
          * @param {*} [options] Override http request option.
@@ -4212,7 +4175,7 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Register to the developer portal
+         * Register to the developer portal.
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
          * @param {*} [options] Override http request option.
@@ -4252,7 +4215,7 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
             return localVarFp.getDeveloperMe(options).then((request) => request(axios, basePath));
         },
         /**
-         * Register to the developer portal
+         * Register to the developer portal.
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
          * @param {*} [options] Override http request option.
@@ -4323,7 +4286,7 @@ export class DeveloperApi extends BaseAPI {
     }
 
     /**
-     * Register to the developer portal
+     * Register to the developer portal.
      * @summary Register
      * @param {DeveloperApiRegisterRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4343,10 +4306,10 @@ export class DeveloperApi extends BaseAPI {
 export const DocumentationApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Returns the specified document from the product\'s document tree
+         * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
-         * @param {string} productId Id of the product
-         * @param {string} documentId Id of the document
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4383,18 +4346,18 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * Return the documentation tree of a product
-         * @summary Get product documentation
-         * @param {string} productId Id of the product
+         * Returns a list of documents that are associated with a given product. The list is paginated, and is in either a list or tree format (based on the Accept header).
+         * @summary List product documents
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {DocumentContentTypeEnum} [accept] 
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductDocuments: async (productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listProductDocuments: async (productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
-            assertParamExists('getProductDocuments', 'productId', productId)
+            assertParamExists('listProductDocuments', 'productId', productId)
             const localVarPath = `/api/v2/products/{productId}/documents`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -4446,10 +4409,10 @@ export const DocumentationApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DocumentationApiAxiosParamCreator(configuration)
     return {
         /**
-         * Returns the specified document from the product\'s document tree
+         * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
-         * @param {string} productId Id of the product
-         * @param {string} documentId Id of the document
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4458,17 +4421,17 @@ export const DocumentationApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Return the documentation tree of a product
-         * @summary Get product documentation
-         * @param {string} productId Id of the product
+         * Returns a list of documents that are associated with a given product. The list is paginated, and is in either a list or tree format (based on the Accept header).
+         * @summary List product documents
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {DocumentContentTypeEnum} [accept] 
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductDocuments(productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyDocuments>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductDocuments(productId, accept, pageSize, pageNumber, options);
+        async listProductDocuments(productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListDocuments>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listProductDocuments(productId, accept, pageSize, pageNumber, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -4482,10 +4445,10 @@ export const DocumentationApiFactory = function (configuration?: Configuration, 
     const localVarFp = DocumentationApiFp(configuration)
     return {
         /**
-         * Returns the specified document from the product\'s document tree
+         * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
-         * @param {string} productId Id of the product
-         * @param {string} documentId Id of the document
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4493,17 +4456,17 @@ export const DocumentationApiFactory = function (configuration?: Configuration, 
             return localVarFp.getProductDocument(productId, documentId, options).then((request) => request(axios, basePath));
         },
         /**
-         * Return the documentation tree of a product
-         * @summary Get product documentation
-         * @param {string} productId Id of the product
+         * Returns a list of documents that are associated with a given product. The list is paginated, and is in either a list or tree format (based on the Accept header).
+         * @summary List product documents
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {DocumentContentTypeEnum} [accept] 
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductDocuments(productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<GetManyDocuments> {
-            return localVarFp.getProductDocuments(productId, accept, pageSize, pageNumber, options).then((request) => request(axios, basePath));
+        listProductDocuments(productId: string, accept?: DocumentContentTypeEnum, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<ListDocuments> {
+            return localVarFp.listProductDocuments(productId, accept, pageSize, pageNumber, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -4515,14 +4478,14 @@ export const DocumentationApiFactory = function (configuration?: Configuration, 
  */
 export interface DocumentationApiGetProductDocumentRequest {
     /**
-     * Id of the product
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof DocumentationApiGetProductDocument
      */
     readonly productId: string
 
     /**
-     * Id of the document
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof DocumentationApiGetProductDocument
      */
@@ -4530,36 +4493,36 @@ export interface DocumentationApiGetProductDocumentRequest {
 }
 
 /**
- * Request parameters for getProductDocuments operation in DocumentationApi.
+ * Request parameters for listProductDocuments operation in DocumentationApi.
  * @export
- * @interface DocumentationApiGetProductDocumentsRequest
+ * @interface DocumentationApiListProductDocumentsRequest
  */
-export interface DocumentationApiGetProductDocumentsRequest {
+export interface DocumentationApiListProductDocumentsRequest {
     /**
-     * Id of the product
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
-     * @memberof DocumentationApiGetProductDocuments
+     * @memberof DocumentationApiListProductDocuments
      */
     readonly productId: string
 
     /**
      * 
      * @type {DocumentContentTypeEnum}
-     * @memberof DocumentationApiGetProductDocuments
+     * @memberof DocumentationApiListProductDocuments
      */
     readonly accept?: DocumentContentTypeEnum
 
     /**
      * Determines the size of the page to retrieve.
      * @type {number}
-     * @memberof DocumentationApiGetProductDocuments
+     * @memberof DocumentationApiListProductDocuments
      */
     readonly pageSize?: number
 
     /**
      * Determines which page of the entities to retrieve.
      * @type {number}
-     * @memberof DocumentationApiGetProductDocuments
+     * @memberof DocumentationApiListProductDocuments
      */
     readonly pageNumber?: number
 }
@@ -4572,7 +4535,7 @@ export interface DocumentationApiGetProductDocumentsRequest {
  */
 export class DocumentationApi extends BaseAPI {
     /**
-     * Returns the specified document from the product\'s document tree
+     * Returns the specified document from the product\'s document tree.
      * @summary Get one product document
      * @param {DocumentationApiGetProductDocumentRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -4584,15 +4547,15 @@ export class DocumentationApi extends BaseAPI {
     }
 
     /**
-     * Return the documentation tree of a product
-     * @summary Get product documentation
-     * @param {DocumentationApiGetProductDocumentsRequest} requestParameters Request parameters.
+     * Returns a list of documents that are associated with a given product. The list is paginated, and is in either a list or tree format (based on the Accept header).
+     * @summary List product documents
+     * @param {DocumentationApiListProductDocumentsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DocumentationApi
      */
-    public getProductDocuments(requestParameters: DocumentationApiGetProductDocumentsRequest, options?: AxiosRequestConfig) {
-        return DocumentationApiFp(this.configuration).getProductDocuments(requestParameters.productId, requestParameters.accept, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
+    public listProductDocuments(requestParameters: DocumentationApiListProductDocumentsRequest, options?: AxiosRequestConfig) {
+        return DocumentationApiFp(this.configuration).listProductDocuments(requestParameters.productId, requestParameters.accept, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -4604,8 +4567,8 @@ export class DocumentationApi extends BaseAPI {
 export const PortalApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * appearance of the portal
-         * @summary portal appearance
+         * Gets appearance configuration object for the portal. This object is set in Konnect.
+         * @summary Portal Appearance Details
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4634,8 +4597,8 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
-         * Cover banner for the developer portal
-         * @summary catalog cover
+         * Gets cover banner for the developer portal. This object is set in Konnect.
+         * @summary Portal Catalog Cover Banner
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4664,8 +4627,8 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
-         * return the portal context
-         * @summary get portal context
+         * Return the portal context object.
+         * @summary Get portal context
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4694,8 +4657,8 @@ export const PortalApiAxiosParamCreator = function (configuration?: Configuratio
             };
         },
         /**
-         * Logo of the developer portal
-         * @summary portal logo
+         * Gets logo of the developer portal. This object is set in Konnect.
+         * @summary Portal Logo
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4734,8 +4697,8 @@ export const PortalApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = PortalApiAxiosParamCreator(configuration)
     return {
         /**
-         * appearance of the portal
-         * @summary portal appearance
+         * Gets appearance configuration object for the portal. This object is set in Konnect.
+         * @summary Portal Appearance Details
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4744,8 +4707,8 @@ export const PortalApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Cover banner for the developer portal
-         * @summary catalog cover
+         * Gets cover banner for the developer portal. This object is set in Konnect.
+         * @summary Portal Catalog Cover Banner
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4754,8 +4717,8 @@ export const PortalApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * return the portal context
-         * @summary get portal context
+         * Return the portal context object.
+         * @summary Get portal context
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4764,8 +4727,8 @@ export const PortalApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Logo of the developer portal
-         * @summary portal logo
+         * Gets logo of the developer portal. This object is set in Konnect.
+         * @summary Portal Logo
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4784,8 +4747,8 @@ export const PortalApiFactory = function (configuration?: Configuration, basePat
     const localVarFp = PortalApiFp(configuration)
     return {
         /**
-         * appearance of the portal
-         * @summary portal appearance
+         * Gets appearance configuration object for the portal. This object is set in Konnect.
+         * @summary Portal Appearance Details
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4793,8 +4756,8 @@ export const PortalApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.getPortalAppearance(options).then((request) => request(axios, basePath));
         },
         /**
-         * Cover banner for the developer portal
-         * @summary catalog cover
+         * Gets cover banner for the developer portal. This object is set in Konnect.
+         * @summary Portal Catalog Cover Banner
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4802,8 +4765,8 @@ export const PortalApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.getPortalCatalogCover(options).then((request) => request(axios, basePath));
         },
         /**
-         * return the portal context
-         * @summary get portal context
+         * Return the portal context object.
+         * @summary Get portal context
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4811,8 +4774,8 @@ export const PortalApiFactory = function (configuration?: Configuration, basePat
             return localVarFp.getPortalContext(options).then((request) => request(axios, basePath));
         },
         /**
-         * Logo of the developer portal
-         * @summary portal logo
+         * Gets logo of the developer portal. This object is set in Konnect.
+         * @summary Portal Logo
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4830,8 +4793,8 @@ export const PortalApiFactory = function (configuration?: Configuration, basePat
  */
 export class PortalApi extends BaseAPI {
     /**
-     * appearance of the portal
-     * @summary portal appearance
+     * Gets appearance configuration object for the portal. This object is set in Konnect.
+     * @summary Portal Appearance Details
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PortalApi
@@ -4841,8 +4804,8 @@ export class PortalApi extends BaseAPI {
     }
 
     /**
-     * Cover banner for the developer portal
-     * @summary catalog cover
+     * Gets cover banner for the developer portal. This object is set in Konnect.
+     * @summary Portal Catalog Cover Banner
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PortalApi
@@ -4852,8 +4815,8 @@ export class PortalApi extends BaseAPI {
     }
 
     /**
-     * return the portal context
-     * @summary get portal context
+     * Return the portal context object.
+     * @summary Get portal context
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PortalApi
@@ -4863,8 +4826,8 @@ export class PortalApi extends BaseAPI {
     }
 
     /**
-     * Logo of the developer portal
-     * @summary portal logo
+     * Gets logo of the developer portal. This object is set in Konnect.
+     * @summary Portal Logo
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PortalApi
@@ -4882,8 +4845,44 @@ export class PortalApi extends BaseAPI {
 export const ProductsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Returns a paginated list of published API Products
-         * @summary Get page of products
+         * Gets the details for an existing published product.
+         * @summary Get a product
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProduct: async (productId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('getProduct', 'productId', productId)
+            const localVarPath = `/api/v2/products/{productId}`
+                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns a paginated list of published API Products.
+         * @summary List Products
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -4897,7 +4896,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyProducts: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listProducts: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/products`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4963,42 +4962,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * Returns the given published product, with its versions attached
-         * @summary Get a product
-         * @param {string} productId Id of the product
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getProduct: async (productId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'productId' is not null or undefined
-            assertParamExists('getProduct', 'productId', productId)
-            const localVarPath = `/api/v2/products/{productId}`
-                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -5010,8 +4973,19 @@ export const ProductsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = ProductsApiAxiosParamCreator(configuration)
     return {
         /**
-         * Returns a paginated list of published API Products
-         * @summary Get page of products
+         * Gets the details for an existing published product.
+         * @summary Get a product
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProduct(productId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProduct(productId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Returns a paginated list of published API Products.
+         * @summary List Products
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -5025,19 +4999,8 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyProducts(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductListPage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyProducts(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterDescriptionEq, filterDescription, filterDescriptionContains, filterIdEq, filterId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Returns the given published product, with its versions attached
-         * @summary Get a product
-         * @param {string} productId Id of the product
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getProduct(productId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Product>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProduct(productId, options);
+        async listProducts(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductListPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listProducts(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterDescriptionEq, filterDescription, filterDescriptionContains, filterIdEq, filterId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -5051,8 +5014,18 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
     const localVarFp = ProductsApiFp(configuration)
     return {
         /**
-         * Returns a paginated list of published API Products
-         * @summary Get page of products
+         * Gets the details for an existing published product.
+         * @summary Get a product
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProduct(productId: string, options?: any): AxiosPromise<Product> {
+            return localVarFp.getProduct(productId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns a paginated list of published API Products.
+         * @summary List Products
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -5066,98 +5039,11 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyProducts(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options?: any): AxiosPromise<ProductListPage> {
-            return localVarFp.getManyProducts(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterDescriptionEq, filterDescription, filterDescriptionContains, filterIdEq, filterId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns the given published product, with its versions attached
-         * @summary Get a product
-         * @param {string} productId Id of the product
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getProduct(productId: string, options?: any): AxiosPromise<Product> {
-            return localVarFp.getProduct(productId, options).then((request) => request(axios, basePath));
+        listProducts(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterDescriptionEq?: string, filterDescription?: string, filterDescriptionContains?: string, filterIdEq?: string, filterId?: string, options?: any): AxiosPromise<ProductListPage> {
+            return localVarFp.listProducts(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterDescriptionEq, filterDescription, filterDescriptionContains, filterIdEq, filterId, options).then((request) => request(axios, basePath));
         },
     };
 };
-
-/**
- * Request parameters for getManyProducts operation in ProductsApi.
- * @export
- * @interface ProductsApiGetManyProductsRequest
- */
-export interface ProductsApiGetManyProductsRequest {
-    /**
-     * Determines the size of the page to retrieve.
-     * @type {number}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly pageSize?: number
-
-    /**
-     * Determines which page of the entities to retrieve.
-     * @type {number}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly pageNumber?: number
-
-    /**
-     * Filter by direct equality comparison of the name property with a supplied value.
-     * @type {string}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly filterNameEq?: string
-
-    /**
-     * Filter by direct equality comparison (short-hand) of the name property with a supplied value.
-     * @type {string}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly filterName?: string
-
-    /**
-     * Filter by contains comparison of the name property with a supplied substring
-     * @type {string}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly filterNameContains?: string
-
-    /**
-     * Filter by direct equality comparison of the description property with a supplied value.
-     * @type {string}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly filterDescriptionEq?: string
-
-    /**
-     * Filter by direct equality comparison (short-hand) of the description property with a supplied value.
-     * @type {string}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly filterDescription?: string
-
-    /**
-     * Filter by contains comparison of the description property with a supplied substring
-     * @type {string}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly filterDescriptionContains?: string
-
-    /**
-     * Filter by direct equality comparison of the id property with a supplied value.
-     * @type {string}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly filterIdEq?: string
-
-    /**
-     * Filter by direct equality comparison (short-hand) of the id property with a supplied value.
-     * @type {string}
-     * @memberof ProductsApiGetManyProducts
-     */
-    readonly filterId?: string
-}
 
 /**
  * Request parameters for getProduct operation in ProductsApi.
@@ -5166,11 +5052,88 @@ export interface ProductsApiGetManyProductsRequest {
  */
 export interface ProductsApiGetProductRequest {
     /**
-     * Id of the product
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof ProductsApiGetProduct
      */
     readonly productId: string
+}
+
+/**
+ * Request parameters for listProducts operation in ProductsApi.
+ * @export
+ * @interface ProductsApiListProductsRequest
+ */
+export interface ProductsApiListProductsRequest {
+    /**
+     * Determines the size of the page to retrieve.
+     * @type {number}
+     * @memberof ProductsApiListProducts
+     */
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof ProductsApiListProducts
+     */
+    readonly pageNumber?: number
+
+    /**
+     * Filter by direct equality comparison of the name property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiListProducts
+     */
+    readonly filterNameEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiListProducts
+     */
+    readonly filterName?: string
+
+    /**
+     * Filter by contains comparison of the name property with a supplied substring
+     * @type {string}
+     * @memberof ProductsApiListProducts
+     */
+    readonly filterNameContains?: string
+
+    /**
+     * Filter by direct equality comparison of the description property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiListProducts
+     */
+    readonly filterDescriptionEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the description property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiListProducts
+     */
+    readonly filterDescription?: string
+
+    /**
+     * Filter by contains comparison of the description property with a supplied substring
+     * @type {string}
+     * @memberof ProductsApiListProducts
+     */
+    readonly filterDescriptionContains?: string
+
+    /**
+     * Filter by direct equality comparison of the id property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiListProducts
+     */
+    readonly filterIdEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+     * @type {string}
+     * @memberof ProductsApiListProducts
+     */
+    readonly filterId?: string
 }
 
 /**
@@ -5181,19 +5144,7 @@ export interface ProductsApiGetProductRequest {
  */
 export class ProductsApi extends BaseAPI {
     /**
-     * Returns a paginated list of published API Products
-     * @summary Get page of products
-     * @param {ProductsApiGetManyProductsRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ProductsApi
-     */
-    public getManyProducts(requestParameters: ProductsApiGetManyProductsRequest = {}, options?: AxiosRequestConfig) {
-        return ProductsApiFp(this.configuration).getManyProducts(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterDescriptionEq, requestParameters.filterDescription, requestParameters.filterDescriptionContains, requestParameters.filterIdEq, requestParameters.filterId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Returns the given published product, with its versions attached
+     * Gets the details for an existing published product.
      * @summary Get a product
      * @param {ProductsApiGetProductRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -5202,6 +5153,18 @@ export class ProductsApi extends BaseAPI {
      */
     public getProduct(requestParameters: ProductsApiGetProductRequest, options?: AxiosRequestConfig) {
         return ProductsApiFp(this.configuration).getProduct(requestParameters.productId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns a paginated list of published API Products.
+     * @summary List Products
+     * @param {ProductsApiListProductsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public listProducts(requestParameters: ProductsApiListProductsRequest = {}, options?: AxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).listProducts(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterDescriptionEq, requestParameters.filterDescription, requestParameters.filterDescriptionContains, requestParameters.filterIdEq, requestParameters.filterId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -5213,10 +5176,10 @@ export class ProductsApi extends BaseAPI {
 export const RegistrationsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * This endpoint registers an application for a product
+         * Registers an application for a product.
          * @summary Register an application for a product
          * @param {string} applicationId Id of the targeted application
-         * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration
+         * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5255,10 +5218,10 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * This endpoint unregister an application for a product version
+         * Unregister an application for a product version.
          * @summary Delete an application registration
          * @param {string} applicationId Id of the targeted application
-         * @param {string} registrationId Id of the targeted registration
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5295,7 +5258,47 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
-         * This endpoint lists product registrations for an application
+         * Retrieves the specified product registration for an application.
+         * @summary Get an application registration
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationRegistration: async (applicationId: string, registrationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'applicationId' is not null or undefined
+            assertParamExists('getApplicationRegistration', 'applicationId', applicationId)
+            // verify required parameter 'registrationId' is not null or undefined
+            assertParamExists('getApplicationRegistration', 'registrationId', registrationId)
+            const localVarPath = `/api/v2/applications/{applicationId}/registrations/{registrationId}`
+                .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)))
+                .replace(`{${"registrationId"}}`, encodeURIComponent(String(registrationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Lists product registrations for an application.
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
          * @param {number} [pageSize] Determines the size of the page to retrieve.
@@ -5307,9 +5310,9 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplicationRegistrations: async (applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listApplicationRegistrations: async (applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
-            assertParamExists('getManyApplicationRegistrations', 'applicationId', applicationId)
+            assertParamExists('listApplicationRegistrations', 'applicationId', applicationId)
             const localVarPath = `/api/v2/applications/{applicationId}/registrations`
                 .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -5360,46 +5363,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * This endpoint retrieves the specified product registration for an application
-         * @summary Get an application registration
-         * @param {string} applicationId Id of the targeted application
-         * @param {string} registrationId Id of the targeted registration
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getOneApplicationRegistration: async (applicationId: string, registrationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'applicationId' is not null or undefined
-            assertParamExists('getOneApplicationRegistration', 'applicationId', applicationId)
-            // verify required parameter 'registrationId' is not null or undefined
-            assertParamExists('getOneApplicationRegistration', 'registrationId', registrationId)
-            const localVarPath = `/api/v2/applications/{applicationId}/registrations/{registrationId}`
-                .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)))
-                .replace(`{${"registrationId"}}`, encodeURIComponent(String(registrationId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -5411,10 +5374,10 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = RegistrationsApiAxiosParamCreator(configuration)
     return {
         /**
-         * This endpoint registers an application for a product
+         * Registers an application for a product.
          * @summary Register an application for a product
          * @param {string} applicationId Id of the targeted application
-         * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration
+         * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5423,10 +5386,10 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint unregister an application for a product version
+         * Unregister an application for a product version.
          * @summary Delete an application registration
          * @param {string} applicationId Id of the targeted application
-         * @param {string} registrationId Id of the targeted registration
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5435,7 +5398,19 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint lists product registrations for an application
+         * Retrieves the specified product registration for an application.
+         * @summary Get an application registration
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApplicationRegistration(applicationId: string, registrationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetRegistrationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationRegistration(applicationId, registrationId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Lists product registrations for an application.
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
          * @param {number} [pageSize] Determines the size of the page to retrieve.
@@ -5447,20 +5422,8 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getManyApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetManyRegistrationsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * This endpoint retrieves the specified product registration for an application
-         * @summary Get an application registration
-         * @param {string} applicationId Id of the targeted application
-         * @param {string} registrationId Id of the targeted registration
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getOneApplicationRegistration(applicationId: string, registrationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetRegistrationResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getOneApplicationRegistration(applicationId, registrationId, options);
+        async listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListRegistrationsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -5474,10 +5437,10 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
     const localVarFp = RegistrationsApiFp(configuration)
     return {
         /**
-         * This endpoint registers an application for a product
+         * Registers an application for a product.
          * @summary Register an application for a product
          * @param {string} applicationId Id of the targeted application
-         * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration
+         * @param {CreateRegistrationPayload} createRegistrationPayload Create an application registration.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5485,10 +5448,10 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
             return localVarFp.createApplicationRegistration(applicationId, createRegistrationPayload, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint unregister an application for a product version
+         * Unregister an application for a product version.
          * @summary Delete an application registration
          * @param {string} applicationId Id of the targeted application
-         * @param {string} registrationId Id of the targeted registration
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5496,7 +5459,18 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
             return localVarFp.deleteApplicationRegistration(applicationId, registrationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint lists product registrations for an application
+         * Retrieves the specified product registration for an application.
+         * @summary Get an application registration
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationRegistration(applicationId: string, registrationId: string, options?: any): AxiosPromise<GetRegistrationResponse> {
+            return localVarFp.getApplicationRegistration(applicationId, registrationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Lists product registrations for an application.
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
          * @param {number} [pageSize] Determines the size of the page to retrieve.
@@ -5508,19 +5482,8 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: any): AxiosPromise<GetManyRegistrationsResponse> {
-            return localVarFp.getManyApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * This endpoint retrieves the specified product registration for an application
-         * @summary Get an application registration
-         * @param {string} applicationId Id of the targeted application
-         * @param {string} registrationId Id of the targeted registration
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getOneApplicationRegistration(applicationId: string, registrationId: string, options?: any): AxiosPromise<GetRegistrationResponse> {
-            return localVarFp.getOneApplicationRegistration(applicationId, registrationId, options).then((request) => request(axios, basePath));
+        listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: any): AxiosPromise<ListRegistrationsResponse> {
+            return localVarFp.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -5539,7 +5502,7 @@ export interface RegistrationsApiCreateApplicationRegistrationRequest {
     readonly applicationId: string
 
     /**
-     * Create an application registration
+     * Create an application registration.
      * @type {CreateRegistrationPayload}
      * @memberof RegistrationsApiCreateApplicationRegistration
      */
@@ -5560,7 +5523,7 @@ export interface RegistrationsApiDeleteApplicationRegistrationRequest {
     readonly applicationId: string
 
     /**
-     * Id of the targeted registration
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof RegistrationsApiDeleteApplicationRegistration
      */
@@ -5568,80 +5531,80 @@ export interface RegistrationsApiDeleteApplicationRegistrationRequest {
 }
 
 /**
- * Request parameters for getManyApplicationRegistrations operation in RegistrationsApi.
+ * Request parameters for getApplicationRegistration operation in RegistrationsApi.
  * @export
- * @interface RegistrationsApiGetManyApplicationRegistrationsRequest
+ * @interface RegistrationsApiGetApplicationRegistrationRequest
  */
-export interface RegistrationsApiGetManyApplicationRegistrationsRequest {
+export interface RegistrationsApiGetApplicationRegistrationRequest {
     /**
      * Id of the targeted application
      * @type {string}
-     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     * @memberof RegistrationsApiGetApplicationRegistration
+     */
+    readonly applicationId: string
+
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof RegistrationsApiGetApplicationRegistration
+     */
+    readonly registrationId: string
+}
+
+/**
+ * Request parameters for listApplicationRegistrations operation in RegistrationsApi.
+ * @export
+ * @interface RegistrationsApiListApplicationRegistrationsRequest
+ */
+export interface RegistrationsApiListApplicationRegistrationsRequest {
+    /**
+     * Id of the targeted application
+     * @type {string}
+     * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly applicationId: string
 
     /**
      * Determines the size of the page to retrieve.
      * @type {number}
-     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly pageSize?: number
 
     /**
      * Determines which page of the entities to retrieve.
      * @type {number}
-     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly pageNumber?: number
 
     /**
      * Filter by direct equality comparison of the id property with a supplied value.
      * @type {string}
-     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly filterIdEq?: string
 
     /**
      * Filter by direct equality comparison (short-hand) of the id property with a supplied value.
      * @type {string}
-     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly filterId?: string
 
     /**
      * Filter by direct equality comparison of the status property with a supplied value.
      * @type {'approved' | 'pending' | 'rejected' | 'revoked'}
-     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked'
 
     /**
      * Filter by direct equality comparison (short-hand) of the status property with a supplied value.
      * @type {'approved' | 'pending' | 'rejected' | 'revoked'}
-     * @memberof RegistrationsApiGetManyApplicationRegistrations
+     * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked'
-}
-
-/**
- * Request parameters for getOneApplicationRegistration operation in RegistrationsApi.
- * @export
- * @interface RegistrationsApiGetOneApplicationRegistrationRequest
- */
-export interface RegistrationsApiGetOneApplicationRegistrationRequest {
-    /**
-     * Id of the targeted application
-     * @type {string}
-     * @memberof RegistrationsApiGetOneApplicationRegistration
-     */
-    readonly applicationId: string
-
-    /**
-     * Id of the targeted registration
-     * @type {string}
-     * @memberof RegistrationsApiGetOneApplicationRegistration
-     */
-    readonly registrationId: string
 }
 
 /**
@@ -5652,7 +5615,7 @@ export interface RegistrationsApiGetOneApplicationRegistrationRequest {
  */
 export class RegistrationsApi extends BaseAPI {
     /**
-     * This endpoint registers an application for a product
+     * Registers an application for a product.
      * @summary Register an application for a product
      * @param {RegistrationsApiCreateApplicationRegistrationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -5664,7 +5627,7 @@ export class RegistrationsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint unregister an application for a product version
+     * Unregister an application for a product version.
      * @summary Delete an application registration
      * @param {RegistrationsApiDeleteApplicationRegistrationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -5676,27 +5639,27 @@ export class RegistrationsApi extends BaseAPI {
     }
 
     /**
-     * This endpoint lists product registrations for an application
-     * @summary Get application registrations
-     * @param {RegistrationsApiGetManyApplicationRegistrationsRequest} requestParameters Request parameters.
+     * Retrieves the specified product registration for an application.
+     * @summary Get an application registration
+     * @param {RegistrationsApiGetApplicationRegistrationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RegistrationsApi
      */
-    public getManyApplicationRegistrations(requestParameters: RegistrationsApiGetManyApplicationRegistrationsRequest, options?: AxiosRequestConfig) {
-        return RegistrationsApiFp(this.configuration).getManyApplicationRegistrations(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, options).then((request) => request(this.axios, this.basePath));
+    public getApplicationRegistration(requestParameters: RegistrationsApiGetApplicationRegistrationRequest, options?: AxiosRequestConfig) {
+        return RegistrationsApiFp(this.configuration).getApplicationRegistration(requestParameters.applicationId, requestParameters.registrationId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * This endpoint retrieves the specified product registration for an application
-     * @summary Get an application registration
-     * @param {RegistrationsApiGetOneApplicationRegistrationRequest} requestParameters Request parameters.
+     * Lists product registrations for an application.
+     * @summary Get application registrations
+     * @param {RegistrationsApiListApplicationRegistrationsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RegistrationsApi
      */
-    public getOneApplicationRegistration(requestParameters: RegistrationsApiGetOneApplicationRegistrationRequest, options?: AxiosRequestConfig) {
-        return RegistrationsApiFp(this.configuration).getOneApplicationRegistration(requestParameters.applicationId, requestParameters.registrationId, options).then((request) => request(this.axios, this.basePath));
+    public listApplicationRegistrations(requestParameters: RegistrationsApiListApplicationRegistrationsRequest, options?: AxiosRequestConfig) {
+        return RegistrationsApiFp(this.configuration).listApplicationRegistrations(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -5885,9 +5848,129 @@ export class SearchApi extends BaseAPI {
 export const VersionsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Returns paginated list of versions of a given product
+         * Gets the details for an existing product version.
+         * @summary Get product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductVersion: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('getProductVersion', 'productId', productId)
+            // verify required parameter 'versionId' is not null or undefined
+            assertParamExists('getProductVersion', 'versionId', versionId)
+            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}`
+                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
+                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
+         * @summary Get spec for product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductVersionSpec: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('getProductVersionSpec', 'productId', productId)
+            // verify required parameter 'versionId' is not null or undefined
+            assertParamExists('getProductVersionSpec', 'versionId', versionId)
+            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/spec`
+                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
+                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns list of operations used in the API specification document attached to given product version.
+         * @summary Get operations in version spec
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductVersionSpecOperations: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('getProductVersionSpecOperations', 'productId', productId)
+            // verify required parameter 'versionId' is not null or undefined
+            assertParamExists('getProductVersionSpecOperations', 'versionId', versionId)
+            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/spec/operations`
+                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
+                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Returns paginated list of versions of a given product.
          * @summary Get page of product versions
-         * @param {string} productId Id of the product
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
@@ -5896,9 +5979,9 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyProductVersions: async (productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listProductVersions: async (productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
-            assertParamExists('getManyProductVersions', 'productId', productId)
+            assertParamExists('listProductVersions', 'productId', productId)
             const localVarPath = `/api/v2/products/{productId}/versions`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -5945,126 +6028,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * Return given product version
-         * @summary Get product version
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getProductVersion: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'productId' is not null or undefined
-            assertParamExists('getProductVersion', 'productId', productId)
-            // verify required parameter 'versionId' is not null or undefined
-            assertParamExists('getProductVersion', 'versionId', versionId)
-            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}`
-                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
-                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns the OpenAPI specification document attached to given product version
-         * @summary Get OpenAPI spec for product version
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getProductVersionSpec: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'productId' is not null or undefined
-            assertParamExists('getProductVersionSpec', 'productId', productId)
-            // verify required parameter 'versionId' is not null or undefined
-            assertParamExists('getProductVersionSpec', 'versionId', versionId)
-            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/spec`
-                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
-                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Returns list of operations used in the OpenAPI specefication document attached to given product version
-         * @summary Get operations in version spec
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getProductVersionSpecOperations: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'productId' is not null or undefined
-            assertParamExists('getProductVersionSpecOperations', 'productId', productId)
-            // verify required parameter 'versionId' is not null or undefined
-            assertParamExists('getProductVersionSpecOperations', 'versionId', versionId)
-            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/spec/operations`
-                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
-                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -6076,26 +6039,10 @@ export const VersionsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = VersionsApiAxiosParamCreator(configuration)
     return {
         /**
-         * Returns paginated list of versions of a given product
-         * @summary Get page of product versions
-         * @param {string} productId Id of the product
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
-         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
-         * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
-         * @param {string} [filterVersion] Filter by direct equality comparison (short-hand) of the version property with a supplied value.
-         * @param {string} [filterVersionContains] Filter by contains comparison of the version property with a supplied substring
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getManyProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListPage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getManyProductVersions(productId, pageSize, pageNumber, filterVersionEq, filterVersion, filterVersionContains, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Return given product version
+         * Gets the details for an existing product version.
          * @summary Get product version
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6104,10 +6051,10 @@ export const VersionsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Returns the OpenAPI specification document attached to given product version
-         * @summary Get OpenAPI spec for product version
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
+         * Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
+         * @summary Get spec for product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6116,15 +6063,31 @@ export const VersionsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Returns list of operations used in the OpenAPI specefication document attached to given product version
+         * Returns list of operations used in the API specification document attached to given product version.
          * @summary Get operations in version spec
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         async getProductVersionSpecOperations(productId: string, versionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionSpecOperations>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersionSpecOperations(productId, versionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Returns paginated list of versions of a given product.
+         * @summary Get page of product versions
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
+         * @param {string} [filterVersion] Filter by direct equality comparison (short-hand) of the version property with a supplied value.
+         * @param {string} [filterVersionContains] Filter by contains comparison of the version property with a supplied substring
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listProductVersions(productId, pageSize, pageNumber, filterVersionEq, filterVersion, filterVersionContains, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -6138,9 +6101,42 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
     const localVarFp = VersionsApiFp(configuration)
     return {
         /**
-         * Returns paginated list of versions of a given product
+         * Gets the details for an existing product version.
+         * @summary Get product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductVersion(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersion> {
+            return localVarFp.getProductVersion(productId, versionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
+         * @summary Get spec for product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductVersionSpec(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpec> {
+            return localVarFp.getProductVersionSpec(productId, versionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns list of operations used in the API specification document attached to given product version.
+         * @summary Get operations in version spec
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductVersionSpecOperations(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpecOperations> {
+            return localVarFp.getProductVersionSpecOperations(productId, versionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns paginated list of versions of a given product.
          * @summary Get page of product versions
-         * @param {string} productId Id of the product
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
@@ -6149,93 +6145,11 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getManyProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options?: any): AxiosPromise<ProductVersionListPage> {
-            return localVarFp.getManyProductVersions(productId, pageSize, pageNumber, filterVersionEq, filterVersion, filterVersionContains, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Return given product version
-         * @summary Get product version
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getProductVersion(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersion> {
-            return localVarFp.getProductVersion(productId, versionId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns the OpenAPI specification document attached to given product version
-         * @summary Get OpenAPI spec for product version
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getProductVersionSpec(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpec> {
-            return localVarFp.getProductVersionSpec(productId, versionId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Returns list of operations used in the OpenAPI specefication document attached to given product version
-         * @summary Get operations in version spec
-         * @param {string} productId Id of the product
-         * @param {string} versionId Id of the product version
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getProductVersionSpecOperations(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpecOperations> {
-            return localVarFp.getProductVersionSpecOperations(productId, versionId, options).then((request) => request(axios, basePath));
+        listProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options?: any): AxiosPromise<ProductVersionListPage> {
+            return localVarFp.listProductVersions(productId, pageSize, pageNumber, filterVersionEq, filterVersion, filterVersionContains, options).then((request) => request(axios, basePath));
         },
     };
 };
-
-/**
- * Request parameters for getManyProductVersions operation in VersionsApi.
- * @export
- * @interface VersionsApiGetManyProductVersionsRequest
- */
-export interface VersionsApiGetManyProductVersionsRequest {
-    /**
-     * Id of the product
-     * @type {string}
-     * @memberof VersionsApiGetManyProductVersions
-     */
-    readonly productId: string
-
-    /**
-     * Determines the size of the page to retrieve.
-     * @type {number}
-     * @memberof VersionsApiGetManyProductVersions
-     */
-    readonly pageSize?: number
-
-    /**
-     * Determines which page of the entities to retrieve.
-     * @type {number}
-     * @memberof VersionsApiGetManyProductVersions
-     */
-    readonly pageNumber?: number
-
-    /**
-     * Filter by direct equality comparison of the version property with a supplied value.
-     * @type {string}
-     * @memberof VersionsApiGetManyProductVersions
-     */
-    readonly filterVersionEq?: string
-
-    /**
-     * Filter by direct equality comparison (short-hand) of the version property with a supplied value.
-     * @type {string}
-     * @memberof VersionsApiGetManyProductVersions
-     */
-    readonly filterVersion?: string
-
-    /**
-     * Filter by contains comparison of the version property with a supplied substring
-     * @type {string}
-     * @memberof VersionsApiGetManyProductVersions
-     */
-    readonly filterVersionContains?: string
-}
 
 /**
  * Request parameters for getProductVersion operation in VersionsApi.
@@ -6244,14 +6158,14 @@ export interface VersionsApiGetManyProductVersionsRequest {
  */
 export interface VersionsApiGetProductVersionRequest {
     /**
-     * Id of the product
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof VersionsApiGetProductVersion
      */
     readonly productId: string
 
     /**
-     * Id of the product version
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof VersionsApiGetProductVersion
      */
@@ -6265,14 +6179,14 @@ export interface VersionsApiGetProductVersionRequest {
  */
 export interface VersionsApiGetProductVersionSpecRequest {
     /**
-     * Id of the product
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof VersionsApiGetProductVersionSpec
      */
     readonly productId: string
 
     /**
-     * Id of the product version
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof VersionsApiGetProductVersionSpec
      */
@@ -6286,18 +6200,67 @@ export interface VersionsApiGetProductVersionSpecRequest {
  */
 export interface VersionsApiGetProductVersionSpecOperationsRequest {
     /**
-     * Id of the product
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof VersionsApiGetProductVersionSpecOperations
      */
     readonly productId: string
 
     /**
-     * Id of the product version
+     * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof VersionsApiGetProductVersionSpecOperations
      */
     readonly versionId: string
+}
+
+/**
+ * Request parameters for listProductVersions operation in VersionsApi.
+ * @export
+ * @interface VersionsApiListProductVersionsRequest
+ */
+export interface VersionsApiListProductVersionsRequest {
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof VersionsApiListProductVersions
+     */
+    readonly productId: string
+
+    /**
+     * Determines the size of the page to retrieve.
+     * @type {number}
+     * @memberof VersionsApiListProductVersions
+     */
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof VersionsApiListProductVersions
+     */
+    readonly pageNumber?: number
+
+    /**
+     * Filter by direct equality comparison of the version property with a supplied value.
+     * @type {string}
+     * @memberof VersionsApiListProductVersions
+     */
+    readonly filterVersionEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the version property with a supplied value.
+     * @type {string}
+     * @memberof VersionsApiListProductVersions
+     */
+    readonly filterVersion?: string
+
+    /**
+     * Filter by contains comparison of the version property with a supplied substring
+     * @type {string}
+     * @memberof VersionsApiListProductVersions
+     */
+    readonly filterVersionContains?: string
 }
 
 /**
@@ -6308,19 +6271,7 @@ export interface VersionsApiGetProductVersionSpecOperationsRequest {
  */
 export class VersionsApi extends BaseAPI {
     /**
-     * Returns paginated list of versions of a given product
-     * @summary Get page of product versions
-     * @param {VersionsApiGetManyProductVersionsRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof VersionsApi
-     */
-    public getManyProductVersions(requestParameters: VersionsApiGetManyProductVersionsRequest, options?: AxiosRequestConfig) {
-        return VersionsApiFp(this.configuration).getManyProductVersions(requestParameters.productId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterVersionEq, requestParameters.filterVersion, requestParameters.filterVersionContains, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Return given product version
+     * Gets the details for an existing product version.
      * @summary Get product version
      * @param {VersionsApiGetProductVersionRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -6332,8 +6283,8 @@ export class VersionsApi extends BaseAPI {
     }
 
     /**
-     * Returns the OpenAPI specification document attached to given product version
-     * @summary Get OpenAPI spec for product version
+     * Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
+     * @summary Get spec for product version
      * @param {VersionsApiGetProductVersionSpecRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -6344,7 +6295,7 @@ export class VersionsApi extends BaseAPI {
     }
 
     /**
-     * Returns list of operations used in the OpenAPI specefication document attached to given product version
+     * Returns list of operations used in the API specification document attached to given product version.
      * @summary Get operations in version spec
      * @param {VersionsApiGetProductVersionSpecOperationsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -6353,6 +6304,18 @@ export class VersionsApi extends BaseAPI {
      */
     public getProductVersionSpecOperations(requestParameters: VersionsApiGetProductVersionSpecOperationsRequest, options?: AxiosRequestConfig) {
         return VersionsApiFp(this.configuration).getProductVersionSpecOperations(requestParameters.productId, requestParameters.versionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns paginated list of versions of a given product.
+     * @summary Get page of product versions
+     * @param {VersionsApiListProductVersionsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VersionsApi
+     */
+    public listProductVersions(requestParameters: VersionsApiListProductVersionsRequest, options?: AxiosRequestConfig) {
+        return VersionsApiFp(this.configuration).listProductVersions(requestParameters.productId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterVersionEq, requestParameters.filterVersion, requestParameters.filterVersionContains, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
