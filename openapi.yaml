@@ -9,9 +9,9 @@ info:
 paths:
   /api/v2/applications:
     get:
-      summary: Get many applications
-      description: This endpoint allows the developer to list applications
-      operationId: get-many-applications
+      summary: List Applications
+      description: List applications owned by the developer currently logged in.
+      operationId: list-applications
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -20,7 +20,7 @@ paths:
         - $ref: '#/components/parameters/FilterByNameContains'
       responses:
         '200':
-          $ref: '#/components/responses/GetManyApplications'
+          $ref: '#/components/responses/ListApplications'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -30,8 +30,8 @@ paths:
       security:
         - portalAccessToken: []
     post:
-      summary: Create Application
-      description: This endpoint allows the developer to create an application
+      summary: Create an Application
+      description: Creates a new Application.
       operationId: create-application
       requestBody:
         $ref: '#/components/requestBodies/CreateApplication'
@@ -56,9 +56,12 @@ paths:
         - portalAccessToken: []
   /api/v2/applications/{applicationId}:
     get:
-      summary: Get one Application
-      description: This endpoint allows the developer to get an application
-      operationId: get-one-application
+      summary: Get an Application
+      description: >-
+        Gets the details for an existing application. You need only supply the
+        unique application identifier that was returned upon application
+        creation or by the list-applications endpoint.
+      operationId: get-application
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
       responses:
@@ -76,13 +79,15 @@ paths:
         - portalAccessToken: []
     delete:
       summary: Delete Application
-      description: This endpoint allows the developer to delete an application they own
+      description: >-
+        Deletes an application and all of its associated entities
+        (registrations).
       operationId: delete-application
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
       responses:
         '204':
-          description: The application has been deleted
+          description: Application was deleted successfully.
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -97,7 +102,9 @@ paths:
         - portalAccessToken: []
     put:
       summary: Update Application
-      description: This endpoint allows the developer to update an application they own
+      description: >-
+        Updates an application, replacing the object with the new values
+        supplied in the request body.
       operationId: update-application
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -122,18 +129,16 @@ paths:
         - portalAccessToken: []
   /api/v2/applications/{applicationId}/credentials:
     get:
-      summary: Get Many credentials
-      description: >-
-        This endpoint allows the developer to list the credentials for an
-        application they own
-      operationId: get-many-credentials
+      summary: List credentials
+      description: Lists the credentials for an application they own.
+      operationId: list-credentials
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
-          $ref: '#/components/responses/GetCredentials'
+          $ref: '#/components/responses/ListCredentials'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -147,10 +152,8 @@ paths:
       security:
         - portalAccessToken: []
     post:
-      summary: Post Credential
-      description: >-
-        This endpoint allows the developer to create a credential for an
-        application they own
+      summary: Create Credential for Application
+      description: Allows a developer to create a credential for an application they own.
       operationId: create-credential
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -175,8 +178,8 @@ paths:
     put:
       summary: Update Credential
       description: >-
-        This endpoint allows the developer to update a credential for an
-        application they own
+        Updates a credential for an application owned by the current logged in
+        developer.
       operationId: update-credential
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -185,7 +188,7 @@ paths:
         $ref: '#/components/requestBodies/UpdateCredential'
       responses:
         '200':
-          description: credential properly updated
+          description: Credential successfully updated.
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -200,16 +203,14 @@ paths:
         - portalAccessToken: []
     delete:
       summary: Delete Credential
-      description: >-
-        This endpoint allows the developer to delete a credential for an
-        application they own
+      description: Deletes a credential for an application they own.
       operationId: delete-credential
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
       responses:
         '204':
-          description: credential properly deleted
+          description: Credential successfully deleted.
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -226,10 +227,8 @@ paths:
         - portalAccessToken: []
   /api/v2/applications/{applicationId}/refresh-token:
     post:
-      summary: refresh token
-      description: >-
-        This endpoint allows the developer to reset the client secret for an
-        application they own
+      summary: Refresh Client Secret
+      description: Resets the client secret for an application.
       operationId: refresh-application-token
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -251,8 +250,8 @@ paths:
   /api/v2/applications/{applicationId}/registrations:
     get:
       summary: Get application registrations
-      description: This endpoint lists product registrations for an application
-      operationId: get-many-application-registrations
+      description: Lists product registrations for an application.
+      operationId: list-application-registrations
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/PageSize'
@@ -263,7 +262,7 @@ paths:
         - $ref: '#/components/parameters/FilterByStatusEqualityShort'
       responses:
         '200':
-          $ref: '#/components/responses/GetManyRegistrations'
+          $ref: '#/components/responses/ListRegistrations'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -276,7 +275,7 @@ paths:
         - portalAccessToken: []
     post:
       summary: Register an application for a product
-      description: This endpoint registers an application for a product
+      description: Registers an application for a product.
       operationId: create-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
@@ -300,10 +299,8 @@ paths:
   /api/v2/applications/{applicationId}/registrations/{registrationId}:
     get:
       summary: Get an application registration
-      description: >-
-        This endpoint retrieves the specified product registration for an
-        application
-      operationId: get-one-application-registration
+      description: Retrieves the specified product registration for an application.
+      operationId: get-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
@@ -320,14 +317,14 @@ paths:
         - portalAccessToken: []
     delete:
       summary: Delete an application registration
-      description: This endpoint unregister an application for a product version
+      description: Unregister an application for a product version.
       operationId: delete-application-registration
       parameters:
         - $ref: '#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '204':
-          description: The registration has been deleted
+          description: The registration has been deleted.
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -387,7 +384,7 @@ paths:
     post:
       operationId: register
       summary: Register
-      description: Register to the developer portal
+      description: Register to the developer portal.
       requestBody:
         description: Developer registration
         content:
@@ -458,11 +455,11 @@ paths:
   /api/v2/portal:
     get:
       operationId: get-portal-context
-      summary: get portal context
-      description: return the portal context
+      summary: Get portal context
+      description: Return the portal context object.
       responses:
         '200':
-          $ref: '#/components/responses/RetrievePortalContextResponse'
+          $ref: '#/components/responses/GetPortalContextResponse'
       tags:
         - portal
       security:
@@ -470,11 +467,13 @@ paths:
   /api/v2/portal/appearance:
     get:
       operationId: get-portal-appearance
-      summary: portal appearance
-      description: appearance of the portal
+      summary: Portal Appearance Details
+      description: >-
+        Gets appearance configuration object for the portal. This object is set
+        in Konnect.
       responses:
         '200':
-          $ref: '#/components/responses/RetrievePortalAppearanceResponse'
+          $ref: '#/components/responses/GetPortalAppearanceResponse'
       tags:
         - portal
       security:
@@ -482,11 +481,13 @@ paths:
   /api/v2/portal/catalog-cover:
     get:
       operationId: get-portal-catalog-cover
-      summary: catalog cover
-      description: Cover banner for the developer portal
+      summary: Portal Catalog Cover Banner
+      description: >-
+        Gets cover banner for the developer portal. This object is set in
+        Konnect.
       responses:
         '200':
-          $ref: '#/components/responses/RetrievePortalCoverResponse'
+          $ref: '#/components/responses/GetPortalCoverResponse'
       tags:
         - portal
       security:
@@ -494,20 +495,20 @@ paths:
   /api/v2/portal/logo:
     get:
       operationId: get-portal-logo
-      summary: portal logo
-      description: Logo of the developer portal
+      summary: Portal Logo
+      description: Gets logo of the developer portal. This object is set in Konnect.
       responses:
         '200':
-          $ref: '#/components/responses/RetrievePortalLogoResponse'
+          $ref: '#/components/responses/GetPortalLogoResponse'
       tags:
         - portal
       security:
         - {}
   /api/v2/products:
     get:
-      summary: Get page of products
-      description: Returns a paginated list of published API Products
-      operationId: get-many-products
+      summary: List Products
+      description: Returns a paginated list of published API Products.
+      operationId: list-products
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
@@ -521,7 +522,7 @@ paths:
         - $ref: '#/components/parameters/FilterByIdEqualityShort'
       responses:
         '200':
-          $ref: '#/components/responses/ProductGetMany'
+          $ref: '#/components/responses/ProductList'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -534,7 +535,7 @@ paths:
   /api/v2/products/{productId}:
     get:
       summary: Get a product
-      description: Returns the given published product, with its versions attached
+      description: Gets the details for an existing published product.
       operationId: get-product
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -554,9 +555,12 @@ paths:
         - {}
   /api/v2/products/{productId}/documents:
     get:
-      summary: Get product documentation
-      description: Return the documentation tree of a product
-      operationId: get-product-documents
+      summary: List product documents
+      description: >-
+        Returns a list of documents that are associated with a given product.
+        The list is paginated, and is in either a list or tree format (based on
+        the Accept header).
+      operationId: list-product-documents
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - in: header
@@ -567,14 +571,14 @@ paths:
         - $ref: '#/components/parameters/PageNumber'
       responses:
         '200':
-          description: Tree of documents
+          description: Lists documents for a given product.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetManyDocuments'
+                $ref: '#/components/schemas/ListDocuments'
             application/konnect.document-tree+json:
               schema:
-                $ref: '#/components/schemas/GetManyDocumentTrees'
+                $ref: '#/components/schemas/ListDocumentsTree'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -589,7 +593,7 @@ paths:
   /api/v2/products/{productId}/documents/{documentId}:
     get:
       summary: Get one product document
-      description: Returns the specified document from the product's document tree
+      description: Returns the specified document from the product's document tree.
       operationId: get-product-document
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -611,8 +615,8 @@ paths:
   /api/v2/products/{productId}/versions:
     get:
       summary: Get page of product versions
-      description: Returns paginated list of versions of a given product
-      operationId: get-many-product-versions
+      description: Returns paginated list of versions of a given product.
+      operationId: list-product-versions
       parameters:
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/PageSize'
@@ -622,7 +626,7 @@ paths:
         - $ref: '#/components/parameters/FilterByVersionContains'
       responses:
         '200':
-          $ref: '#/components/responses/ProductGetManyVersions'
+          $ref: '#/components/responses/ProductListVersions'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -637,7 +641,7 @@ paths:
   /api/v2/products/{productId}/versions/{versionId}:
     get:
       summary: Get product version
-      description: Return given product version
+      description: Gets the details for an existing product version.
       operationId: get-product-version
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -658,10 +662,10 @@ paths:
         - {}
   /api/v2/products/{productId}/versions/{versionId}/spec:
     get:
-      summary: Get OpenAPI spec for product version
+      summary: Get spec for product version
       description: >-
-        Returns the OpenAPI specification document attached to given product
-        version
+        Returns the API specification document attached to given product
+        version. Currently only OpenAPI is supported.
       operationId: get-product-version-spec
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -670,7 +674,7 @@ paths:
         '200':
           $ref: '#/components/responses/ProductVersionSpecGet'
         '204':
-          description: No specification is defined for the version
+          description: No specification is defined for the version.
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -686,8 +690,8 @@ paths:
     get:
       summary: Get operations in version spec
       description: >-
-        Returns list of operations used in the OpenAPI specefication document
-        attached to given product version
+        Returns list of operations used in the API specification document
+        attached to given product version.
       operationId: get-product-version-spec-operations
       parameters:
         - $ref: '#/components/parameters/ProductId'
@@ -698,7 +702,7 @@ paths:
         '204':
           description: >-
             Response when there are no operations to send because no spec is
-            defined for the version
+            defined for the version.
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -811,14 +815,6 @@ components:
         The Developer portal cookie is meant to be used by the Developer API to
         authenticate with.
   parameters:
-    ApplicationId:
-      name: applicationId
-      in: path
-      required: true
-      description: Id of the targeted application
-      schema:
-        type: string
-        format: uuid
     CredentialId:
       name: credentialId
       in: path
@@ -875,6 +871,14 @@ components:
       schema:
         type: string
         example: good service
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      description: Id of the targeted application
+      schema:
+        type: string
+        format: uuid
     ssoLoginPath:
       name: ssoLoginPath
       in: path
@@ -887,7 +891,7 @@ components:
       name: productId
       in: path
       required: true
-      description: Id of the product
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
         format: uuid
@@ -895,7 +899,7 @@ components:
       name: versionId
       in: path
       required: true
-      description: Id of the product version
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
         format: uuid
@@ -903,7 +907,7 @@ components:
       name: documentId
       in: path
       required: true
-      description: Id of the document
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
         format: uuid
@@ -991,7 +995,7 @@ components:
       name: registrationId
       in: path
       required: true
-      description: Id of the targeted registration
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
         format: uuid
@@ -1100,19 +1104,19 @@ components:
             VerifyEmailRequest:
               $ref: '#/components/examples/Verify-Email-Request'
     CreateRegistration:
-      description: Create an application registration
+      description: Create an application registration.
       required: true
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateRegistrationPayload'
   responses:
-    GetManyApplications:
+    ListApplications:
       description: Get applications response
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GetManyApplicationsResponse'
+            $ref: '#/components/schemas/ListApplicationsResponse'
     GetApplication:
       description: Get application response
       content:
@@ -1125,12 +1129,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RefreshTokenResponse'
-    GetCredentials:
-      description: Get credentials response
+    ListCredentials:
+      description: List credentials response
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GetCredentialsResponse'
+            $ref: '#/components/schemas/ListCredentialsResponse'
     CredentialCreation:
       description: Credential Creation success
       content:
@@ -1149,12 +1153,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApplicationUpdateResponse'
-    TooManyRequests:
-      description: Too Many Requests
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Error'
     BadRequest:
       description: Bad Request
       content:
@@ -1197,6 +1195,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/InternalError'
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequestsError'
     Gone:
       description: Gone
       content:
@@ -1216,12 +1220,12 @@ components:
             VerifyEmailResponse:
               $ref: '#/components/examples/Verify-Email-Response'
     MeResponse:
-      description: Response from me endpoint.
+      description: Response from me endpoint
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Developer'
-    RetrievePortalLogoResponse:
+    GetPortalLogoResponse:
       description: Logo of the portal. Can be either png or jpg
       content:
         image/png:
@@ -1232,7 +1236,7 @@ components:
           schema:
             type: string
             format: binary
-    RetrievePortalCoverResponse:
+    GetPortalCoverResponse:
       description: Cover of the portal. Can be either png or jpg
       content:
         image/png:
@@ -1243,78 +1247,78 @@ components:
           schema:
             type: string
             format: binary
-    RetrievePortalAppearanceResponse:
+    GetPortalAppearanceResponse:
       description: portal appearance
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAppearance'
-    RetrievePortalContextResponse:
+    GetPortalContextResponse:
       description: portal context
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalContext'
     ProductGet:
-      description: Response for getting a product
+      description: Response for a single product's details.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Product'
-    ProductGetMany:
-      description: Response for getting many products
+    ProductList:
+      description: Response for a list of products.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductListPage'
-    ProductGetManyVersions:
-      description: Response for getting a paginated list of versions of an API Product
+    ProductListVersions:
+      description: Paginated list of versions of an API Product.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersionListPage'
     ProductVersionGet:
-      description: Response for getting a product version
+      description: Product version details.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersion'
     ProductVersionSpecGet:
-      description: Response for getting a product version spec document
+      description: Product version spec document.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersionSpec'
     ProductVersionSpecOperationsGet:
-      description: Response for getting product version spec operations
+      description: Product version spec operations.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersionSpecOperations'
     ProductDocumentGet:
-      description: Response for getting one of the product's documents
+      description: Details for a single document for a given product.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductDocument'
     CreateRegistration:
-      description: Registration creation response
+      description: Registration creation response.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GetRegistrationResponse'
     GetRegistration:
-      description: Get registration response
+      description: Get registration response.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GetRegistrationResponse'
-    GetManyRegistrations:
-      description: Get registrations response
+    ListRegistrations:
+      description: Get registrations response.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/GetManyRegistrationsResponse'
+            $ref: '#/components/schemas/ListRegistrationsResponse'
     SearchResponse:
       description: Search Results
       content:
@@ -1341,7 +1345,7 @@ components:
         display_name:
           type: string
           maxLength: 255
-    GetManyApplicationsResponse:
+    ListApplicationsResponse:
       additionalProperties: false
       type: object
       required:
@@ -1359,30 +1363,19 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          type: string
+          $ref: '#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
           type: string
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application creation date.
-          readOnly: true
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An ISO-8601 timestamp representation of application last updated at
-            date.
-          readOnly: true
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - id
         - name
@@ -1390,7 +1383,7 @@ components:
         - description
         - updated_at
         - created_at
-    GetCredentialsResponse:
+    ListCredentialsResponse:
       additionalProperties: false
       type: object
       required:
@@ -1405,8 +1398,7 @@ components:
             type: object
             properties:
               id:
-                type: string
-                format: uuid
+                $ref: '#/components/schemas/UUID'
               display_name:
                 type: string
             required:
@@ -1419,7 +1411,7 @@ components:
         credential:
           type: string
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         display_name:
           type: string
       required:
@@ -1443,7 +1435,7 @@ components:
       additionalProperties: false
       type: object
       title: CreateApplicationPayload
-      description: an application payload
+      description: Application creation payload
       required:
         - name
       properties:
@@ -1452,11 +1444,7 @@ components:
           type: string
           maxLength: 255
         reference_id:
-          description: >-
-            An identifier to correlate the application with an external system.
-            Cannot be set when using Dynamic Client Registration.
-          type: string
-          maxLength: 255
+          $ref: '#/components/schemas/ApplicationReferenceId'
         redirect_uri:
           description: URL to redirect to after completing an OIDC auth flow
           type: string
@@ -1479,12 +1467,11 @@ components:
         - updated_at
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          type: string
+          $ref: '#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
@@ -1500,19 +1487,9 @@ components:
             client_secret:
               type: string
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application creation date.
-          readOnly: true
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An ISO-8601 timestamp representation of application last updated at
-            date.
-          readOnly: true
+          $ref: '#/components/schemas/UpdatedAt'
     UpdateApplicationPayload:
       additionalProperties: false
       type: object
@@ -1522,7 +1499,7 @@ components:
         name:
           type: string
         reference_id:
-          type: string
+          $ref: '#/components/schemas/ApplicationReferenceId'
         description:
           type: string
         redirect_uri:
@@ -1541,85 +1518,21 @@ components:
         - created_at
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          type: string
+          $ref: '#/components/schemas/ApplicationReferenceId'
         description:
           type: string
+          example: A brief description of the application
         redirect_uri:
           type: string
+          example: https://example.com/callback
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of application creation date.
-          readOnly: true
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An ISO-8601 timestamp representation of application last updated at
-            date.
-          readOnly: true
-    Error:
-      type: object
-      title: Error
-      description: standard error
-      example:
-        status: 404
-        title: Not Found
-        type: https://kongapi.info/konnect/not-found
-        instance: portal:trace:2287285207635123011
-        detail: The requested document was not found
-      required:
-        - status
-        - title
-        - instance
-      properties:
-        status:
-          type: integer
-          description: The HTTP status code.
-          example: 404
-        title:
-          type: string
-          description: The error response code.
-          example: Not Found
-        type:
-          type: string
-          description: The error type.
-          example: Not Found
-        instance:
-          type: string
-          example: portal:trace:2287285207635123011
-          description: The portal traceback code
-        invalid_parameters:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The name of the invalid parameter.
-              reason:
-                type: string
-                description: The reason the parameter is invalid.
-              field:
-                type: string
-                description: The field that caused the error.
-                example: name
-              rule:
-                type: string
-                description: The rule that caused the error.
-                example: required
-          description: An array of invalid parameters.
-        detail:
-          type: string
-          example: The requested team was not found
-          description: Details about the error.
+          $ref: '#/components/schemas/UpdatedAt'
     PageMeta:
       type: object
       description: >-
@@ -1648,6 +1561,30 @@ components:
           $ref: '#/components/schemas/PageMeta'
       required:
         - page
+    UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used by the Portal API for this resource.
+      readOnly: true
+    ApplicationReferenceId:
+      description: >-
+        An identifier to correlate the application with an external system.
+        Cannot be set when using Dynamic Client Registration.
+      type: string
+      maxLength: 255
+    CreatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity creation date.
+      readOnly: true
+    UpdatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity update date.
+      readOnly: true
     BaseError:
       type: object
       title: Error
@@ -1839,6 +1776,21 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
+    TooManyRequestsError:
+      type: object
+      properties:
+        status:
+          example: 429
+        title:
+          example: Too Many Requests
+        type:
+          example: https://httpstatuses.com/429
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Too Many Requests
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     AuthenticateRequest:
       type: object
       additionalProperties: false
@@ -1935,14 +1887,11 @@ components:
     Developer:
       title: Developer
       type: object
-      description: A developer is an individual who can use a developer portal.
+      description: A user who can use a developer portal
       additionalProperties: false
       properties:
         id:
-          type: string
-          format: uuid
-          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          readOnly: true
+          $ref: '#/components/schemas/UUID'
         email:
           type: string
           format: email
@@ -1954,15 +1903,9 @@ components:
           example: API Developer
           maxLength: 250
         created_at:
-          type: string
-          format: date-time
-          example: '2022-02-07T17:46:57.52Z'
-          readOnly: true
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-10-08T17:00:00.52Z'
-          readOnly: true
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - full_name
         - email
@@ -2099,27 +2042,18 @@ components:
         - name
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8604 timestamp representation of product creation date.
-          readOnly: true
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8604 timestamp representation of product update date.
-          readOnly: true
+          $ref: '#/components/schemas/UpdatedAt'
         name:
           type: string
           example: Billing
-          description: name of service
+          description: Name of product.
         description:
           type: string
-          example: Api for billing functions
+          example: API for billing functions
         labels:
           type: object
     ProductListPage:
@@ -2137,33 +2071,22 @@ components:
       additionalProperties: false
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: >-
-            An ISO-8604 timestamp representation of product version creation
-            date.
-          readOnly: true
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8604 timestamp representation of product version update date.
-          readOnly: true
+          $ref: '#/components/schemas/UpdatedAt'
         version:
           type: string
           example: v2.0.0
-          description: Name of product version
+          description: Name of product version.
         deprecated:
           type: boolean
-          description: If true, product version is deprecated
+          description: If true, product version is deprecated.
         registration_configs:
           description: >-
             Configurations for how the product version is able to be registered
-            for by applications
+            for by applications.
           type: array
           items:
             type: object
@@ -2195,7 +2118,7 @@ components:
     ProductVersionSpec:
       type: object
       title: Product Version Spec Document
-      description: API specification
+      description: API specification document for a product version.
       properties:
         api_type:
           $ref: '#/components/schemas/ApiTypeEnum'
@@ -2207,7 +2130,7 @@ components:
     ProductVersionSpecOperations:
       type: object
       title: Operations in product version spec document
-      description: List of every operation detailed in the product version spec document
+      description: List of every operation detailed in a product version spec document.
       required:
         - api_type
         - operations
@@ -2263,7 +2186,9 @@ components:
     ProductDocument:
       type: object
       title: Document
-      description: a document
+      description: >-
+        A document for a product. This is a document that is not a part of the
+        API specification.
       required:
         - id
         - slug
@@ -2271,25 +2196,32 @@ components:
         - content
       properties:
         id:
-          type: string
-          format: uuid
-          description: the id of the document
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+          allOf:
+            - $ref: '#/components/schemas/UUID'
+            - description: >-
+                Contains a unique identifier used by the DocumentHub service for
+                this resource.
         parent_document_id:
           type: string
           format: uuid
-          description: the id of the parent document
+          description: >-
+            Contains a unique identifier used by the DocumentHub service for
+            this resource.
           nullable: true
           example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
         slug:
           type: string
-          description: the slug of the document
+          description: >-
+            Slug of the document. This is used in the URL to identify the
+            document.
           example: getting-started
         content:
           $ref: '#/components/schemas/DocumentBlock'
         title:
           type: string
-          description: the title of the document
+          description: >-
+            Title of the document. This is used in the Portal UI to identify the
+            document.
           example: Hello World
     DocumentContentTypeEnum:
       type: string
@@ -2297,7 +2229,7 @@ components:
       enum:
         - application/json
         - application/konnect.document-tree+json
-    ListDocumentsItem:
+    DocumentItem:
       type: object
       title: Document item
       required:
@@ -2325,7 +2257,7 @@ components:
           type: string
           description: the title of the document
           example: Getting Started
-    GetManyDocuments:
+    ListDocuments:
       type: object
       required:
         - meta
@@ -2336,7 +2268,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ListDocumentsItem'
+            $ref: '#/components/schemas/DocumentItem'
     DocumentTree:
       type: object
       title: DocumentTree
@@ -2376,7 +2308,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentTree'
-    GetManyDocumentTrees:
+    ListDocumentsTree:
       type: object
       required:
         - meta
@@ -2628,15 +2560,15 @@ components:
       additionalProperties: false
       type: object
       title: CreateRegistrationPayload
-      description: an application registration payload
+      description: The payload to create a registration.
       required:
         - product_version_id
       properties:
         product_version_id:
-          description: The UUID of the product version to register for
+          description: The product version id required for registration.
           type: string
           format: uuid
-    GetManyRegistrationsResponse:
+    ListRegistrationsResponse:
       additionalProperties: false
       type: object
       required:
@@ -2664,11 +2596,13 @@ components:
         - updated_at
       properties:
         id:
-          description: The UUID of the registration
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
         status:
-          description: The approval status of the registration
+          description: The approval status of the registration.
           type: string
           enum:
             - approved
@@ -2676,31 +2610,33 @@ components:
             - rejected
             - revoked
         product_id:
-          description: The UUID of the product registered for
+          description: >-
+            Contains a unique identifier used by the Portal API for this
+            resource.
           type: string
           format: uuid
         product_name:
-          description: The name of the product registered for
+          description: >-
+            The name of the product. This is the name that is displayed in the
+            developer portal.
           type: string
         product_version_id:
-          description: The UUID of the product version registered for
+          description: >-
+            Contains a unique identifier used by the Portal API for this
+            resource.
           type: string
           format: uuid
         product_version_name:
-          description: The name of the product version registered for
+          description: >-
+            The name of the product version. This is the version label that is
+            displayed in the developer portal.
           type: string
         application_id:
-          description: The UUID of the application the registration is linked to
+          description: >-
+            Contains a unique identifier used by the Portal API for this
+            resource.
           type: string
           format: uuid
-        created_at:
-          description: ISO timestamp the registration record was created
-          type: string
-          format: date-time
-        updated_at:
-          description: ISO timestamp the registration record was last updated
-          type: string
-          format: date-time
     SearchResults:
       title: SearchResults
       type: object
@@ -2736,11 +2672,7 @@ components:
         - has_documentation
       properties:
         id:
-          type: string
-          format: uuid
-          example: 4f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-          description: The entity ID.
-          readOnly: true
+          $ref: '#/components/schemas/UUID'
         name:
           type: string
           example: Nice Product
@@ -2755,20 +2687,12 @@ components:
         has_documentation:
           type: boolean
           example: true
-          description: whether the product has documents associated with it
+          description: Whether the product has documents associated with it.
           readOnly: true
         created_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of entity creation date.
-          readOnly: true
+          $ref: '#/components/schemas/CreatedAt'
         updated_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp representation of entity update date.
-          readOnly: true
+          $ref: '#/components/schemas/UpdatedAt'
         versions:
           type: array
           items:
@@ -2782,29 +2706,18 @@ components:
               - deprecated
             properties:
               id:
-                type: string
-                format: uuid
-                example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-                description: the entity id
-                readOnly: true
+                $ref: '#/components/schemas/UUID'
               created_at:
-                type: string
-                format: date-time
-                example: '2022-11-04T20:10:06.927Z'
-                description: An ISO-8601 timestamp representation of entity creation date.
-                readOnly: true
+                $ref: '#/components/schemas/CreatedAt'
               updated_at:
-                type: string
-                format: date-time
-                example: '2022-11-04T20:10:06.927Z'
-                description: An ISO-8601 timestamp representation of entity update date.
-                readOnly: true
+                $ref: '#/components/schemas/UpdatedAt'
               version:
                 type: string
                 example: v2.0.0
-                description: the name of the version
+                description: Name of product version.
                 readOnly: true
               deprecated:
+                description: Whether the version is deprecated.
                 type: boolean
                 example: true
                 readOnly: true
@@ -2885,21 +2798,40 @@ components:
         meta:
           page:
             number: 1
-            size: 1
+            size: 10
             total: 4
 tags:
   - name: applications
+    description: >-
+      The API for Konnect Portal developer applications within a private portal
+      (i.e. requires registration/authentication). When a portal is in `public`
+      mode, all of the described endpoints will return a 404 error. A public
+      portal means that applications and registrations are not available/needed.
+      In this API's context, "you" and "your" refers to the developer consuming
+      the API.
   - name: credentials
+    description: >-
+      The API for Konnect Portal developer credentials within a private portal
+      (i.e. requires registration/authentication).
   - name: authentication
   - name: developer
-    description: Portal Developer API
+    description: API for managing Konnect Portal Developers.
   - name: portal
-    description: Portal API
+    description: The API for retrieving details about a single Konnect Portal.
   - name: products
+    description: The API for Konnect Portal Products.
   - name: versions
+    description: The API for Konnect Portal Product Versions.
   - name: documentation
+    description: The API for Konnect Portal Product Documentation.
   - name: registrations
+    description: >
+      The API for Konnect Portal application registrations. If the portal is
+      public
+
+      all of the described endpoints will return a 404 error
   - name: search
+    description: The API for Konnect Portal Search.
 servers:
   - url: https://custom.example.com
     description: Portal API
