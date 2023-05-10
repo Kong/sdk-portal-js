@@ -629,6 +629,20 @@ export type DocumentContentTypeEnum = typeof DocumentContentTypeEnum[keyof typeo
 /**
  * 
  * @export
+ * @enum {string}
+ */
+
+export const DocumentFormatContentTypeEnum = {
+    Json: 'application/json',
+    KonnectDocumentNodesjson: 'application/konnect.document-nodes+json'
+} as const;
+
+export type DocumentFormatContentTypeEnum = typeof DocumentFormatContentTypeEnum[keyof typeof DocumentFormatContentTypeEnum];
+
+
+/**
+ * 
+ * @export
  * @interface DocumentItem
  */
 export interface DocumentItem {
@@ -1769,6 +1783,43 @@ export interface ProductDocument {
      * Title of the document. This is used in the Portal UI to identify the document.
      * @type {string}
      * @memberof ProductDocument
+     */
+    'title': string;
+}
+/**
+ * A document for a product. This is a document that is not a part of the API specification.
+ * @export
+ * @interface ProductDocumentRaw
+ */
+export interface ProductDocumentRaw {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductDocumentRaw
+     */
+    'id': string;
+    /**
+     * Contains a unique identifier used by the DocumentHub service for this resource.
+     * @type {string}
+     * @memberof ProductDocumentRaw
+     */
+    'parent_document_id'?: string | null;
+    /**
+     * Slug of the document. This is used in the URL to identify the document.
+     * @type {string}
+     * @memberof ProductDocumentRaw
+     */
+    'slug': string;
+    /**
+     * Markdown document
+     * @type {string}
+     * @memberof ProductDocumentRaw
+     */
+    'content': string;
+    /**
+     * Title of the document. This is used in the Portal UI to identify the document.
+     * @type {string}
+     * @memberof ProductDocumentRaw
      */
     'title': string;
 }
@@ -4310,10 +4361,11 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductDocument: async (productId: string, documentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProductDocument: async (productId: string, documentId: string, accept?: DocumentFormatContentTypeEnum, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
             assertParamExists('getProductDocument', 'productId', productId)
             // verify required parameter 'documentId' is not null or undefined
@@ -4333,6 +4385,12 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
+
+            if (accept != null) {
+                localVarHeaderParameter['Accept'] = typeof accept === 'string' 
+                    ? accept 
+                    : JSON.stringify(accept);
+            }
 
 
     
@@ -4413,11 +4471,12 @@ export const DocumentationApiFp = function(configuration?: Configuration) {
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductDocument(productId: string, documentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDocument>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductDocument(productId, documentId, options);
+        async getProductDocument(productId: string, documentId: string, accept?: DocumentFormatContentTypeEnum, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDocumentRaw>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductDocument(productId, documentId, accept, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4449,11 +4508,12 @@ export const DocumentationApiFactory = function (configuration?: Configuration, 
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductDocument(productId: string, documentId: string, options?: any): AxiosPromise<ProductDocument> {
-            return localVarFp.getProductDocument(productId, documentId, options).then((request) => request(axios, basePath));
+        getProductDocument(productId: string, documentId: string, accept?: DocumentFormatContentTypeEnum, options?: any): AxiosPromise<ProductDocumentRaw> {
+            return localVarFp.getProductDocument(productId, documentId, accept, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns a list of documents that are associated with a given product. The list is paginated, and is in either a list or tree format (based on the Accept header).
@@ -4490,6 +4550,13 @@ export interface DocumentationApiGetProductDocumentRequest {
      * @memberof DocumentationApiGetProductDocument
      */
     readonly documentId: string
+
+    /**
+     * 
+     * @type {DocumentFormatContentTypeEnum}
+     * @memberof DocumentationApiGetProductDocument
+     */
+    readonly accept?: DocumentFormatContentTypeEnum
 }
 
 /**
@@ -4543,7 +4610,7 @@ export class DocumentationApi extends BaseAPI {
      * @memberof DocumentationApi
      */
     public getProductDocument(requestParameters: DocumentationApiGetProductDocumentRequest, options?: AxiosRequestConfig) {
-        return DocumentationApiFp(this.configuration).getProductDocument(requestParameters.productId, requestParameters.documentId, options).then((request) => request(this.axios, this.basePath));
+        return DocumentationApiFp(this.configuration).getProductDocument(requestParameters.productId, requestParameters.documentId, requestParameters.accept, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
