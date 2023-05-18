@@ -1741,7 +1741,7 @@ export interface ProductCatalogIndexSourceVersionsInner {
      * @type {string}
      * @memberof ProductCatalogIndexSourceVersionsInner
      */
-    'version': string;
+    'name': string;
     /**
      * Whether the version is deprecated.
      * @type {boolean}
@@ -1871,7 +1871,7 @@ export interface ProductVersion {
      * @type {string}
      * @memberof ProductVersion
      */
-    'version': string;
+    'name': string;
     /**
      * If true, product version is deprecated.
      * @type {boolean}
@@ -6040,13 +6040,13 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
-         * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
-         * @param {string} [filterVersion] Filter by direct equality comparison (short-hand) of the version property with a supplied value.
-         * @param {string} [filterVersionContains] Filter by contains comparison of the version property with a supplied substring
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listProductVersions: async (productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listProductVersions: async (productId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
             assertParamExists('listProductVersions', 'productId', productId)
             const localVarPath = `/api/v2/products/{productId}/versions`
@@ -6072,16 +6072,16 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['page[number]'] = pageNumber;
             }
 
-            if (filterVersionEq !== undefined) {
-                localVarQueryParameter['filter[version][eq]'] = filterVersionEq;
+            if (filterNameEq !== undefined) {
+                localVarQueryParameter['filter[name][eq]'] = filterNameEq;
             }
 
-            if (filterVersion !== undefined) {
-                localVarQueryParameter['filter[version]'] = filterVersion;
+            if (filterName !== undefined) {
+                localVarQueryParameter['filter[name]'] = filterName;
             }
 
-            if (filterVersionContains !== undefined) {
-                localVarQueryParameter['filter[version][contains]'] = filterVersionContains;
+            if (filterNameContains !== undefined) {
+                localVarQueryParameter['filter[name][contains]'] = filterNameContains;
             }
 
 
@@ -6147,14 +6147,14 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
-         * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
-         * @param {string} [filterVersion] Filter by direct equality comparison (short-hand) of the version property with a supplied value.
-         * @param {string} [filterVersionContains] Filter by contains comparison of the version property with a supplied substring
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListPage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listProductVersions(productId, pageSize, pageNumber, filterVersionEq, filterVersion, filterVersionContains, options);
+        async listProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listProductVersions(productId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -6206,14 +6206,14 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
-         * @param {string} [filterVersionEq] Filter by direct equality comparison of the version property with a supplied value.
-         * @param {string} [filterVersion] Filter by direct equality comparison (short-hand) of the version property with a supplied value.
-         * @param {string} [filterVersionContains] Filter by contains comparison of the version property with a supplied substring
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterVersionEq?: string, filterVersion?: string, filterVersionContains?: string, options?: any): AxiosPromise<ProductVersionListPage> {
-            return localVarFp.listProductVersions(productId, pageSize, pageNumber, filterVersionEq, filterVersion, filterVersionContains, options).then((request) => request(axios, basePath));
+        listProductVersions(productId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: any): AxiosPromise<ProductVersionListPage> {
+            return localVarFp.listProductVersions(productId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -6309,25 +6309,25 @@ export interface VersionsApiListProductVersionsRequest {
     readonly pageNumber?: number
 
     /**
-     * Filter by direct equality comparison of the version property with a supplied value.
+     * Filter by direct equality comparison of the name property with a supplied value.
      * @type {string}
      * @memberof VersionsApiListProductVersions
      */
-    readonly filterVersionEq?: string
+    readonly filterNameEq?: string
 
     /**
-     * Filter by direct equality comparison (short-hand) of the version property with a supplied value.
+     * Filter by direct equality comparison (short-hand) of the name property with a supplied value.
      * @type {string}
      * @memberof VersionsApiListProductVersions
      */
-    readonly filterVersion?: string
+    readonly filterName?: string
 
     /**
-     * Filter by contains comparison of the version property with a supplied substring
+     * Filter by contains comparison of the name property with a supplied substring
      * @type {string}
      * @memberof VersionsApiListProductVersions
      */
-    readonly filterVersionContains?: string
+    readonly filterNameContains?: string
 }
 
 /**
@@ -6382,7 +6382,7 @@ export class VersionsApi extends BaseAPI {
      * @memberof VersionsApi
      */
     public listProductVersions(requestParameters: VersionsApiListProductVersionsRequest, options?: AxiosRequestConfig) {
-        return VersionsApiFp(this.configuration).listProductVersions(requestParameters.productId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterVersionEq, requestParameters.filterVersion, requestParameters.filterVersionContains, options).then((request) => request(this.axios, this.basePath));
+        return VersionsApiFp(this.configuration).listProductVersions(requestParameters.productId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
