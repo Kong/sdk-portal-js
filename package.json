@@ -5,7 +5,8 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "yarn build"
   },
   "repository": "git@github.com:Kong/sdk-portal-js.git",
   "devDependencies": {
