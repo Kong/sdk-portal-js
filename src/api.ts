@@ -1131,6 +1131,25 @@ export type InvalidRules = typeof InvalidRules[keyof typeof InvalidRules];
 /**
  * 
  * @export
+ * @interface LatestVersion
+ */
+export interface LatestVersion {
+    /**
+     * 
+     * @type {string}
+     * @memberof LatestVersion
+     */
+    'name'?: string;
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof LatestVersion
+     */
+    'id'?: string;
+}
+/**
+ * 
+ * @export
  * @interface Link
  */
 export interface Link {
@@ -1657,11 +1676,23 @@ export interface Product {
      */
     'description'?: string;
     /**
-     * 
-     * @type {object}
+     * Number of linked documents in documentation.
+     * @type {number}
      * @memberof Product
      */
-    'labels'?: object;
+    'document_count'?: number;
+    /**
+     * Number of published versions.
+     * @type {number}
+     * @memberof Product
+     */
+    'version_count'?: number;
+    /**
+     * 
+     * @type {LatestVersion}
+     * @memberof Product
+     */
+    'latest_version'?: LatestVersion | null;
 }
 /**
  * 
@@ -1688,12 +1719,6 @@ export interface ProductCatalogIndexSource {
      */
     'description'?: string;
     /**
-     * Whether the product has documents associated with it.
-     * @type {boolean}
-     * @memberof ProductCatalogIndexSource
-     */
-    'has_documentation': boolean;
-    /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof ProductCatalogIndexSource
@@ -1705,49 +1730,43 @@ export interface ProductCatalogIndexSource {
      * @memberof ProductCatalogIndexSource
      */
     'updated_at': string;
+    /**
+     * Number of product documents available.
+     * @type {number}
+     * @memberof ProductCatalogIndexSource
+     */
+    'document_count': number;
+    /**
+     * Number of product versions.
+     * @type {number}
+     * @memberof ProductCatalogIndexSource
+     */
+    'version_count': number;
     /**
      * 
-     * @type {Array<ProductCatalogIndexSourceVersionsInner>}
+     * @type {ProductCatalogIndexSourceLatestVersion}
      * @memberof ProductCatalogIndexSource
      */
-    'versions'?: Array<ProductCatalogIndexSourceVersionsInner>;
+    'latest_version': ProductCatalogIndexSourceLatestVersion;
 }
 /**
- * 
+ * Last created version.
  * @export
- * @interface ProductCatalogIndexSourceVersionsInner
+ * @interface ProductCatalogIndexSourceLatestVersion
  */
-export interface ProductCatalogIndexSourceVersionsInner {
-    /**
-     * Contains a unique identifier used by the Portal API for this resource.
-     * @type {string}
-     * @memberof ProductCatalogIndexSourceVersionsInner
-     */
-    'id': string;
-    /**
-     * An ISO-8601 timestamp representation of entity creation date.
-     * @type {string}
-     * @memberof ProductCatalogIndexSourceVersionsInner
-     */
-    'created_at': string;
-    /**
-     * An ISO-8601 timestamp representation of entity update date.
-     * @type {string}
-     * @memberof ProductCatalogIndexSourceVersionsInner
-     */
-    'updated_at': string;
+export interface ProductCatalogIndexSourceLatestVersion {
     /**
      * Name of product version.
      * @type {string}
-     * @memberof ProductCatalogIndexSourceVersionsInner
+     * @memberof ProductCatalogIndexSourceLatestVersion
      */
     'name': string;
     /**
-     * Whether the version is deprecated.
-     * @type {boolean}
-     * @memberof ProductCatalogIndexSourceVersionsInner
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof ProductCatalogIndexSourceLatestVersion
      */
-    'deprecated': boolean;
+    'id': string;
 }
 /**
  * A document for a product. This is a document that is not a part of the API specification.
