@@ -22,7 +22,7 @@ paths:
         '200':
           $ref: '#/components/responses/ListApplications'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
       tags:
@@ -39,13 +39,13 @@ paths:
         '201':
           $ref: '#/components/responses/ApplicationCreation'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
         '500':
@@ -68,11 +68,11 @@ paths:
         '200':
           $ref: '#/components/responses/GetApplication'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - applications
       security:
@@ -89,11 +89,11 @@ paths:
         '204':
           description: Application was deleted successfully.
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
       tags:
@@ -114,11 +114,11 @@ paths:
         '200':
           $ref: '#/components/responses/ApplicationUpdate'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
         '500':
@@ -140,9 +140,9 @@ paths:
         '200':
           $ref: '#/components/responses/ListCredentials'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
         '500':
@@ -163,11 +163,11 @@ paths:
         '201':
           $ref: '#/components/responses/CredentialCreation'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/Internal'
       tags:
@@ -190,11 +190,11 @@ paths:
         '200':
           description: Credential successfully updated.
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/Internal'
       tags:
@@ -212,11 +212,11 @@ paths:
         '204':
           description: Credential successfully deleted.
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
         '500':
@@ -236,11 +236,11 @@ paths:
         '201':
           $ref: '#/components/responses/RefreshToken'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/Internal'
       tags:
@@ -264,11 +264,11 @@ paths:
         '200':
           $ref: '#/components/responses/ListRegistrations'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - registrations
       security:
@@ -285,11 +285,11 @@ paths:
         '201':
           $ref: '#/components/responses/CreateRegistration'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
         '409':
           $ref: '#/components/responses/Conflict'
       tags:
@@ -310,7 +310,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - registrations
       security:
@@ -328,58 +328,11 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - registrations
       security:
         - portalAccessToken: []
-  /api/v2/authenticate:
-    post:
-      summary: Authenticate
-      description: >-
-        This endpoint allows a developer to authenticate to their portal using a
-        username and password.
-      operationId: authenticate
-      requestBody:
-        $ref: '#/components/requestBodies/AuthenticateRequest'
-      responses:
-        '204':
-          description: No Content
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-                example: >
-                  portalaccesstoken=access12345; Path=/;
-                  Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023
-                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
-
-                  portalrefreshtoken=refresh12345; Path=/v2/refresh;
-                  Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023
-                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
-              description: The access and refresh tokens.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - authentication
-  /api/v2/authenticate/{ssoLoginPath}:
-    get:
-      summary: Authenticate SSO
-      description: >-
-        This endpoint allows a developer to authenticate to their portal using
-        an external IdP.
-      operationId: authenticate-sso
-      parameters:
-        - $ref: '#/components/parameters/ssoLoginPath'
-      responses:
-        '302':
-          description: Found
-        '400':
-          $ref: '#/components/responses/BadRequest'
-      tags:
-        - authentication
   /api/v2/developer:
     post:
       operationId: register
@@ -395,7 +348,7 @@ paths:
         '201':
           description: the developer has been properly registered.
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/Internal'
       tags:
@@ -419,39 +372,11 @@ paths:
         '200':
           description: the password reset flow has been initiated.
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
       tags:
         - developer
       security:
         - {}
-  /api/v2/developer/me:
-    get:
-      summary: Retrieve My Account
-      tags:
-        - developer
-      responses:
-        '200':
-          $ref: '#/components/responses/MeResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/Internal'
-      operationId: get-developer-me
-      description: Returns info about the current developer.
-      security:
-        - portalAccessToken: []
-  /api/v2/logout:
-    post:
-      summary: Logout
-      description: >-
-        This endpoint allows a developer to logout of the portal. This operation
-        revokes all active tokens and clears the portal cookies.
-      operationId: logout
-      responses:
-        '204':
-          description: No Content
-      tags:
-        - authentication
   /api/v2/portal:
     get:
       operationId: get-portal-context
@@ -524,7 +449,7 @@ paths:
         '200':
           $ref: '#/components/responses/ProductList'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
       tags:
@@ -543,11 +468,11 @@ paths:
         '200':
           $ref: '#/components/responses/ProductGet'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - products
       security:
@@ -580,11 +505,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListDocumentsTree'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - documentation
       security:
@@ -606,11 +531,11 @@ paths:
         '200':
           $ref: '#/components/responses/ProductDocumentGet'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - documentation
       security:
@@ -632,11 +557,11 @@ paths:
         '200':
           $ref: '#/components/responses/ProductListVersions'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - versions
       security:
@@ -654,11 +579,11 @@ paths:
         '200':
           $ref: '#/components/responses/ProductVersionGet'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - versions
       security:
@@ -680,11 +605,11 @@ paths:
         '204':
           description: No specification is defined for the version.
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          $ref: '#/components/responses/responses-NotFound'
+          $ref: '#/components/responses/NotFound'
       tags:
         - versions
       security:
@@ -708,63 +633,16 @@ paths:
             Response when there are no operations to send because no spec is
             defined for the version.
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/responses-NotFound'
-      tags:
-        - versions
-      security:
-        - portalAccessToken: []
-        - {}
-  /api/v2/refresh:
-    post:
-      summary: Refresh Access Token
-      description: This endpoint allows a developer to refresh their existing access token.
-      operationId: refresh
-      responses:
-        '204':
-          description: No Content
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-                example: >
-                  portalaccesstoken=access12345; Path=/;
-                  Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023
-                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
-
-                  portalrefreshtoken=refresh12345; Path=/v2/refresh;
-                  Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023
-                  12:00:00 GMT; HttpOnly; Secure; SameSite=None
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-      tags:
-        - authentication
-  /api/v2/reset-password:
-    post:
-      summary: Reset Password
-      description: >-
-        This endpoint allows a developer to reset their password, using a reset
-        token.
-      operationId: reset-password
-      responses:
-        '204':
-          description: No Content
-        '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-        '410':
-          $ref: '#/components/responses/Gone'
       tags:
-        - authentication
-      requestBody:
-        $ref: '#/components/requestBodies/ResetPasswordRequest'
-    parameters: []
+        - versions
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v2/search/{indices}:
     get:
       summary: Search Portal Entities
@@ -776,7 +654,7 @@ paths:
         '200':
           $ref: '#/components/responses/SearchResponse'
         '400':
-          $ref: '#/components/responses/responses-BadRequest'
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
       parameters:
@@ -790,25 +668,6 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v2/verify-email:
-    post:
-      summary: Verify Email
-      description: This endpoint allows a new developer to verify their email.
-      operationId: verify-email
-      responses:
-        '202':
-          $ref: '#/components/responses/VerifyEmailResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '410':
-          $ref: '#/components/responses/Gone'
-      tags:
-        - authentication
-      requestBody:
-        $ref: '#/components/requestBodies/VerifyEmailRequest'
-    parameters: []
 components:
   securitySchemes:
     portalAccessToken:
@@ -827,67 +686,6 @@ components:
       schema:
         type: string
         format: uuid
-    ssoLoginPath:
-      name: ssoLoginPath
-      in: path
-      required: true
-      schema:
-        type: string
-        example: mycompany
-      description: The login path unique to the portal for SSO.
-    ProductId:
-      name: productId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
-    ProductVersionId:
-      name: versionId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
-    DocumentId:
-      name: documentId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
-    RegistrationId:
-      name: registrationId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
-    SearchQuery:
-      name: q
-      description: Determines how to filter search results
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/SearchQueryParameters'
-    SearchJoin:
-      name: join
-      description: Determines which sub-entities to include in search results
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/SearchJoinParameters'
-    SearchIndices:
-      name: indices
-      description: Determines which entity sets to search
-      required: true
-      in: path
-      schema:
-        $ref: '#/components/schemas/SearchIndicesParameters'
     PageSize:
       name: page[size]
       description: Determines the size of the page to retrieve.
@@ -944,56 +742,30 @@ components:
       schema:
         type: string
         format: uuid
-    FilterByIdEquality:
-      name: filter[id][eq]
-      description: >-
-        Filter by direct equality comparison of the id property with a supplied
-        value.
-      in: query
-      required: false
+    ProductId:
+      name: productId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
-    FilterByIdEqualityShort:
-      name: filter[id]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the id property
-        with a supplied value.
-      in: query
-      required: false
+        format: uuid
+    ProductVersionId:
+      name: versionId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
-    FilterByStatusEquality:
-      name: filter[status][eq]
-      description: >-
-        Filter by direct equality comparison of the status property with a
-        supplied value.
-      in: query
-      required: false
+        format: uuid
+    DocumentId:
+      name: documentId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
       schema:
         type: string
-        enum:
-          - approved
-          - pending
-          - rejected
-          - revoked
-        example: approved
-    FilterByStatusEqualityShort:
-      name: filter[status]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the status property
-        with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-          - approved
-          - pending
-          - rejected
-          - revoked
-        example: approved
+        format: uuid
     FilterByDescriptionEquality:
       name: filter[description][eq]
       description: >-
@@ -1024,6 +796,85 @@ components:
       schema:
         type: string
         example: portal
+    FilterByIdEquality:
+      name: filter[id][eq]
+      description: >-
+        Filter by direct equality comparison of the id property with a supplied
+        value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByIdEqualityShort:
+      name: filter[id]
+      description: >-
+        Filter by direct equality comparison (short-hand) of the id property
+        with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    RegistrationId:
+      name: registrationId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
+      schema:
+        type: string
+        format: uuid
+    FilterByStatusEquality:
+      name: filter[status][eq]
+      description: >-
+        Filter by direct equality comparison of the status property with a
+        supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+        example: approved
+    FilterByStatusEqualityShort:
+      name: filter[status]
+      description: >-
+        Filter by direct equality comparison (short-hand) of the status property
+        with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - approved
+          - pending
+          - rejected
+          - revoked
+        example: approved
+    SearchQuery:
+      name: q
+      description: Determines how to filter search results
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SearchQueryParameters'
+    SearchJoin:
+      name: join
+      description: Determines which sub-entities to include in search results
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SearchJoinParameters'
+    SearchIndices:
+      name: indices
+      description: Determines which entity sets to search
+      required: true
+      in: path
+      schema:
+        $ref: '#/components/schemas/SearchIndicesParameters'
   requestBodies:
     CreateApplication:
       description: Create an application
@@ -1139,6 +990,18 @@ components:
           examples:
             400-Invalid-Token:
               $ref: '#/components/examples/400-Invalid-Token'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
     NotFound:
       description: Not Found
       content:
@@ -1148,6 +1011,24 @@ components:
           examples:
             404-Token-Not-Found:
               $ref: '#/components/examples/404-Token-Not-Found'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    Internal:
+      description: Internal
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalError'
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequestsError'
     Gone:
       description: Gone
       content:
@@ -1278,48 +1159,6 @@ components:
           examples:
             Search Response Example:
               $ref: '#/components/examples/SearchResponseExample'
-    responses-BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenError'
-    responses-NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/NotFoundError'
-    Conflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConflictError'
-    Internal:
-      description: Internal
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalError'
-    TooManyRequests:
-      description: Too Many Requests
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/TooManyRequestsError'
   schemas:
     CreateCredentialPayload:
       additionalProperties: false
@@ -1525,6 +1364,264 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+    PageMeta:
+      type: object
+      description: >-
+        Contains pagination query parameters and the total number of objects
+        returned.
+      required:
+        - number
+        - size
+        - total
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+    PaginatedMeta:
+      type: object
+      title: PaginatedMeta
+      description: returns the pagination information
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+    UUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used by the Portal API for this resource.
+      readOnly: true
+    ApplicationReferenceId:
+      description: >-
+        An identifier to correlate the application with an external system.
+        Cannot be set when using Dynamic Client Registration.
+      type: string
+      maxLength: 255
+    CreatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity creation date.
+      readOnly: true
+    UpdatedAt:
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity update date.
+      readOnly: true
+    BaseError:
+      type: object
+      title: Error
+      description: standard error
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      readOnly: true
+      nullable: true
+      enum:
+        - required
+        - enum
+        - min_length
+        - max_length
+        - min_digits
+        - min_lowercase
+        - min_uppercase
+        - min_symbols
+    InvalidParameterItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
+      required:
+        - field
+        - reason
+    InvalidParameters:
+      type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
+      items:
+        $ref: '#/components/schemas/InvalidParameterItem'
+    BadRequestError:
+      type: object
+      required:
+        - invalid_parameters
+      properties:
+        status:
+          example: 400
+        title:
+          example: Bad Request
+        type:
+          example: https://httpstatuses.com/400
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid request body
+        invalid_parameters:
+          $ref: '#/components/schemas/InvalidParameters'
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+    ForbiddenError:
+      type: object
+      properties:
+        status:
+          example: 403
+        title:
+          example: Forbidden
+        type:
+          example: https://httpstatuses.com/403
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    NotFoundError:
+      type: object
+      properties:
+        status:
+          example: 404
+        title:
+          example: Not Found
+        type:
+          example: https://httpstatuses.com/404
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Not found
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+    ConflictError:
+      type: object
+      properties:
+        status:
+          example: 409
+        title:
+          example: Conflict
+        type:
+          example: https://httpstatuses.com/409
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Conflict
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+    InternalError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - $ref: '#/components/schemas/BaseError'
+    TooManyRequestsError:
+      type: object
+      properties:
+        status:
+          example: 429
+        title:
+          example: Too Many Requests
+        type:
+          example: https://httpstatuses.com/429
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Too Many Requests
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     AuthenticateRequest:
       type: object
       additionalProperties: false
@@ -1603,6 +1700,21 @@ components:
           format: uuid
           example: c8efd006-d8e1-4743-b91b-f163b9eae06a
           readOnly: true
+    GoneError:
+      type: object
+      properties:
+        status:
+          example: 410
+        title:
+          example: Gone
+        type:
+          example: https://httpstatuses.com/410
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Gone
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     Developer:
       title: Developer
       type: object
@@ -1741,6 +1853,9 @@ components:
           items:
             type: string
             format: uuid
+        allowed_time_period:
+          type: string
+          description: Allowed time period for Analytics queries
       required:
         - portal_id
         - org_id
@@ -1750,6 +1865,7 @@ components:
         - oidc_auth_enabled
         - rbac_enabled
         - dcr_provider_ids
+        - allowed_time_period
     Product:
       title: Product
       type: object
@@ -2008,422 +2124,6 @@ components:
             Title of the document. This is used in the Portal UI to identify the
             document.
           example: Hello World
-    CreateRegistrationPayload:
-      additionalProperties: false
-      type: object
-      title: CreateRegistrationPayload
-      description: The payload to create a registration.
-      required:
-        - product_version_id
-      properties:
-        product_version_id:
-          description: The product version id required for registration.
-          type: string
-          format: uuid
-    ListRegistrationsResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/GetRegistrationResponse'
-    GetRegistrationResponse:
-      additionalProperties: false
-      type: object
-      required:
-        - id
-        - status
-        - application_id
-        - product_id
-        - product_name
-        - product_version_id
-        - product_version_name
-        - created_at
-        - updated_at
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        status:
-          description: The approval status of the registration.
-          type: string
-          enum:
-            - approved
-            - pending
-            - rejected
-            - revoked
-        product_id:
-          description: >-
-            Contains a unique identifier used by the Portal API for this
-            resource.
-          type: string
-          format: uuid
-        product_name:
-          description: >-
-            The name of the product. This is the name that is displayed in the
-            developer portal.
-          type: string
-        product_version_id:
-          description: >-
-            Contains a unique identifier used by the Portal API for this
-            resource.
-          type: string
-          format: uuid
-        product_version_name:
-          description: >-
-            The name of the product version. This is the version label that is
-            displayed in the developer portal.
-          type: string
-        application_id:
-          description: >-
-            Contains a unique identifier used by the Portal API for this
-            resource.
-          type: string
-          format: uuid
-    SearchResults:
-      title: SearchResults
-      type: object
-      required:
-        - data
-        - meta
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          description: The paginated results that matched the search query
-          items:
-            type: object
-            additionalProperties: false
-            properties:
-              index:
-                $ref: '#/components/schemas/SearchIndicesParameters'
-              source:
-                $ref: '#/components/schemas/ProductCatalogIndexSource'
-            required:
-              - index
-              - source
-    ProductCatalogIndexSource:
-      title: ProductCatalogIndexSource
-      type: object
-      additionalProperties: false
-      required:
-        - id
-        - created_at
-        - updated_at
-        - name
-        - document_count
-        - version_count
-        - latest_version
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          type: string
-          example: Nice Product
-          description: the name of the product
-          nullable: true
-          readOnly: true
-        description:
-          type: string
-          example: A nice product for customers to read about and consume
-          description: a description of the product
-          readOnly: true
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-        document_count:
-          type: number
-          example: 5
-          description: Number of product documents available.
-          readOnly: true
-        version_count:
-          type: number
-          example: 2
-          description: Number of product versions.
-          readOnly: true
-        latest_version:
-          type: object
-          description: Last created version.
-          required:
-            - name
-            - id
-          additionalProperties: false
-          properties:
-            name:
-              type: string
-              example: v2.0.0
-              description: Name of product version.
-            id:
-              $ref: '#/components/schemas/UUID'
-    SearchIndicesParameters:
-      title: SearchIndicesParameters
-      type: string
-      enum:
-        - product-catalog
-    SearchQueryParameters:
-      title: SearchQueryParameters
-      type: string
-    SearchJoinParameters:
-      title: SearchJoinParameters
-      type: string
-      description: >-
-        Accepted values are `versions` and `versions.documents`. Use commas to
-        separate multiple values.
-      example: versions,versions.documents
-    PageMeta:
-      type: object
-      description: >-
-        Contains pagination query parameters and the total number of objects
-        returned.
-      required:
-        - number
-        - size
-        - total
-      properties:
-        number:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 10
-        total:
-          type: number
-          example: 100
-    PaginatedMeta:
-      type: object
-      title: PaginatedMeta
-      description: returns the pagination information
-      properties:
-        page:
-          $ref: '#/components/schemas/PageMeta'
-      required:
-        - page
-    UUID:
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      description: Contains a unique identifier used by the Portal API for this resource.
-      readOnly: true
-    ApplicationReferenceId:
-      description: >-
-        An identifier to correlate the application with an external system.
-        Cannot be set when using Dynamic Client Registration.
-      type: string
-      maxLength: 255
-    CreatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity creation date.
-      readOnly: true
-    UpdatedAt:
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      description: An ISO-8601 timestamp representation of entity update date.
-      readOnly: true
-    BaseError:
-      type: object
-      title: Error
-      description: standard error
-      required:
-        - status
-        - title
-        - instance
-        - detail
-      properties:
-        status:
-          type: integer
-          description: >
-            The HTTP status code of the error. Useful when passing the response
-
-            body to child properties in a frontend UI. Must be returned as an
-            integer.
-          readOnly: true
-        title:
-          type: string
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-        type:
-          type: string
-          description: The error type.
-          readOnly: true
-        instance:
-          type: string
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          readOnly: true
-        detail:
-          type: string
-          description: >
-            A human readable explanation specific to this occurence of the
-            problem.
-
-            This field may contain request/entity data to help the user
-            understand
-
-            what went wrong. Enclose variable values in square brackets. Should
-            be
-
-            provided as "Sentence case" for direct use in the UI.
-          readOnly: true
-    InvalidRules:
-      description: invalid parameters rules
-      type: string
-      readOnly: true
-      nullable: true
-      enum:
-        - required
-        - enum
-        - min_length
-        - max_length
-        - min_digits
-        - min_lowercase
-        - min_uppercase
-        - min_symbols
-    InvalidParameterItem:
-      type: object
-      properties:
-        field:
-          type: string
-          example: name
-          readOnly: true
-        rule:
-          $ref: '#/components/schemas/InvalidRules'
-        reason:
-          type: string
-          example: is a required field
-          readOnly: true
-        choices:
-          type: array
-          uniqueItems: true
-          nullable: true
-          items: {}
-          readOnly: true
-      required:
-        - field
-        - reason
-    InvalidParameters:
-      type: array
-      nullable: false
-      uniqueItems: true
-      minItems: 1
-      description: invalid parameters
-      items:
-        $ref: '#/components/schemas/InvalidParameterItem'
-    BadRequestError:
-      type: object
-      required:
-        - invalid_parameters
-      properties:
-        status:
-          example: 400
-        title:
-          example: Bad Request
-        type:
-          example: https://httpstatuses.com/400
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid request body
-        invalid_parameters:
-          $ref: '#/components/schemas/InvalidParameters'
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    UnauthorizedError:
-      type: object
-      properties:
-        status:
-          example: 401
-        title:
-          example: Unauthorized
-        type:
-          example: https://httpstatuses.com/401
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid credentials
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    ForbiddenError:
-      type: object
-      properties:
-        status:
-          example: 403
-        title:
-          example: Forbidden
-        type:
-          example: https://httpstatuses.com/403
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Forbidden
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    NotFoundError:
-      type: object
-      properties:
-        status:
-          example: 404
-        title:
-          example: Not Found
-        type:
-          example: https://httpstatuses.com/404
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Not found
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    ConflictError:
-      type: object
-      properties:
-        status:
-          example: 409
-        title:
-          example: Conflict
-        type:
-          example: https://httpstatuses.com/409
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Conflict
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    InternalError:
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    TooManyRequestsError:
-      type: object
-      properties:
-        status:
-          example: 429
-        title:
-          example: Too Many Requests
-        type:
-          example: https://httpstatuses.com/429
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Too Many Requests
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
     DocumentContentTypeEnum:
       type: string
       default: application/json
@@ -2763,21 +2463,179 @@ components:
           table_header: '#/components/schemas/TableHeaderBlock'
           table_cell: '#/components/schemas/TableCellBlock'
           table_row: '#/components/schemas/TableRowBlock'
-    GoneError:
+    CreateRegistrationPayload:
+      additionalProperties: false
       type: object
+      title: CreateRegistrationPayload
+      description: The payload to create a registration.
+      required:
+        - product_version_id
       properties:
+        product_version_id:
+          description: The product version id required for registration.
+          type: string
+          format: uuid
+    ListRegistrationsResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetRegistrationResponse'
+    GetRegistrationResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - id
+        - status
+        - application_id
+        - product_id
+        - product_name
+        - product_version_id
+        - product_version_name
+        - created_at
+        - updated_at
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
         status:
-          example: 410
-        title:
-          example: Gone
-        type:
-          example: https://httpstatuses.com/410
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Gone
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
+          description: The approval status of the registration.
+          type: string
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+        product_id:
+          description: >-
+            Contains a unique identifier used by the Portal API for this
+            resource.
+          type: string
+          format: uuid
+        product_name:
+          description: >-
+            The name of the product. This is the name that is displayed in the
+            developer portal.
+          type: string
+        product_version_id:
+          description: >-
+            Contains a unique identifier used by the Portal API for this
+            resource.
+          type: string
+          format: uuid
+        product_version_name:
+          description: >-
+            The name of the product version. This is the version label that is
+            displayed in the developer portal.
+          type: string
+        application_id:
+          description: >-
+            Contains a unique identifier used by the Portal API for this
+            resource.
+          type: string
+          format: uuid
+    SearchResults:
+      title: SearchResults
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          description: The paginated results that matched the search query
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              index:
+                $ref: '#/components/schemas/SearchIndicesParameters'
+              source:
+                $ref: '#/components/schemas/ProductCatalogIndexSource'
+            required:
+              - index
+              - source
+    ProductCatalogIndexSource:
+      title: ProductCatalogIndexSource
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - document_count
+        - version_count
+        - latest_version
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+          example: Nice Product
+          description: the name of the product
+          nullable: true
+          readOnly: true
+        description:
+          type: string
+          example: A nice product for customers to read about and consume
+          description: a description of the product
+          readOnly: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        document_count:
+          type: number
+          example: 5
+          description: Number of product documents available.
+          readOnly: true
+        version_count:
+          type: number
+          example: 2
+          description: Number of product versions.
+          readOnly: true
+        latest_version:
+          type: object
+          description: Last created version.
+          required:
+            - name
+            - id
+          additionalProperties: false
+          properties:
+            name:
+              type: string
+              example: v2.0.0
+              description: Name of product version.
+            id:
+              $ref: '#/components/schemas/UUID'
+    SearchIndicesParameters:
+      title: SearchIndicesParameters
+      type: string
+      enum:
+        - product-catalog
+    SearchQueryParameters:
+      title: SearchQueryParameters
+      type: string
+    SearchJoinParameters:
+      title: SearchJoinParameters
+      type: string
+      description: >-
+        Accepted values are `versions` and `versions.documents`. Use commas to
+        separate multiple values.
+      example: versions,versions.documents
   examples:
     Authenticate-Request:
       value:
@@ -2848,9 +2706,8 @@ tags:
     description: >-
       The API for Konnect Portal developer credentials within a private portal
       (i.e. requires registration/authentication).
-  - name: authentication
   - name: developer
-    description: API for managing Konnect Portal Developers.
+    description: API for managing a Konnect Portal Developer.
   - name: portal
     description: The API for retrieving details about a single Konnect Portal.
   - name: products
