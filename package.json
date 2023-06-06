@@ -10,7 +10,6 @@
   },
   "repository": "git@github.com:Kong/sdk-portal-js.git",
   "devDependencies": {
-    "@types/axios": "0.14.0",
     "typescript": "5.0.2"
   },
   "dependencies": {
