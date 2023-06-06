@@ -12,5 +12,8 @@
   "devDependencies": {
     "@types/axios": "0.14.0",
     "typescript": "5.0.2"
+  },
+  "dependencies": {
+    "axios": "0.27.2"
   }
 }
