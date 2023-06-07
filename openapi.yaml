@@ -377,6 +377,22 @@ paths:
         - developer
       security:
         - {}
+  /api/v2/developer/me:
+    get:
+      summary: Retrieve My Account
+      tags:
+        - developer
+      responses:
+        '200':
+          $ref: '#/components/responses/MeResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/Internal'
+      operationId: get-developer-me
+      description: Returns info about the current developer.
+      security:
+        - portalAccessToken: []
   /api/v2/portal:
     get:
       operationId: get-portal-context
