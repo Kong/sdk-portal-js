@@ -3672,6 +3672,38 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
+         * Returns info about the current developer.
+         * @summary Retrieve My Account
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDeveloperMe: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Register to the developer portal.
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
@@ -3727,6 +3759,16 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Returns info about the current developer.
+         * @summary Retrieve My Account
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getDeveloperMe(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Developer>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDeveloperMe(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Register to the developer portal.
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
@@ -3756,6 +3798,15 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
          */
         forgotPassword(resetPasswordPayload?: ResetPasswordPayload, options?: any): AxiosPromise<void> {
             return localVarFp.forgotPassword(resetPasswordPayload, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Returns info about the current developer.
+         * @summary Retrieve My Account
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDeveloperMe(options?: any): AxiosPromise<Developer> {
+            return localVarFp.getDeveloperMe(options).then((request) => request(axios, basePath));
         },
         /**
          * Register to the developer portal.
@@ -3815,6 +3866,17 @@ export class DeveloperApi extends BaseAPI {
      */
     public forgotPassword(requestParameters: DeveloperApiForgotPasswordRequest = {}, options?: AxiosRequestConfig) {
         return DeveloperApiFp(this.configuration).forgotPassword(requestParameters.resetPasswordPayload, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Returns info about the current developer.
+     * @summary Retrieve My Account
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public getDeveloperMe(options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).getDeveloperMe(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
