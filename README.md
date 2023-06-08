@@ -17,7 +17,7 @@ import {
   Configuration,
   PortalApi,
 } from '@kong/sdk-portal-js'
-import axios, { AxiosInstance } from 'axios'****
+import axios, { AxiosInstance } from 'axios'
 
 export default class PortalV2ApiService {
   private baseURL: string
