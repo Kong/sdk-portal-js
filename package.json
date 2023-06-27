@@ -2,7 +2,7 @@
   "name": "@kong/sdk-portal-js",
   "main": "dist/index.js",
   "types": "./src/index.ts",
-  "version": "0.0.1-beta.23",
+  "version": "0.0.1",
   "private": false,
   "scripts": {
     "build": "tsc",
@@ -10,9 +10,17 @@
   },
   "repository": "git@github.com:Kong/sdk-portal-js.git",
   "devDependencies": {
+    "auto": "^10.46.0",
     "typescript": "5.0.2"
   },
   "dependencies": {
     "axios": "0.27.2"
+  },
+  "license": "Apache-2.0",
+  "author": "kong-apiops <apiops-bot@konghq.com>",
+  "auto": {
+    "plugins": [
+      "npm"
+    ]
   }
 }
