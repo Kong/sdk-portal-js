@@ -63,7 +63,7 @@ export type ApiTypeEnum = typeof ApiTypeEnum[keyof typeof ApiTypeEnum];
  */
 export interface ApplicationCreationResponse {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
@@ -75,7 +75,7 @@ export interface ApplicationCreationResponse {
      */
     'name': string;
     /**
-     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration. 
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
@@ -137,7 +137,7 @@ export interface ApplicationCreationResponseCredentials {
  */
 export interface ApplicationUpdateResponse {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
@@ -149,7 +149,7 @@ export interface ApplicationUpdateResponse {
      */
     'name': string;
     /**
-     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration. 
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
@@ -468,7 +468,7 @@ export interface CreateApplicationPayload {
      */
     'name': string;
     /**
-     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration. 
      * @type {string}
      * @memberof CreateApplicationPayload
      */
@@ -525,7 +525,7 @@ export interface CredentialCreationResponse {
      */
     'credential': string;
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof CredentialCreationResponse
      */
@@ -544,7 +544,7 @@ export interface CredentialCreationResponse {
  */
 export interface Developer {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof Developer
      */
@@ -620,7 +620,8 @@ export interface DocumentBlockAllOf {
 
 export const DocumentContentTypeEnum = {
     Json: 'application/json',
-    KonnectDocumentTreejson: 'application/konnect.document-tree+json'
+    KonnectDocumentTreejson: 'application/konnect.document-tree+json',
+    VndKonnectDocumentTreejson: 'application/vnd.konnect.document-tree+json'
 } as const;
 
 export type DocumentContentTypeEnum = typeof DocumentContentTypeEnum[keyof typeof DocumentContentTypeEnum];
@@ -634,7 +635,8 @@ export type DocumentContentTypeEnum = typeof DocumentContentTypeEnum[keyof typeo
 
 export const DocumentFormatContentTypeEnum = {
     Json: 'application/json',
-    KonnectDocumentNodesjson: 'application/konnect.document-nodes+json'
+    KonnectDocumentNodesjson: 'application/konnect.document-nodes+json',
+    VndKonnectDocumentNodesjson: 'application/vnd.konnect.document-nodes+json'
 } as const;
 
 export type DocumentFormatContentTypeEnum = typeof DocumentFormatContentTypeEnum[keyof typeof DocumentFormatContentTypeEnum];
@@ -796,7 +798,7 @@ export interface ForbiddenError {
  */
 export interface GetApplicationResponse {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof GetApplicationResponse
      */
@@ -808,7 +810,7 @@ export interface GetApplicationResponse {
      */
     'name': string;
     /**
-     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration. 
      * @type {string}
      * @memberof GetApplicationResponse
      */
@@ -845,7 +847,7 @@ export interface GetApplicationResponse {
  */
 export interface GetRegistrationResponse {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof GetRegistrationResponse
      */
@@ -1122,7 +1124,19 @@ export const InvalidRules = {
     MinDigits: 'min_digits',
     MinLowercase: 'min_lowercase',
     MinUppercase: 'min_uppercase',
-    MinSymbols: 'min_symbols'
+    MinSymbols: 'min_symbols',
+    IsArray: 'is_array',
+    IsBoolean: 'is_boolean',
+    IsDateTime: 'is_date_time',
+    IsInteger: 'is_integer',
+    IsNull: 'is_null',
+    IsNumber: 'is_number',
+    IsObject: 'is_object',
+    IsString: 'is_string',
+    IsUuid: 'is_uuid',
+    UnknownProperty: 'unknown_property',
+    IsLabel: 'is_label',
+    MatchesRegex: 'matches_regex'
 } as const;
 
 export type InvalidRules = typeof InvalidRules[keyof typeof InvalidRules];
@@ -1141,7 +1155,7 @@ export interface LatestVersion {
      */
     'name'?: string;
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof LatestVersion
      */
@@ -1274,7 +1288,7 @@ export interface ListCredentialsResponse {
  */
 export interface ListCredentialsResponseDataInner {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof ListCredentialsResponseDataInner
      */
@@ -1609,6 +1623,12 @@ export interface PortalContext {
      */
     'featureset_id': string;
     /**
+     * String that determines feature set group developer belongs to when logged in
+     * @type {string}
+     * @memberof PortalContext
+     */
+    'feature_set'?: string;
+    /**
      * Whether the portal can be accessed via email and password
      * @type {boolean}
      * @memberof PortalContext
@@ -1652,7 +1672,7 @@ export interface PortalContext {
  */
 export interface Product {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof Product
      */
@@ -1707,7 +1727,7 @@ export interface Product {
  */
 export interface ProductCatalogIndexSource {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof ProductCatalogIndexSource
      */
@@ -1768,7 +1788,7 @@ export interface ProductCatalogIndexSourceLatestVersion {
      */
     'name': string;
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof ProductCatalogIndexSourceLatestVersion
      */
@@ -1874,7 +1894,7 @@ export interface ProductListPage {
  */
 export interface ProductVersion {
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * Contains a unique identifier used by the API for this resource.
      * @type {string}
      * @memberof ProductVersion
      */
@@ -2505,7 +2525,7 @@ export interface UpdateApplicationPayload {
      */
     'name'?: string;
     /**
-     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration.
+     * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration. 
      * @type {string}
      * @memberof UpdateApplicationPayload
      */
@@ -2743,7 +2763,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * Updates an application, replacing the object with the new values supplied in the request body.
+         * Updates an application, replacing specified properties with any new values supplied in the request body.
          * @summary Update Application
          * @param {string} applicationId Id of the targeted application
          * @param {UpdateApplicationPayload} updateApplicationPayload Update an application
@@ -2764,7 +2784,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2843,7 +2863,7 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Updates an application, replacing the object with the new values supplied in the request body.
+         * Updates an application, replacing specified properties with any new values supplied in the request body.
          * @summary Update Application
          * @param {string} applicationId Id of the targeted application
          * @param {UpdateApplicationPayload} updateApplicationPayload Update an application
@@ -2909,7 +2929,7 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
             return localVarFp.listApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options).then((request) => request(axios, basePath));
         },
         /**
-         * Updates an application, replacing the object with the new values supplied in the request body.
+         * Updates an application, replacing specified properties with any new values supplied in the request body.
          * @summary Update Application
          * @param {string} applicationId Id of the targeted application
          * @param {UpdateApplicationPayload} updateApplicationPayload Update an application
@@ -3083,7 +3103,7 @@ export class ApplicationsApi extends BaseAPI {
     }
 
     /**
-     * Updates an application, replacing the object with the new values supplied in the request body.
+     * Updates an application, replacing specified properties with any new values supplied in the request body.
      * @summary Update Application
      * @param {ApplicationsApiUpdateApplicationRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -3638,6 +3658,70 @@ export class CredentialsApi extends BaseAPI {
 export const DeveloperApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * This endpoint allows a developer to authenticate to their portal using a username and password.
+         * @summary Authenticate
+         * @param {AuthenticateRequest} [authenticateRequest] The request schema for the authenticate endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authenticate: async (authenticateRequest?: AuthenticateRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/authenticate`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(authenticateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a developer to authenticate to their portal using an external IdP.
+         * @summary Authenticate SSO
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authenticateSso: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/authenticate/sso`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
          * @summary Forgot Password
          * @param {ResetPasswordPayload} [resetPasswordPayload] Developer registration
@@ -3704,6 +3788,66 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
+         * This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/logout`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a developer to refresh their existing access token.
+         * @summary Refresh Access Token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refresh: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/refresh`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Register to the developer portal.
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
@@ -3737,6 +3881,74 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * This endpoint allows a developer to reset their password, using a reset token.
+         * @summary Reset Password
+         * @param {ResetPasswordRequest} [resetPasswordRequest] The request schema for the reset password endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        resetPassword: async (resetPasswordRequest?: ResetPasswordRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/reset-password`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(resetPasswordRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * This endpoint allows a new developer to verify their email.
+         * @summary Verify Email
+         * @param {VerifyEmailRequest} [verifyEmailRequest] The request schema for the verify email endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyEmail: async (verifyEmailRequest?: VerifyEmailRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/developer/verify-email`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(verifyEmailRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -3747,6 +3959,27 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
 export const DeveloperApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = DeveloperApiAxiosParamCreator(configuration)
     return {
+        /**
+         * This endpoint allows a developer to authenticate to their portal using a username and password.
+         * @summary Authenticate
+         * @param {AuthenticateRequest} [authenticateRequest] The request schema for the authenticate endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async authenticate(authenticateRequest?: AuthenticateRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.authenticate(authenticateRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a developer to authenticate to their portal using an external IdP.
+         * @summary Authenticate SSO
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async authenticateSso(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.authenticateSso(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
         /**
          * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
          * @summary Forgot Password
@@ -3769,6 +4002,26 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async logout(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logout(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a developer to refresh their existing access token.
+         * @summary Refresh Access Token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refresh(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refresh(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Register to the developer portal.
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
@@ -3777,6 +4030,28 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
          */
         async register(registerPayload?: RegisterPayload, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.register(registerPayload, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a developer to reset their password, using a reset token.
+         * @summary Reset Password
+         * @param {ResetPasswordRequest} [resetPasswordRequest] The request schema for the reset password endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async resetPassword(resetPasswordRequest?: ResetPasswordRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.resetPassword(resetPasswordRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * This endpoint allows a new developer to verify their email.
+         * @summary Verify Email
+         * @param {VerifyEmailRequest} [verifyEmailRequest] The request schema for the verify email endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifyEmail(verifyEmailRequest?: VerifyEmailRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VerifyEmailResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyEmail(verifyEmailRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -3789,6 +4064,25 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
 export const DeveloperApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = DeveloperApiFp(configuration)
     return {
+        /**
+         * This endpoint allows a developer to authenticate to their portal using a username and password.
+         * @summary Authenticate
+         * @param {AuthenticateRequest} [authenticateRequest] The request schema for the authenticate endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authenticate(authenticateRequest?: AuthenticateRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.authenticate(authenticateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a developer to authenticate to their portal using an external IdP.
+         * @summary Authenticate SSO
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authenticateSso(options?: any): AxiosPromise<void> {
+            return localVarFp.authenticateSso(options).then((request) => request(axios, basePath));
+        },
         /**
          * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
          * @summary Forgot Password
@@ -3809,6 +4103,24 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
             return localVarFp.getDeveloperMe(options).then((request) => request(axios, basePath));
         },
         /**
+         * This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout(options?: any): AxiosPromise<void> {
+            return localVarFp.logout(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a developer to refresh their existing access token.
+         * @summary Refresh Access Token
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refresh(options?: any): AxiosPromise<void> {
+            return localVarFp.refresh(options).then((request) => request(axios, basePath));
+        },
+        /**
          * Register to the developer portal.
          * @summary Register
          * @param {RegisterPayload} [registerPayload] Developer registration
@@ -3818,8 +4130,42 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
         register(registerPayload?: RegisterPayload, options?: any): AxiosPromise<void> {
             return localVarFp.register(registerPayload, options).then((request) => request(axios, basePath));
         },
+        /**
+         * This endpoint allows a developer to reset their password, using a reset token.
+         * @summary Reset Password
+         * @param {ResetPasswordRequest} [resetPasswordRequest] The request schema for the reset password endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        resetPassword(resetPasswordRequest?: ResetPasswordRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.resetPassword(resetPasswordRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * This endpoint allows a new developer to verify their email.
+         * @summary Verify Email
+         * @param {VerifyEmailRequest} [verifyEmailRequest] The request schema for the verify email endpoint.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyEmail(verifyEmailRequest?: VerifyEmailRequest, options?: any): AxiosPromise<VerifyEmailResponse> {
+            return localVarFp.verifyEmail(verifyEmailRequest, options).then((request) => request(axios, basePath));
+        },
     };
 };
+
+/**
+ * Request parameters for authenticate operation in DeveloperApi.
+ * @export
+ * @interface DeveloperApiAuthenticateRequest
+ */
+export interface DeveloperApiAuthenticateRequest {
+    /**
+     * The request schema for the authenticate endpoint.
+     * @type {AuthenticateRequest}
+     * @memberof DeveloperApiAuthenticate
+     */
+    readonly authenticateRequest?: AuthenticateRequest
+}
 
 /**
  * Request parameters for forgotPassword operation in DeveloperApi.
@@ -3850,12 +4196,63 @@ export interface DeveloperApiRegisterRequest {
 }
 
 /**
+ * Request parameters for resetPassword operation in DeveloperApi.
+ * @export
+ * @interface DeveloperApiResetPasswordRequest
+ */
+export interface DeveloperApiResetPasswordRequest {
+    /**
+     * The request schema for the reset password endpoint.
+     * @type {ResetPasswordRequest}
+     * @memberof DeveloperApiResetPassword
+     */
+    readonly resetPasswordRequest?: ResetPasswordRequest
+}
+
+/**
+ * Request parameters for verifyEmail operation in DeveloperApi.
+ * @export
+ * @interface DeveloperApiVerifyEmailRequest
+ */
+export interface DeveloperApiVerifyEmailRequest {
+    /**
+     * The request schema for the verify email endpoint.
+     * @type {VerifyEmailRequest}
+     * @memberof DeveloperApiVerifyEmail
+     */
+    readonly verifyEmailRequest?: VerifyEmailRequest
+}
+
+/**
  * DeveloperApi - object-oriented interface
  * @export
  * @class DeveloperApi
  * @extends {BaseAPI}
  */
 export class DeveloperApi extends BaseAPI {
+    /**
+     * This endpoint allows a developer to authenticate to their portal using a username and password.
+     * @summary Authenticate
+     * @param {DeveloperApiAuthenticateRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public authenticate(requestParameters: DeveloperApiAuthenticateRequest = {}, options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).authenticate(requestParameters.authenticateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a developer to authenticate to their portal using an external IdP.
+     * @summary Authenticate SSO
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public authenticateSso(options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).authenticateSso(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Starts the password reset flow for the desired account. An email will be sent to the email address to initiate the password reset flow. 
      * @summary Forgot Password
@@ -3880,6 +4277,28 @@ export class DeveloperApi extends BaseAPI {
     }
 
     /**
+     * This endpoint allows a developer to logout of the portal. This operation revokes all active tokens and clears the portal cookies.
+     * @summary Logout
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public logout(options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a developer to refresh their existing access token.
+     * @summary Refresh Access Token
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public refresh(options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).refresh(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Register to the developer portal.
      * @summary Register
      * @param {DeveloperApiRegisterRequest} requestParameters Request parameters.
@@ -3889,6 +4308,30 @@ export class DeveloperApi extends BaseAPI {
      */
     public register(requestParameters: DeveloperApiRegisterRequest = {}, options?: AxiosRequestConfig) {
         return DeveloperApiFp(this.configuration).register(requestParameters.registerPayload, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a developer to reset their password, using a reset token.
+     * @summary Reset Password
+     * @param {DeveloperApiResetPasswordRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public resetPassword(requestParameters: DeveloperApiResetPasswordRequest = {}, options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).resetPassword(requestParameters.resetPasswordRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * This endpoint allows a new developer to verify their email.
+     * @summary Verify Email
+     * @param {DeveloperApiVerifyEmailRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DeveloperApi
+     */
+    public verifyEmail(requestParameters: DeveloperApiVerifyEmailRequest = {}, options?: AxiosRequestConfig) {
+        return DeveloperApiFp(this.configuration).verifyEmail(requestParameters.verifyEmailRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
