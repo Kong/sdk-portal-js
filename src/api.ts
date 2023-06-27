@@ -85,13 +85,13 @@ export interface ApplicationCreationResponse {
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
-    'description': string;
+    'description': string | null;
     /**
      * 
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
-    'redirect_uri'?: string;
+    'redirect_uri'?: string | null;
     /**
      * 
      * @type {ApplicationCreationResponseCredentials}
@@ -159,13 +159,13 @@ export interface ApplicationUpdateResponse {
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
-    'description': string;
+    'description': string | null;
     /**
      * 
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
-    'redirect_uri'?: string;
+    'redirect_uri'?: string | null;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -620,7 +620,6 @@ export interface DocumentBlockAllOf {
 
 export const DocumentContentTypeEnum = {
     Json: 'application/json',
-    KonnectDocumentTreejson: 'application/konnect.document-tree+json',
     VndKonnectDocumentTreejson: 'application/vnd.konnect.document-tree+json'
 } as const;
 
@@ -635,7 +634,6 @@ export type DocumentContentTypeEnum = typeof DocumentContentTypeEnum[keyof typeo
 
 export const DocumentFormatContentTypeEnum = {
     Json: 'application/json',
-    KonnectDocumentNodesjson: 'application/konnect.document-nodes+json',
     VndKonnectDocumentNodesjson: 'application/vnd.konnect.document-nodes+json'
 } as const;
 
@@ -820,13 +818,13 @@ export interface GetApplicationResponse {
      * @type {string}
      * @memberof GetApplicationResponse
      */
-    'description': string;
+    'description': string | null;
     /**
      * 
      * @type {string}
      * @memberof GetApplicationResponse
      */
-    'redirect_uri'?: string;
+    'redirect_uri'?: string | null;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -2519,11 +2517,11 @@ export interface UnauthorizedError {
  */
 export interface UpdateApplicationPayload {
     /**
-     * 
+     * The name of the application
      * @type {string}
      * @memberof UpdateApplicationPayload
      */
-    'name'?: string;
+    'name': string;
     /**
      * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration. 
      * @type {string}
@@ -2531,17 +2529,17 @@ export interface UpdateApplicationPayload {
      */
     'reference_id'?: string;
     /**
-     * 
-     * @type {string}
-     * @memberof UpdateApplicationPayload
-     */
-    'description'?: string;
-    /**
-     * 
+     * URL to redirect to after completing an OIDC auth flow
      * @type {string}
      * @memberof UpdateApplicationPayload
      */
     'redirect_uri'?: string;
+    /**
+     * A brief description of the application
+     * @type {string}
+     * @memberof UpdateApplicationPayload
+     */
+    'description'?: string;
 }
 /**
  * 
