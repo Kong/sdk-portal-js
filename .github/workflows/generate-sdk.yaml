@@ -11,15 +11,13 @@ jobs:
     name: Generate JavaScript SDK
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.ref }}
-          path: ${{github.workspace}}/sdk
+          path: actions
+
       - name: Build JavaScript SDK
-        uses: Kong/public-shared-actions/code-build-actions/build-js-sdk@v1.6.0
+        uses: ./actions/.github/actions/build/
         with:
-          app_directory: ${{ github.workspace }}
-          sdk_output_directory: ${{github.workspace}}/sdk
-          token: ${{secrets.GITHUB_TOKEN}}
-          dry-run: false
-          
+          token: ${{ secrets.GITHUB_TOKEN }}
