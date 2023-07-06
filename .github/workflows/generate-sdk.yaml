@@ -18,7 +18,7 @@ jobs:
           path: actions
 
       - name: Build JavaScript SDK
-        uses: Kong/public-shared-actions/code-build-actions/build-js-sdk@v1.11.0
+        uses: Kong/public-shared-actions/code-build-actions/build-js-sdk@v1.6.0
         with:
           app_directory: ${{ github.workspace }}
           sdk_output_directory: ${{ github.workspace }}/actions
