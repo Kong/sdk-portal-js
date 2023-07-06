@@ -18,7 +18,7 @@ jobs:
           path: actions
 
       - name: Build JavaScript SDK
-        uses: andrewwylde/public-shared-actions/code-build-actions/build-js-sdk@9e4dd27bf6a5fb4ece15bfee173a5fe65d64d73c
+        uses: andrewwylde/public-shared-actions/code-build-actions/build-js-sdk@9a1483670e976163a295252253d4b859c80d419e
         with:
           app_directory: ${{ github.workspace }}
           sdk_output_directory: ${{ github.workspace }}/actions
