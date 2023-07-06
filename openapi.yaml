@@ -1,13 +1,13 @@
 openapi: 3.0.3
 info:
   title: Portal API
-  version: 2.0.0
+  version: 2.0.1
   description: Portal API
   contact:
     name: Kong
     url: https://cloud.konghq.com
 paths:
-  /api/v2/applications:
+  /api/v2/applicatios:
     get:
       summary: List Applications
       description: List applications owned by the developer currently logged in.
