@@ -19,6 +19,6 @@ jobs:
           path: actions
 
       - name: Build JavaScript SDK
-        uses: ./actions/.github/actions/build/
+        uses: schimia/code-build-actions/build-js-sdk@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
