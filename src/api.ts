@@ -85,13 +85,13 @@ export interface ApplicationCreationResponse {
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
-    'description': string | null;
+    'description': string;
     /**
      * 
      * @type {string}
      * @memberof ApplicationCreationResponse
      */
-    'redirect_uri'?: string | null;
+    'redirect_uri'?: string;
     /**
      * 
      * @type {ApplicationCreationResponseCredentials}
@@ -159,13 +159,13 @@ export interface ApplicationUpdateResponse {
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
-    'description': string | null;
+    'description': string;
     /**
      * 
      * @type {string}
      * @memberof ApplicationUpdateResponse
      */
-    'redirect_uri'?: string | null;
+    'redirect_uri'?: string;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -818,13 +818,13 @@ export interface GetApplicationResponse {
      * @type {string}
      * @memberof GetApplicationResponse
      */
-    'description': string | null;
+    'description': string;
     /**
      * 
      * @type {string}
      * @memberof GetApplicationResponse
      */
-    'redirect_uri'?: string | null;
+    'redirect_uri'?: string;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -2517,11 +2517,11 @@ export interface UnauthorizedError {
  */
 export interface UpdateApplicationPayload {
     /**
-     * The name of the application
+     * 
      * @type {string}
      * @memberof UpdateApplicationPayload
      */
-    'name': string;
+    'name'?: string;
     /**
      * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration. 
      * @type {string}
@@ -2529,17 +2529,17 @@ export interface UpdateApplicationPayload {
      */
     'reference_id'?: string;
     /**
-     * URL to redirect to after completing an OIDC auth flow
-     * @type {string}
-     * @memberof UpdateApplicationPayload
-     */
-    'redirect_uri'?: string;
-    /**
-     * A brief description of the application
+     * 
      * @type {string}
      * @memberof UpdateApplicationPayload
      */
     'description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateApplicationPayload
+     */
+    'redirect_uri'?: string;
 }
 /**
  * 
