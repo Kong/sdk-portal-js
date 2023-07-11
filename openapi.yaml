@@ -1355,10 +1355,8 @@ components:
           $ref: '#/components/schemas/ApplicationReferenceId'
         description:
           type: string
-          nullable: true
         redirect_uri:
           type: string
-          nullable: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1383,7 +1381,6 @@ components:
           type: array
           items:
             type: object
-            additionalProperties: false
             properties:
               id:
                 $ref: '#/components/schemas/UUID'
@@ -1462,12 +1459,9 @@ components:
           $ref: '#/components/schemas/ApplicationReferenceId'
         description:
           type: string
-          nullable: true
         redirect_uri:
           type: string
-          nullable: true
         credentials:
-          additionalProperties: false
           type: object
           required:
             - client_id
@@ -1486,23 +1480,15 @@ components:
       type: object
       title: UpdateApplicationPayload
       description: Payload required to update an application
-      required:
-        - name
       properties:
         name:
-          description: The name of the application
           type: string
-          maxLength: 255
         reference_id:
           $ref: '#/components/schemas/ApplicationReferenceId'
-        redirect_uri:
-          description: URL to redirect to after completing an OIDC auth flow
-          type: string
-          format: uri
         description:
-          description: A brief description of the application
           type: string
-          maxLength: 255
+        redirect_uri:
+          type: string
     ApplicationUpdateResponse:
       additionalProperties: false
       type: object
@@ -1525,11 +1511,9 @@ components:
         description:
           type: string
           example: A brief description of the application
-          nullable: true
         redirect_uri:
           type: string
           example: https://example.com/callback
-          nullable: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
