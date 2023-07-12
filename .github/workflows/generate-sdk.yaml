@@ -14,9 +14,9 @@ jobs:
     steps:
 
       - uses: actions/checkout@v3
-#         with:
-#           ref: ${{ github.event.pull_request.ref }}
-#           path: actions
+        with:
+          ref: ${{ github.event.pull_request.ref }}
+          path: actions
 
       - name: Build JavaScript SDK
         uses: scimia/public-shared-actions/code-build-actions/build-js-sdk@main
@@ -29,7 +29,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/actions
         run: | 
-          gh pr checkout ${{ github.event.pull_request.number }}
+          # gh pr checkout ${{ github.event.pull_request.number }}
           git add src
           git commit "Update SDK based on openapi.yaml changes"
           git push
