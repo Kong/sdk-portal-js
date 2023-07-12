@@ -29,7 +29,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/actions
         run: | 
-          # gh pr checkout ${{ github.event.pull_request.number }}
+          gh pr checkout ${{ github.event.pull_request.number }}
           git add src
           git commit "Update SDK based on openapi.yaml changes"
           git push
