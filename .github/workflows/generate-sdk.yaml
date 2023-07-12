@@ -24,3 +24,12 @@ jobs:
           app_directory: ${{ github.workspace }}
           sdk_output_directory: ${{ github.workspace }}/actions
           token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Commit SDK changes to the PR
+        shell: bash
+        working-directory: ${{ github.workspace }}/actions
+        run: | 
+          gh pr checkout ${{ github.event.pull_request.number }}
+          git add src
+          git commit "Update SDK based on openapi.yaml changes"
+          git push
