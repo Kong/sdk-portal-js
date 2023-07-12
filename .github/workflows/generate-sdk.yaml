@@ -21,4 +21,6 @@ jobs:
       - name: Build JavaScript SDK
         uses: scimia/public-shared-actions/code-build-actions/build-js-sdk@main
         with:
+          app_directory: ${{ github.workspace }}
+          sdk_output_directory: ${{ github.workspace }}/actions
           token: ${{ secrets.GITHUB_TOKEN }}
