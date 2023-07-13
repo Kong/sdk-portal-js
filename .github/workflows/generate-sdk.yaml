@@ -34,5 +34,5 @@ jobs:
           git config --global user.name "team-devx"
           gh pr checkout ${{ github.event.pull_request.number }}
           git add src/
-          git commit -m "Update SDK based on openapi.yaml changes"
+          git commit -m --allow-empty "Update SDK based on openapi.yaml changes"
           git push
