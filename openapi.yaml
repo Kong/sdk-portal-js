@@ -10,7 +10,7 @@ paths:
   /api/v2/applications:
     get:
       summary: List Applications
-      description: List applications owned by the developer currently logged in.
+      description: List applications owned by the developer that is currently logged in.
       operationId: list-applications
       parameters:
         - $ref: '#/components/parameters/PageSize'
