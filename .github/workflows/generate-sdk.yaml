@@ -18,6 +18,21 @@ jobs:
           path: actions
 
       - name: Build JavaScript SDK
-        uses: ./actions/.github/actions/build/
+        uses: Kong/public-shared-actions/code-build-actions/build-js-sdk@main
         with:
+          app_directory: ${{ github.workspace }}
+          sdk_output_directory: ${{ github.workspace }}/actions
           token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Commit SDK changes to the PR
+        shell: bash
+        working-directory: ${{ github.workspace }}/actions
+        env:
+          GH_TOKEN: ${{ secrets.PORTAL_JS_SDK_TOKEN }}
+        run: |
+          git config --global user.email "team-devx+github-bot@konghq.com"
+          git config --global user.name "team-devx"
+          gh pr checkout ${{ github.event.pull_request.number }}
+          git add src/
+          git commit --allow-empty -m "Update SDK based on openapi.yaml changes"
+          git push
