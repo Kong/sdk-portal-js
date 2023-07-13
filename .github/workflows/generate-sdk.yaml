@@ -13,9 +13,6 @@ jobs:
     steps:
 
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.ref }}
-          path: actions
           
       - name: Find changed openapi spec
         id: changed-openapi
