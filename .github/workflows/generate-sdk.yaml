@@ -16,8 +16,16 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.ref }}
           path: actions
+          
+      - name: Find changed openapi spec
+        id: changed-openapi
+        uses: tj-actions/changed-files@v35.7.1
+        with:
+          files: |
+            openapi.yaml
 
       - name: Build JavaScript SDK
+        if: steps.changed-openapi.outputs.any_modified == 'true'
         uses: scimia/public-shared-actions/code-build-actions/build-js-sdk@main
         with:
           app_directory: ${{ github.workspace }}
@@ -34,5 +42,5 @@ jobs:
           git config --global user.name "team-devx"
           gh pr checkout ${{ github.event.pull_request.number }}
           git add src/
-          git commit -m --allow-empty "Update SDK based on openapi.yaml changes"
+          git commit -m "Update SDK based on openapi.yaml changes"
           git push
