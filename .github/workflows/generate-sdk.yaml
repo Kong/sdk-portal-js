@@ -1,6 +1,5 @@
 name: Generate SDK Packages
 on:
-  workflow_dispatch: {}
   pull_request:
     types:
       - opened
@@ -29,7 +28,7 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}/actions
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PORTAL_JS_SDK_TOKEN }}
         run: |
           git config --global user.email "team-devx+github-bot@konghq.com"
           git config --global user.name "team-devx"
