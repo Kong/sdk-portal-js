@@ -2704,7 +2704,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * List applications owned by the developer currently logged in.
+         * List applications owned by the developer that is currently logged in.
          * @summary List Applications
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
@@ -2846,7 +2846,7 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * List applications owned by the developer currently logged in.
+         * List applications owned by the developer that is currently logged in.
          * @summary List Applications
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
@@ -2913,7 +2913,7 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
             return localVarFp.getApplication(applicationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * List applications owned by the developer currently logged in.
+         * List applications owned by the developer that is currently logged in.
          * @summary List Applications
          * @param {number} [pageSize] Determines the size of the page to retrieve.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
@@ -3089,7 +3089,7 @@ export class ApplicationsApi extends BaseAPI {
     }
 
     /**
-     * List applications owned by the developer currently logged in.
+     * List applications owned by the developer that is currently logged in.
      * @summary List Applications
      * @param {ApplicationsApiListApplicationsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
