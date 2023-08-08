@@ -46,6 +46,38 @@ export type AnyNode = { type: 'blockquote' } & BlockQuoteBlock | { type: 'break'
 /**
  * 
  * @export
+ * @interface ApiProductVersionFilter
+ */
+export interface ApiProductVersionFilter {
+    /**
+     * The dimension to filter.
+     * @type {string}
+     * @memberof ApiProductVersionFilter
+     */
+    'dimension': ApiProductVersionFilterDimensionEnum;
+    /**
+     * 
+     * @type {FilterType}
+     * @memberof ApiProductVersionFilter
+     */
+    'type': FilterType;
+    /**
+     * The UUIDs of the API product versions to include in the results. 
+     * @type {Array<string>}
+     * @memberof ApiProductVersionFilter
+     */
+    'values': Array<string>;
+}
+
+export const ApiProductVersionFilterDimensionEnum = {
+    ApiProductVersion: 'API_PRODUCT_VERSION'
+} as const;
+
+export type ApiProductVersionFilterDimensionEnum = typeof ApiProductVersionFilterDimensionEnum[keyof typeof ApiProductVersionFilterDimensionEnum];
+
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -130,6 +162,38 @@ export interface ApplicationCreationResponseCredentials {
      */
     'client_secret': string;
 }
+/**
+ * 
+ * @export
+ * @interface ApplicationFilter
+ */
+export interface ApplicationFilter {
+    /**
+     * The dimension to filter. If no application filter is provided the API will implicitly filter on the applications owned by the developer making the query request.
+     * @type {string}
+     * @memberof ApplicationFilter
+     */
+    'dimension': ApplicationFilterDimensionEnum;
+    /**
+     * 
+     * @type {FilterType}
+     * @memberof ApplicationFilter
+     */
+    'type': FilterType;
+    /**
+     * The UUIDs of the dev portal applications to include in the results. 
+     * @type {Array<string>}
+     * @memberof ApplicationFilter
+     */
+    'values': Array<string>;
+}
+
+export const ApplicationFilterDimensionEnum = {
+    Application: 'APPLICATION'
+} as const;
+
+export type ApplicationFilterDimensionEnum = typeof ApplicationFilterDimensionEnum[keyof typeof ApplicationFilterDimensionEnum];
+
 /**
  * Application update response payload
  * @export
@@ -236,10 +300,10 @@ export interface BadRequestError {
     'detail'?: any;
     /**
      * invalid parameters
-     * @type {Set<InvalidParameterItem>}
+     * @type {Set<InvalidParametersInner>}
      * @memberof BadRequestError
      */
-    'invalid_parameters': Set<InvalidParameterItem>;
+    'invalid_parameters': Set<InvalidParametersInner>;
 }
 /**
  * standard error
@@ -753,6 +817,20 @@ export interface EmphasisAllOf {
     'level'?: number;
 }
 /**
+ * The type of filter to apply.  `IN` filters will limit results to only the specified values, while `NOT_IN` filters will exclude the specified values.
+ * @export
+ * @enum {string}
+ */
+
+export const FilterType = {
+    In: 'IN',
+    NotIn: 'NOT_IN'
+} as const;
+
+export type FilterType = typeof FilterType[keyof typeof FilterType];
+
+
+/**
  * 
  * @export
  * @interface ForbiddenError
@@ -1043,71 +1121,78 @@ export interface ImageAllOf {
 /**
  * 
  * @export
- * @interface InternalError
+ * @interface InvalidParameterChoiceItem
  */
-export interface InternalError {
-    /**
-     * The HTTP status code of the error. Useful when passing the response body to child properties in a frontend UI. Must be returned as an integer. 
-     * @type {number}
-     * @memberof InternalError
-     */
-    'status': number;
-    /**
-     * A short, human-readable summary of the problem. It should not change between occurences of a problem, except for localization. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
-     * @memberof InternalError
-     */
-    'title': string;
-    /**
-     * The error type.
-     * @type {string}
-     * @memberof InternalError
-     */
-    'type'?: string;
-    /**
-     * Used to return the correlation ID back to the user, in the format kong:trace:<correlation_id>. This helps us find the relevant logs when a customer reports an issue. 
-     * @type {string}
-     * @memberof InternalError
-     */
-    'instance': string;
-    /**
-     * A human readable explanation specific to this occurence of the problem. This field may contain request/entity data to help the user understand what went wrong. Enclose variable values in square brackets. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
-     * @memberof InternalError
-     */
-    'detail': string;
-}
-/**
- * 
- * @export
- * @interface InvalidParameterItem
- */
-export interface InvalidParameterItem {
+export interface InvalidParameterChoiceItem {
     /**
      * 
      * @type {string}
-     * @memberof InvalidParameterItem
+     * @memberof InvalidParameterChoiceItem
      */
     'field': string;
     /**
      * 
      * @type {InvalidRules}
-     * @memberof InvalidParameterItem
+     * @memberof InvalidParameterChoiceItem
      */
     'rule'?: InvalidRules | null;
     /**
      * 
      * @type {string}
-     * @memberof InvalidParameterItem
+     * @memberof InvalidParameterChoiceItem
      */
     'reason': string;
     /**
      * 
      * @type {Set<any>}
-     * @memberof InvalidParameterItem
+     * @memberof InvalidParameterChoiceItem
      */
     'choices'?: Set<any> | null;
 }
+/**
+ * 
+ * @export
+ * @interface InvalidParameterDependentItem
+ */
+export interface InvalidParameterDependentItem {
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterDependentItem
+     */
+    'field': string;
+    /**
+     * invalid parameters rules
+     * @type {string}
+     * @memberof InvalidParameterDependentItem
+     */
+    'rule': InvalidParameterDependentItemRuleEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterDependentItem
+     */
+    'reason': string;
+    /**
+     * 
+     * @type {Set<any>}
+     * @memberof InvalidParameterDependentItem
+     */
+    'dependents': Set<any> | null;
+}
+
+export const InvalidParameterDependentItemRuleEnum = {
+    DependentFields: 'dependent_fields'
+} as const;
+
+export type InvalidParameterDependentItemRuleEnum = typeof InvalidParameterDependentItemRuleEnum[keyof typeof InvalidParameterDependentItemRuleEnum];
+
+/**
+ * @type InvalidParametersInner
+ * @export
+ */
+export type InvalidParametersInner = InvalidParameterChoiceItem | InvalidParameterDependentItem;
+
 /**
  * invalid parameters rules
  * @export
@@ -1124,6 +1209,7 @@ export const InvalidRules = {
     MinUppercase: 'min_uppercase',
     MinSymbols: 'min_symbols',
     IsArray: 'is_array',
+    IsBase64: 'is_base64',
     IsBoolean: 'is_boolean',
     IsDateTime: 'is_date_time',
     IsInteger: 'is_integer',
@@ -1698,7 +1784,7 @@ export interface Product {
      * @type {string}
      * @memberof Product
      */
-    'description'?: string;
+    'description'?: string | null;
     /**
      * Number of linked documents in documentation.
      * @type {number}
@@ -1741,7 +1827,7 @@ export interface ProductCatalogIndexSource {
      * @type {string}
      * @memberof ProductCatalogIndexSource
      */
-    'description'?: string;
+    'description'?: string | null;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -1771,7 +1857,7 @@ export interface ProductCatalogIndexSource {
      * @type {ProductCatalogIndexSourceLatestVersion}
      * @memberof ProductCatalogIndexSource
      */
-    'latest_version': ProductCatalogIndexSourceLatestVersion;
+    'latest_version': ProductCatalogIndexSourceLatestVersion | null;
 }
 /**
  * Last created version.
@@ -1939,13 +2025,13 @@ export interface ProductVersionListPage {
      * @type {PaginatedMeta}
      * @memberof ProductVersionListPage
      */
-    'meta'?: PaginatedMeta;
+    'meta': PaginatedMeta;
     /**
      * 
      * @type {Array<ProductVersion>}
      * @memberof ProductVersionListPage
      */
-    'data'?: Array<ProductVersion>;
+    'data': Array<ProductVersion>;
 }
 /**
  * 
@@ -1971,19 +2057,19 @@ export type ProductVersionRegistrationConfigsInnerNameEnum = typeof ProductVersi
 /**
  * API specification document for a product version.
  * @export
- * @interface ProductVersionSpec
+ * @interface ProductVersionSpecDocument
  */
-export interface ProductVersionSpec {
+export interface ProductVersionSpecDocument {
     /**
      * 
      * @type {ApiTypeEnum}
-     * @memberof ProductVersionSpec
+     * @memberof ProductVersionSpecDocument
      */
     'api_type': ApiTypeEnum;
     /**
      * 
      * @type {string}
-     * @memberof ProductVersionSpec
+     * @memberof ProductVersionSpecDocument
      */
     'content': string;
 }
@@ -2064,6 +2150,411 @@ export const ProductVersionSpecOperationsOperationsInnerMethodEnum = {
 export type ProductVersionSpecOperationsOperationsInnerMethodEnum = typeof ProductVersionSpecOperationsOperationsInnerMethodEnum[keyof typeof ProductVersionSpecOperationsOperationsInnerMethodEnum];
 
 /**
+ * 
+ * @export
+ * @interface QueryApplicationAnalytics
+ */
+export interface QueryApplicationAnalytics {
+    /**
+     * Unix timestamp in milliseconds specifying the lower bound to return data for the query, inclusive.
+     * @type {number}
+     * @memberof QueryApplicationAnalytics
+     */
+    'start_ms': number;
+    /**
+     * Unix timestamp in milliseconds specifying upper bound to return data for the query, inclusive.
+     * @type {number}
+     * @memberof QueryApplicationAnalytics
+     */
+    'end_ms': number;
+    /**
+     * A property of your API (such as request count or latency) that you wish to query on. Your chosen metric is aggregated within the specified dimensions, meaning that if you query \'request count by application\', you\'ll receive the total number of requests each application received within the given time frame.  Some metrics, such as latency and response size, have more complicated aggregations: selecting P99 will result in the 99th percentile of the chosen metric. 
+     * @type {Array<string>}
+     * @memberof QueryApplicationAnalytics
+     */
+    'metrics': Array<QueryApplicationAnalyticsMetricsEnum>;
+    /**
+     * The dimensions for the query.  A query may have up to 2 dimensions, including time. If no dimensions are provided, the report will simply return the provided metric aggregated across all available data. 
+     * @type {Array<string>}
+     * @memberof QueryApplicationAnalytics
+     */
+    'dimensions'?: Array<QueryApplicationAnalyticsDimensionsEnum>;
+    /**
+     * `granularity_ms` is only valid for queries that include a time dimension, and it specifies the time buckets in for the returned data. 
+     * @type {number}
+     * @memberof QueryApplicationAnalytics
+     */
+    'granularity_ms'?: number;
+    /**
+     * 
+     * @type {QueryApplicationAnalyticsMeta}
+     * @memberof QueryApplicationAnalytics
+     */
+    'meta'?: QueryApplicationAnalyticsMeta;
+    /**
+     * 
+     * @type {Array<QueryApplicationAnalyticsFilterInner>}
+     * @memberof QueryApplicationAnalytics
+     */
+    'filter'?: Array<QueryApplicationAnalyticsFilterInner>;
+}
+
+export const QueryApplicationAnalyticsMetricsEnum = {
+    RequestCount: 'REQUEST_COUNT',
+    RequestPerMinute: 'REQUEST_PER_MINUTE',
+    ResponseLatencyP99: 'RESPONSE_LATENCY_P99',
+    ResponseLatencyP95: 'RESPONSE_LATENCY_P95',
+    ResponseLatencyP50: 'RESPONSE_LATENCY_P50',
+    ResponseSizeP99: 'RESPONSE_SIZE_P99',
+    ResponseSizeP95: 'RESPONSE_SIZE_P95',
+    ResponseSizeP50: 'RESPONSE_SIZE_P50',
+    RequestSizeP99: 'REQUEST_SIZE_P99',
+    RequestSizeP95: 'REQUEST_SIZE_P95',
+    RequestSizeP50: 'REQUEST_SIZE_P50'
+} as const;
+
+export type QueryApplicationAnalyticsMetricsEnum = typeof QueryApplicationAnalyticsMetricsEnum[keyof typeof QueryApplicationAnalyticsMetricsEnum];
+export const QueryApplicationAnalyticsDimensionsEnum = {
+    ApiProductVersion: 'API_PRODUCT_VERSION',
+    Application: 'APPLICATION',
+    StatusCode: 'STATUS_CODE',
+    StatusCodeGrouped: 'STATUS_CODE_GROUPED',
+    Time: 'TIME'
+} as const;
+
+export type QueryApplicationAnalyticsDimensionsEnum = typeof QueryApplicationAnalyticsDimensionsEnum[keyof typeof QueryApplicationAnalyticsDimensionsEnum];
+
+/**
+ * 
+ * @export
+ * @interface QueryApplicationAnalytics200Response
+ */
+export interface QueryApplicationAnalytics200Response {
+    /**
+     * 
+     * @type {QueryResponseMeta}
+     * @memberof QueryApplicationAnalytics200Response
+     */
+    'meta'?: QueryResponseMeta;
+    /**
+     * Query response data.
+     * @type {Array<QueryResponseRecord>}
+     * @memberof QueryApplicationAnalytics200Response
+     */
+    'records'?: Array<QueryResponseRecord>;
+}
+/**
+ * @type QueryApplicationAnalyticsFilterInner
+ * @export
+ */
+export type QueryApplicationAnalyticsFilterInner = { dimension: 'API_PRODUCT_VERSION' } & ApiProductVersionFilter | { dimension: 'APPLICATION' } & ApplicationFilter | { dimension: 'STATUS_CODE' } & StatusCodeFilter | { dimension: 'STATUS_CODE_GROUPED' } & StatusCodeGroupedFilter;
+
+/**
+ * Meta information about the query.
+ * @export
+ * @interface QueryApplicationAnalyticsMeta
+ */
+export interface QueryApplicationAnalyticsMeta {
+    /**
+     * Optional ID used to look up the query.
+     * @type {string}
+     * @memberof QueryApplicationAnalyticsMeta
+     */
+    'query_id'?: string;
+}
+/**
+ * Query response metadata.
+ * @export
+ * @interface QueryResponseMeta
+ */
+export interface QueryResponseMeta {
+    /**
+     * 
+     * @type {QueryResponseMetaDimensions}
+     * @memberof QueryResponseMeta
+     */
+    'dimensions'?: QueryResponseMetaDimensions;
+    /**
+     * The metric requested in query.
+     * @type {Array<string>}
+     * @memberof QueryResponseMeta
+     */
+    'metric_names'?: Array<QueryResponseMetaMetricNamesEnum>;
+    /**
+     * 
+     * @type {QueryResponseMetaMetricUnits}
+     * @memberof QueryResponseMeta
+     */
+    'metric_units'?: QueryResponseMetaMetricUnits;
+    /**
+     * Unix timestamp in milliseconds specifying the lower bound to return data for the query. Provided from the query parameters.
+     * @type {number}
+     * @memberof QueryResponseMeta
+     */
+    'start_ms'?: number;
+    /**
+     * Unix timestamp in milliseconds specifying the upper bound to return data for the query. Provided from the query parameters.
+     * @type {number}
+     * @memberof QueryResponseMeta
+     */
+    'end_ms'?: number;
+    /**
+     * True if the limit of dimension values was reached and results were truncated. Limit value is 50.
+     * @type {boolean}
+     * @memberof QueryResponseMeta
+     */
+    'truncated'?: boolean;
+    /**
+     * The resulting time bucket for the returned data. If `TIME` was not specified as a dimension, granularity is the duration of the query.
+     * @type {number}
+     * @memberof QueryResponseMeta
+     */
+    'granularity'?: number;
+    /**
+     * Optional ID used to look up the query.
+     * @type {string}
+     * @memberof QueryResponseMeta
+     */
+    'query_id'?: string;
+}
+
+export const QueryResponseMetaMetricNamesEnum = {
+    RequestCount: 'REQUEST_COUNT',
+    RequestPerMinute: 'REQUEST_PER_MINUTE',
+    ResponseLatencyP99: 'RESPONSE_LATENCY_P99',
+    ResponseLatencyP95: 'RESPONSE_LATENCY_P95',
+    ResponseLatencyP50: 'RESPONSE_LATENCY_P50',
+    ResponseSizeP99: 'RESPONSE_SIZE_P99',
+    ResponseSizeP95: 'RESPONSE_SIZE_P95',
+    ResponseSizeP50: 'RESPONSE_SIZE_P50',
+    RequestSizeP99: 'REQUEST_SIZE_P99',
+    RequestSizeP95: 'REQUEST_SIZE_P95',
+    RequestSizeP50: 'REQUEST_SIZE_P50'
+} as const;
+
+export type QueryResponseMetaMetricNamesEnum = typeof QueryResponseMetaMetricNamesEnum[keyof typeof QueryResponseMetaMetricNamesEnum];
+
+/**
+ * The dimension name and values returned in the response.
+ * @export
+ * @interface QueryResponseMetaDimensions
+ */
+export interface QueryResponseMetaDimensions {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof QueryResponseMetaDimensions
+     */
+    'API_PRODUCT_VERSION'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof QueryResponseMetaDimensions
+     */
+    'APPLICATION'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof QueryResponseMetaDimensions
+     */
+    'STATUS_CODE'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof QueryResponseMetaDimensions
+     */
+    'STATUS_CODE_GROUPED'?: Array<string>;
+}
+/**
+ * The unit of metric.
+ * @export
+ * @interface QueryResponseMetaMetricUnits
+ */
+export interface QueryResponseMetaMetricUnits {
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'REQUEST_COUNT'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'REQUEST_PER_MINUTE'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'RESPONSE_LATENCY_P99'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'RESPONSE_LATENCY_P95'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'RESPONSE_LATENCY_P50'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'RESPONSE_SIZE_P99'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'RESPONSE_SIZE_P95'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'RESPONSE_SIZE_P50'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'REQUEST_SIZE_P99'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'REQUEST_SIZE_P95'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QueryResponseMetaMetricUnits
+     */
+    'REQUEST_SIZE_P50'?: string;
+}
+/**
+ * A response record.
+ * @export
+ * @interface QueryResponseRecord
+ */
+export interface QueryResponseRecord {
+    /**
+     * 
+     * @type {QueryResponseRecordEvent}
+     * @memberof QueryResponseRecord
+     */
+    'event'?: QueryResponseRecordEvent;
+    /**
+     * An ISO-8601 timestamp. If `TIME` was requested as a dimension this will be the start of the time bucket. If not specified this is the start time of the query.
+     * @type {string}
+     * @memberof QueryResponseRecord
+     */
+    'timestamp'?: string;
+}
+/**
+ * Event within the response. Mapping from the requested metrics and dimensions to the values.
+ * @export
+ * @interface QueryResponseRecordEvent
+ */
+export interface QueryResponseRecordEvent {
+    /**
+     * The number or requests metric.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'REQUEST_COUNT'?: number;
+    /**
+     * The number of requests per minute metric.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'REQUEST_PER_MINUTE'?: number;
+    /**
+     * 99th percentile response latency metric in milliseconds.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'RESPONSE_LATENCY_P99'?: number;
+    /**
+     * 95th percentile response latency metric in milliseconds.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'RESPONSE_LATENCY_P95'?: number;
+    /**
+     * 50th percentile response latency metric in milliseconds.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'RESPONSE_LATENCY_P50'?: number;
+    /**
+     * 99th percentile response size metric in bytes.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'RESPONSE_SIZE_P99'?: number;
+    /**
+     * 95th percentile response size metric in bytes.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'RESPONSE_SIZE_P95'?: number;
+    /**
+     * 50th percentile response size metric in bytes.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'RESPONSE_SIZE_P50'?: number;
+    /**
+     * 99th percentile request size metric in bytes.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'REQUEST_SIZE_P99'?: number;
+    /**
+     * 95th percentile request size metric in bytes.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'REQUEST_SIZE_P95'?: number;
+    /**
+     * 50th percentile request size metric in bytes.
+     * @type {number}
+     * @memberof QueryResponseRecordEvent
+     */
+    'REQUEST_SIZE_P50'?: number;
+    /**
+     * Dimension value for `API_PRODUCT_VERSION` name.
+     * @type {string}
+     * @memberof QueryResponseRecordEvent
+     */
+    'API_PRODUCT_VERSION'?: string;
+    /**
+     * Dimension value for `APPLICATION` name.
+     * @type {string}
+     * @memberof QueryResponseRecordEvent
+     */
+    'APPLICATION'?: string;
+    /**
+     * Dimension value for `STATUS_CODE`.
+     * @type {string}
+     * @memberof QueryResponseRecordEvent
+     */
+    'STATUS_CODE'?: string;
+    /**
+     * Dimension value for `STATUS_CODE_GROUPED`.
+     * @type {string}
+     * @memberof QueryResponseRecordEvent
+     */
+    'STATUS_CODE_GROUPED'?: string;
+}
+/**
  * Refresh token response
  * @export
  * @interface RefreshTokenResponse
@@ -2088,6 +2579,8 @@ export interface RefreshTokenResponse {
  * @interface RegisterPayload
  */
 export interface RegisterPayload {
+    [key: string]: any;
+
     /**
      * 
      * @type {string}
@@ -2184,6 +2677,70 @@ export interface SearchResultsDataInner {
      */
     'source': ProductCatalogIndexSource;
 }
+/**
+ * 
+ * @export
+ * @interface StatusCodeFilter
+ */
+export interface StatusCodeFilter {
+    /**
+     * The dimension to filter.
+     * @type {string}
+     * @memberof StatusCodeFilter
+     */
+    'dimension': StatusCodeFilterDimensionEnum;
+    /**
+     * 
+     * @type {FilterType}
+     * @memberof StatusCodeFilter
+     */
+    'type': FilterType;
+    /**
+     * Only include requests with specific status codes in the results. 
+     * @type {Array<number>}
+     * @memberof StatusCodeFilter
+     */
+    'values': Array<number>;
+}
+
+export const StatusCodeFilterDimensionEnum = {
+    StatusCode: 'STATUS_CODE'
+} as const;
+
+export type StatusCodeFilterDimensionEnum = typeof StatusCodeFilterDimensionEnum[keyof typeof StatusCodeFilterDimensionEnum];
+
+/**
+ * 
+ * @export
+ * @interface StatusCodeGroupedFilter
+ */
+export interface StatusCodeGroupedFilter {
+    /**
+     * The dimension to filter.
+     * @type {string}
+     * @memberof StatusCodeGroupedFilter
+     */
+    'dimension': StatusCodeGroupedFilterDimensionEnum;
+    /**
+     * 
+     * @type {FilterType}
+     * @memberof StatusCodeGroupedFilter
+     */
+    'type': FilterType;
+    /**
+     * Only include the given groups of status codes in the results. 
+     * @type {Array<string>}
+     * @memberof StatusCodeGroupedFilter
+     */
+    'values': Array<string>;
+}
+
+export const StatusCodeGroupedFilterDimensionEnum = {
+    StatusCodeGrouped: 'STATUS_CODE_GROUPED'
+} as const;
+
+export type StatusCodeGroupedFilterDimensionEnum = typeof StatusCodeGroupedFilterDimensionEnum[keyof typeof StatusCodeGroupedFilterDimensionEnum];
+
 /**
  * 
  * @export
@@ -2588,6 +3145,125 @@ export interface VerifyEmailResponse {
 }
 
 /**
+ * ApplicationAnalyticsApi - axios parameter creator
+ * @export
+ */
+export const ApplicationAnalyticsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Query
+         * @summary Query Application Analytics
+         * @param {QueryApplicationAnalytics} [queryApplicationAnalytics] Object describing the query sent to analytics API.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        queryApplicationAnalytics: async (queryApplicationAnalytics?: QueryApplicationAnalytics, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/stats`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(queryApplicationAnalytics, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ApplicationAnalyticsApi - functional programming interface
+ * @export
+ */
+export const ApplicationAnalyticsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ApplicationAnalyticsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Query
+         * @summary Query Application Analytics
+         * @param {QueryApplicationAnalytics} [queryApplicationAnalytics] Object describing the query sent to analytics API.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async queryApplicationAnalytics(queryApplicationAnalytics?: QueryApplicationAnalytics, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<QueryApplicationAnalytics200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.queryApplicationAnalytics(queryApplicationAnalytics, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ApplicationAnalyticsApi - factory interface
+ * @export
+ */
+export const ApplicationAnalyticsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ApplicationAnalyticsApiFp(configuration)
+    return {
+        /**
+         * Query
+         * @summary Query Application Analytics
+         * @param {QueryApplicationAnalytics} [queryApplicationAnalytics] Object describing the query sent to analytics API.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        queryApplicationAnalytics(queryApplicationAnalytics?: QueryApplicationAnalytics, options?: any): AxiosPromise<QueryApplicationAnalytics200Response> {
+            return localVarFp.queryApplicationAnalytics(queryApplicationAnalytics, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for queryApplicationAnalytics operation in ApplicationAnalyticsApi.
+ * @export
+ * @interface ApplicationAnalyticsApiQueryApplicationAnalyticsRequest
+ */
+export interface ApplicationAnalyticsApiQueryApplicationAnalyticsRequest {
+    /**
+     * Object describing the query sent to analytics API.
+     * @type {QueryApplicationAnalytics}
+     * @memberof ApplicationAnalyticsApiQueryApplicationAnalytics
+     */
+    readonly queryApplicationAnalytics?: QueryApplicationAnalytics
+}
+
+/**
+ * ApplicationAnalyticsApi - object-oriented interface
+ * @export
+ * @class ApplicationAnalyticsApi
+ * @extends {BaseAPI}
+ */
+export class ApplicationAnalyticsApi extends BaseAPI {
+    /**
+     * Query
+     * @summary Query Application Analytics
+     * @param {ApplicationAnalyticsApiQueryApplicationAnalyticsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationAnalyticsApi
+     */
+    public queryApplicationAnalytics(requestParameters: ApplicationAnalyticsApiQueryApplicationAnalyticsRequest = {}, options?: AxiosRequestConfig) {
+        return ApplicationAnalyticsApiFp(this.configuration).queryApplicationAnalytics(requestParameters.queryApplicationAnalytics, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
  * ApplicationsApi - axios parameter creator
  * @export
  */
@@ -2614,8 +3290,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
 
     
@@ -2654,8 +3328,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -2690,8 +3362,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -2706,7 +3376,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
         /**
          * List applications owned by the developer currently logged in.
          * @summary List Applications
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -2726,8 +3396,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -2785,8 +3453,6 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
 
     
@@ -2848,7 +3514,7 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
         /**
          * List applications owned by the developer currently logged in.
          * @summary List Applications
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -2915,7 +3581,7 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
         /**
          * List applications owned by the developer currently logged in.
          * @summary List Applications
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -2989,7 +3655,7 @@ export interface ApplicationsApiGetApplicationRequest {
  */
 export interface ApplicationsApiListApplicationsRequest {
     /**
-     * Determines the size of the page to retrieve.
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
      * @type {number}
      * @memberof ApplicationsApiListApplications
      */
@@ -3144,8 +3810,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -3187,8 +3851,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3204,7 +3866,7 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
          * Lists the credentials for an application they own.
          * @summary List credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3224,8 +3886,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -3269,8 +3929,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3311,8 +3969,6 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
 
     
@@ -3366,7 +4022,7 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
          * Lists the credentials for an application they own.
          * @summary List credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3435,7 +4091,7 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
          * Lists the credentials for an application they own.
          * @summary List credentials
          * @param {string} applicationId Id of the targeted application
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3524,7 +4180,7 @@ export interface CredentialsApiListCredentialsRequest {
     readonly applicationId: string
 
     /**
-     * Determines the size of the page to retrieve.
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
      * @type {number}
      * @memberof CredentialsApiListCredentials
      */
@@ -3772,8 +4428,6 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3848,11 +4502,11 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
         /**
          * Register to the developer portal.
          * @summary Register
-         * @param {RegisterPayload} [registerPayload] Developer registration
+         * @param {{ [key: string]: any; }} [requestBody] Developer registration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        register: async (registerPayload?: RegisterPayload, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        register: async (requestBody?: { [key: string]: any; }, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/developer`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3872,7 +4526,7 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(registerPayload, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4022,12 +4676,12 @@ export const DeveloperApiFp = function(configuration?: Configuration) {
         /**
          * Register to the developer portal.
          * @summary Register
-         * @param {RegisterPayload} [registerPayload] Developer registration
+         * @param {{ [key: string]: any; }} [requestBody] Developer registration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async register(registerPayload?: RegisterPayload, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.register(registerPayload, options);
+        async register(requestBody?: { [key: string]: any; }, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.register(requestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4121,12 +4775,12 @@ export const DeveloperApiFactory = function (configuration?: Configuration, base
         /**
          * Register to the developer portal.
          * @summary Register
-         * @param {RegisterPayload} [registerPayload] Developer registration
+         * @param {{ [key: string]: any; }} [requestBody] Developer registration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        register(registerPayload?: RegisterPayload, options?: any): AxiosPromise<void> {
-            return localVarFp.register(registerPayload, options).then((request) => request(axios, basePath));
+        register(requestBody?: { [key: string]: any; }, options?: any): AxiosPromise<void> {
+            return localVarFp.register(requestBody, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows a developer to reset their password, using a reset token.
@@ -4187,10 +4841,10 @@ export interface DeveloperApiForgotPasswordRequest {
 export interface DeveloperApiRegisterRequest {
     /**
      * Developer registration
-     * @type {RegisterPayload}
+     * @type {{ [key: string]: any; }}
      * @memberof DeveloperApiRegister
      */
-    readonly registerPayload?: RegisterPayload
+    readonly requestBody?: { [key: string]: any; }
 }
 
 /**
@@ -4305,7 +4959,7 @@ export class DeveloperApi extends BaseAPI {
      * @memberof DeveloperApi
      */
     public register(requestParameters: DeveloperApiRegisterRequest = {}, options?: AxiosRequestConfig) {
-        return DeveloperApiFp(this.configuration).register(requestParameters.registerPayload, options).then((request) => request(this.axios, this.basePath));
+        return DeveloperApiFp(this.configuration).register(requestParameters.requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4368,8 +5022,6 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
             if (accept != null) {
                 localVarHeaderParameter['Accept'] = typeof accept === 'string' 
                     ? accept 
@@ -4392,7 +5044,7 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
          * @summary List product documents
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {DocumentContentTypeEnum} [accept] 
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4412,8 +5064,6 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -4468,7 +5118,7 @@ export const DocumentationApiFp = function(configuration?: Configuration) {
          * @summary List product documents
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {DocumentContentTypeEnum} [accept] 
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4504,7 +5154,7 @@ export const DocumentationApiFactory = function (configuration?: Configuration, 
          * @summary List product documents
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
          * @param {DocumentContentTypeEnum} [accept] 
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4564,7 +5214,7 @@ export interface DocumentationApiListProductDocumentsRequest {
     readonly accept?: DocumentContentTypeEnum
 
     /**
-     * Determines the size of the page to retrieve.
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
      * @type {number}
      * @memberof DocumentationApiListProductDocuments
      */
@@ -4918,8 +5568,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4934,7 +5582,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Returns a paginated list of published API Products.
          * @summary List Products
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -4959,8 +5607,6 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -5037,7 +5683,7 @@ export const ProductsApiFp = function(configuration?: Configuration) {
         /**
          * Returns a paginated list of published API Products.
          * @summary List Products
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -5077,7 +5723,7 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
         /**
          * Returns a paginated list of published API Products.
          * @summary List Products
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -5117,7 +5763,7 @@ export interface ProductsApiGetProductRequest {
  */
 export interface ProductsApiListProductsRequest {
     /**
-     * Determines the size of the page to retrieve.
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
      * @type {number}
      * @memberof ProductsApiListProducts
      */
@@ -5252,8 +5898,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -5295,8 +5939,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5335,8 +5977,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5352,7 +5992,7 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
          * Lists product registrations for an application.
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
@@ -5376,8 +6016,6 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -5464,7 +6102,7 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
          * Lists product registrations for an application.
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
@@ -5524,7 +6162,7 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
          * Lists product registrations for an application.
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterIdEq] Filter by direct equality comparison of the id property with a supplied value.
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
@@ -5616,7 +6254,7 @@ export interface RegistrationsApiListApplicationRegistrationsRequest {
     readonly applicationId: string
 
     /**
-     * Determines the size of the page to retrieve.
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
      * @type {number}
      * @memberof RegistrationsApiListApplicationRegistrations
      */
@@ -5727,7 +6365,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
          * @param {string} [join] Determines which sub-entities to include in search results
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5747,8 +6385,6 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
             if (q !== undefined) {
                 localVarQueryParameter['q'] = q;
@@ -5793,7 +6429,7 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
          * @param {string} [join] Determines which sub-entities to include in search results
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5818,7 +6454,7 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
          * @param {string} [q] Determines how to filter search results
          * @param {string} [join] Determines which sub-entities to include in search results
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5857,7 +6493,7 @@ export interface SearchApiSearchPortalEntitiesRequest {
     readonly join?: string
 
     /**
-     * Determines the size of the page to retrieve.
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
      * @type {number}
      * @memberof SearchApiSearchPortalEntities
      */
@@ -5925,8 +6561,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5964,8 +6598,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
 
     
@@ -6005,8 +6637,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication portalAccessToken required
-
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6022,7 +6652,7 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * Returns paginated list of versions of a given product.
          * @summary Get page of product versions
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -6045,8 +6675,6 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -6109,7 +6737,7 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductVersionSpec(productId: string, versionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionSpec>> {
+        async getProductVersionSpec(productId: string, versionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionSpecDocument>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersionSpec(productId, versionId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -6129,7 +6757,7 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * Returns paginated list of versions of a given product.
          * @summary Get page of product versions
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -6170,7 +6798,7 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductVersionSpec(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpec> {
+        getProductVersionSpec(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpecDocument> {
             return localVarFp.getProductVersionSpec(productId, versionId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -6188,7 +6816,7 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * Returns paginated list of versions of a given product.
          * @summary Get page of product versions
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {number} [pageSize] Determines the size of the page to retrieve.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
@@ -6279,7 +6907,7 @@ export interface VersionsApiListProductVersionsRequest {
     readonly productId: string
 
     /**
-     * Determines the size of the page to retrieve.
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
      * @type {number}
      * @memberof VersionsApiListProductVersions
      */
