@@ -636,6 +636,30 @@ paths:
       security:
         - portalAccessToken: []
         - {}
+  /api/v2/products/{productId}/actions:
+    x-unstable: true
+    parameters:
+      - $ref: '#/components/parameters/ProductId'
+    get:
+      summary: Get Product Actions
+      description: >-
+        Get a list of actions that the current developer is allowed to perform
+        on an API product.
+      operationId: get-product-actions
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductActions'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '503':
+          $ref: '#/components/responses/NotAvailable'
+      tags:
+        - products
+    description: |-
+      **Pre-release Endpoint**
+      This endpoint is currently in beta and is subject to change.
   /api/v2/products/{productId}/documents:
     get:
       summary: List product documents
@@ -871,6 +895,14 @@ paths:
       security:
         - portalAccessToken: []
 components:
+  securitySchemes:
+    portalAccessToken:
+      type: apiKey
+      in: cookie
+      name: portalaccesstoken
+      description: >
+        The Developer portal cookie is meant to be used by the Developer API to
+        authenticate with.
   schemas:
     QueryApplicationAnalytics:
       type: object
@@ -942,14 +974,6 @@ components:
             `granularity_ms` is only valid for queries that include a time
             dimension, and it specifies the time buckets in for the returned
             data.
-        meta:
-          type: object
-          additionalProperties: false
-          description: Meta information about the query.
-          properties:
-            query_id:
-              type: string
-              description: Optional ID used to look up the query.
         filter:
           type: array
           items:
@@ -1311,7 +1335,6 @@ components:
           example: Forbidden
       allOf:
         - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
     CreateCredentialPayload:
       additionalProperties: false
       type: object
@@ -1672,16 +1695,6 @@ components:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
-          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
-          - $ref: '#/components/schemas/InvalidParameterDependentItem'
     BadRequestError:
       type: object
       required:
@@ -1701,11 +1714,6 @@ components:
           $ref: '#/components/schemas/InvalidParameters'
       allOf:
         - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
     UnauthorizedError:
       type: object
       properties:
@@ -1720,11 +1728,6 @@ components:
         detail:
           example: Invalid credentials
       allOf:
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
     NotFoundError:
       type: object
@@ -1741,9 +1744,6 @@ components:
           example: Not found
       allOf:
         - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
-        - $ref: '#/components/schemas/BaseError'
     ConflictError:
       type: object
       properties:
@@ -1758,7 +1758,6 @@ components:
         detail:
           example: Conflict
       allOf:
-        - $ref: '#/components/schemas/BaseError'
         - $ref: '#/components/schemas/BaseError'
     TooManyRequestsError:
       type: object
@@ -2026,6 +2025,33 @@ components:
         - rbac_enabled
         - dcr_provider_ids
         - allowed_time_period
+    ProductActionsResponse:
+      title: Product Actions Response
+      type: object
+      additionalProperties: false
+      required:
+        - actions
+      properties:
+        actions:
+          type: object
+          additionalProperties: false
+          required:
+            - view
+            - register
+            - view_documentation
+          properties:
+            view:
+              type: boolean
+            register:
+              type: boolean
+            view_documentation:
+              type: boolean
+          description: List of actions that can be performed on the API Product
+      example:
+        actions:
+          view: true
+          register: false
+          view_documentation: true
     Product:
       title: Product
       type: object
@@ -2136,6 +2162,51 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductVersion'
+    ProductVersionListApplicationsPage:
+      title: ProductVersionListApplicationsPage
+      type: object
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersionApplication'
+    ProductVersionApplication:
+      title: ProductVersionApplication
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - registration_status
+        - registration_id
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          description: The name of the application
+          type: string
+        registration_id:
+          $ref: '#/components/schemas/NullableUUID'
+        registration_status:
+          type: string
+          nullable: true
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
     ProductVersionSpecDocument:
       type: object
       title: ProductVersionSpecDocument
@@ -2291,6 +2362,12 @@ components:
             Title of the document. This is used in the Portal UI to identify the
             document.
           example: Hello World
+    NullableUUID:
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier for a resource.
+      nullable: true
     DocumentContentTypeEnum:
       type: string
       default: application/json
@@ -2632,6 +2709,9 @@ components:
           table_header: '#/components/schemas/TableHeaderBlock'
           table_cell: '#/components/schemas/TableCellBlock'
           table_row: '#/components/schemas/TableRowBlock'
+    NotAvailableError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     CreateRegistrationPayload:
       additionalProperties: false
       type: object
@@ -2996,6 +3076,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalContext'
+    ProductActions:
+      description: Product actions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductActionsResponse'
+          examples:
+            Retrieve Product Actions Response:
+              $ref: '#/components/examples/ProductActionsExample'
     ProductGet:
       description: Response for a single product's details.
       content:
@@ -3041,6 +3130,12 @@ components:
         application/vnd.konnect.document-nodes+json:
           schema:
             $ref: '#/components/schemas/ProductDocument'
+    NotAvailable:
+      description: Service not available
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotAvailableError'
     CreateRegistration:
       description: Registration creation response.
       content:
@@ -3207,8 +3302,6 @@ components:
         end_ms: 1691158980000
         metrics:
           - REQUEST_PER_MINUTE
-        meta:
-          query_id: portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e
         filter:
           - dimension: API_PRODUCT_VERSION
             type: IN
@@ -3222,8 +3315,6 @@ components:
           - RESPONSE_LATENCY_P99
         dimensions:
           - APPLICATION
-        meta:
-          query_id: portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e
     QueryExampleWithMetricAndMultipleDimensions:
       value:
         start_ms: 1691074800000
@@ -3233,8 +3324,6 @@ components:
         dimensions:
           - APPLICATION
           - STATUS_CODE_GROUPED
-        meta:
-          query_id: portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e
         filter:
           - dimension: STATUS_CODE_GROUPED
             type: IN
@@ -3251,8 +3340,6 @@ components:
         dimensions:
           - TIME
           - STATUS_CODE_GROUPED
-        meta:
-          query_id: portal-api-3c0abb98-90bd-4e80-a495-ac268acc493e
     BadRequestExample:
       value:
         status: 400
@@ -3336,6 +3423,12 @@ components:
         title: Gone
         instance: konnect:trace:8988732526256293040
         detail: The token has expired
+    ProductActionsExample:
+      value:
+        actions:
+          register: false
+          view: true
+          view_documentation: true
     SearchResponseExample:
       value:
         data:
@@ -3497,14 +3590,6 @@ components:
       schema:
         type: string
         example: 5be86298-147b-45ab-bfaf-a1bff97dce39
-    RegistrationId:
-      name: registrationId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
     FilterByStatusEquality:
       name: filter[status][eq]
       description: >-
@@ -3535,6 +3620,14 @@ components:
           - rejected
           - revoked
         example: approved
+    RegistrationId:
+      name: registrationId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
+      schema:
+        type: string
+        format: uuid
     SearchQuery:
       name: q
       description: Determines how to filter search results
