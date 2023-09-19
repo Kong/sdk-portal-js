@@ -1463,6 +1463,43 @@ export interface ListRegistrationsResponse {
 /**
  * 
  * @export
+ * @interface NotAvailableError
+ */
+export interface NotAvailableError {
+    /**
+     * The HTTP status code of the error. Useful when passing the response body to child properties in a frontend UI. Must be returned as an integer. 
+     * @type {number}
+     * @memberof NotAvailableError
+     */
+    'status': number;
+    /**
+     * A short, human-readable summary of the problem. It should not change between occurences of a problem, except for localization. Should be provided as \"Sentence case\" for direct use in the UI. 
+     * @type {string}
+     * @memberof NotAvailableError
+     */
+    'title': string;
+    /**
+     * The error type.
+     * @type {string}
+     * @memberof NotAvailableError
+     */
+    'type'?: string;
+    /**
+     * Used to return the correlation ID back to the user, in the format kong:trace:<correlation_id>. This helps us find the relevant logs when a customer reports an issue. 
+     * @type {string}
+     * @memberof NotAvailableError
+     */
+    'instance': string;
+    /**
+     * A human readable explanation specific to this occurence of the problem. This field may contain request/entity data to help the user understand what went wrong. Enclose variable values in square brackets. Should be provided as \"Sentence case\" for direct use in the UI. 
+     * @type {string}
+     * @memberof NotAvailableError
+     */
+    'detail': string;
+}
+/**
+ * 
+ * @export
  * @interface NotFoundError
  */
 export interface NotFoundError {
@@ -1807,6 +1844,44 @@ export interface Product {
 /**
  * 
  * @export
+ * @interface ProductActionsResponse
+ */
+export interface ProductActionsResponse {
+    /**
+     * 
+     * @type {ProductActionsResponseActions}
+     * @memberof ProductActionsResponse
+     */
+    'actions': ProductActionsResponseActions;
+}
+/**
+ * List of actions that can be performed on the API Product
+ * @export
+ * @interface ProductActionsResponseActions
+ */
+export interface ProductActionsResponseActions {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProductActionsResponseActions
+     */
+    'view': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProductActionsResponseActions
+     */
+    'register': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProductActionsResponseActions
+     */
+    'view_documentation': boolean;
+}
+/**
+ * 
+ * @export
  * @interface ProductCatalogIndexSource
  */
 export interface ProductCatalogIndexSource {
@@ -2017,6 +2092,78 @@ export interface ProductVersion {
 /**
  * 
  * @export
+ * @interface ProductVersionApplication
+ */
+export interface ProductVersionApplication {
+    /**
+     * Contains a unique identifier used by the API for this resource.
+     * @type {string}
+     * @memberof ProductVersionApplication
+     */
+    'id': string;
+    /**
+     * The name of the application
+     * @type {string}
+     * @memberof ProductVersionApplication
+     */
+    'name': string;
+    /**
+     * Contains a unique identifier for a resource.
+     * @type {string}
+     * @memberof ProductVersionApplication
+     */
+    'registration_id': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductVersionApplication
+     */
+    'registration_status': ProductVersionApplicationRegistrationStatusEnum;
+    /**
+     * An ISO-8601 timestamp representation of entity creation date.
+     * @type {string}
+     * @memberof ProductVersionApplication
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of entity update date.
+     * @type {string}
+     * @memberof ProductVersionApplication
+     */
+    'updated_at': string;
+}
+
+export const ProductVersionApplicationRegistrationStatusEnum = {
+    Approved: 'approved',
+    Pending: 'pending',
+    Rejected: 'rejected',
+    Revoked: 'revoked'
+} as const;
+
+export type ProductVersionApplicationRegistrationStatusEnum = typeof ProductVersionApplicationRegistrationStatusEnum[keyof typeof ProductVersionApplicationRegistrationStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface ProductVersionListApplicationsPage
+ */
+export interface ProductVersionListApplicationsPage {
+    /**
+     * 
+     * @type {PaginatedMeta}
+     * @memberof ProductVersionListApplicationsPage
+     */
+    'meta': PaginatedMeta;
+    /**
+     * 
+     * @type {Array<ProductVersionApplication>}
+     * @memberof ProductVersionListApplicationsPage
+     */
+    'data': Array<ProductVersionApplication>;
+}
+/**
+ * 
+ * @export
  * @interface ProductVersionListPage
  */
 export interface ProductVersionListPage {
@@ -2187,12 +2334,6 @@ export interface QueryApplicationAnalytics {
     'granularity_ms'?: number;
     /**
      * 
-     * @type {QueryApplicationAnalyticsMeta}
-     * @memberof QueryApplicationAnalytics
-     */
-    'meta'?: QueryApplicationAnalyticsMeta;
-    /**
-     * 
      * @type {Array<QueryApplicationAnalyticsFilterInner>}
      * @memberof QueryApplicationAnalytics
      */
@@ -2249,19 +2390,6 @@ export interface QueryApplicationAnalytics200Response {
  */
 export type QueryApplicationAnalyticsFilterInner = { dimension: 'API_PRODUCT_VERSION' } & ApiProductVersionFilter | { dimension: 'APPLICATION' } & ApplicationFilter | { dimension: 'STATUS_CODE' } & StatusCodeFilter | { dimension: 'STATUS_CODE_GROUPED' } & StatusCodeGroupedFilter;
 
-/**
- * Meta information about the query.
- * @export
- * @interface QueryApplicationAnalyticsMeta
- */
-export interface QueryApplicationAnalyticsMeta {
-    /**
-     * Optional ID used to look up the query.
-     * @type {string}
-     * @memberof QueryApplicationAnalyticsMeta
-     */
-    'query_id'?: string;
-}
 /**
  * Query response metadata.
  * @export
@@ -3170,6 +3298,8 @@ export const ApplicationAnalyticsApiAxiosParamCreator = function (configuration?
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -3291,6 +3421,8 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -3328,6 +3460,8 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3361,6 +3495,8 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
 
     
@@ -3396,6 +3532,8 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -3453,6 +3591,8 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
 
     
@@ -3810,6 +3950,8 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -3851,6 +3993,8 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3886,6 +4030,8 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -3929,6 +4075,8 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -3969,6 +4117,8 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
 
     
@@ -4427,6 +4577,8 @@ export const DeveloperApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
 
     
@@ -5022,6 +5174,8 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
             if (accept != null) {
                 localVarHeaderParameter['Accept'] = typeof accept === 'string' 
                     ? accept 
@@ -5064,6 +5218,8 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -5568,6 +5724,42 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Get a list of actions that the current developer is allowed to perform on an API product.
+         * @summary Get Product Actions
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductActions: async (productId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('getProductActions', 'productId', productId)
+            const localVarPath = `/api/v2/products/{productId}/actions`
+                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5607,6 +5799,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -5681,6 +5875,17 @@ export const ProductsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Get a list of actions that the current developer is allowed to perform on an API product.
+         * @summary Get Product Actions
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProductActions(productId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductActionsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductActions(productId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Returns a paginated list of published API Products.
          * @summary List Products
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -5721,6 +5926,16 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.getProduct(productId, options).then((request) => request(axios, basePath));
         },
         /**
+         * Get a list of actions that the current developer is allowed to perform on an API product.
+         * @summary Get Product Actions
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProductActions(productId: string, options?: any): AxiosPromise<ProductActionsResponse> {
+            return localVarFp.getProductActions(productId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Returns a paginated list of published API Products.
          * @summary List Products
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -5752,6 +5967,20 @@ export interface ProductsApiGetProductRequest {
      * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof ProductsApiGetProduct
+     */
+    readonly productId: string
+}
+
+/**
+ * Request parameters for getProductActions operation in ProductsApi.
+ * @export
+ * @interface ProductsApiGetProductActionsRequest
+ */
+export interface ProductsApiGetProductActionsRequest {
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof ProductsApiGetProductActions
      */
     readonly productId: string
 }
@@ -5853,6 +6082,18 @@ export class ProductsApi extends BaseAPI {
     }
 
     /**
+     * Get a list of actions that the current developer is allowed to perform on an API product.
+     * @summary Get Product Actions
+     * @param {ProductsApiGetProductActionsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public getProductActions(requestParameters: ProductsApiGetProductActionsRequest, options?: AxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).getProductActions(requestParameters.productId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Returns a paginated list of published API Products.
      * @summary List Products
      * @param {ProductsApiListProductsRequest} requestParameters Request parameters.
@@ -5898,6 +6139,8 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -5939,6 +6182,8 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5976,6 +6221,8 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
 
     
@@ -6016,6 +6263,8 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
@@ -6386,6 +6635,8 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
             if (q !== undefined) {
                 localVarQueryParameter['q'] = q;
             }
@@ -6561,6 +6812,8 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6598,6 +6851,8 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
 
     
@@ -6637,6 +6892,8 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication portalAccessToken required
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -6675,6 +6932,8 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
 
             if (pageSize !== undefined) {
                 localVarQueryParameter['page[size]'] = pageSize;
