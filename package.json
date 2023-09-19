@@ -1,8 +1,8 @@
 {
   "name": "@kong/sdk-portal-js",
   "main": "dist/index.js",
-  "types": "./src/index.ts",
-  "version": "0.0.1",
+  "types": "dist/types/index.d.ts",
+  "version": "2.1.0",
   "private": false,
   "scripts": {
     "build": "tsc",
