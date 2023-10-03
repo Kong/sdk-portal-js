@@ -7,9 +7,23 @@ on:
 permissions:
   contents: write
 jobs:
+  get-changed-files:
+    name: Get Changed Files
+      runs-on: ubuntu-latest
+      outputs:
+        oas-modified: ${{ steps.oas-modified.outputs.any_modified }}
+    steps:
+     - name: Check if `openapi.yaml` has changed
+        uses: tj-actions/changed-files@v35.7.1
+        id: oas-modified
+        with:
+          files: |
+            openapi.yaml
   generate-js:
     name: Generate JavaScript SDK
     runs-on: ubuntu-latest
+    needs: [get-changed-files]
+    if: needs.get-changed-files.outputs.oas-modified == 'true'
     steps:
 
       - uses: actions/checkout@v3
@@ -34,5 +48,5 @@ jobs:
           git config --global user.name "team-devx"
           gh pr checkout ${{ github.event.pull_request.number }}
           git add src/
-          git commit --allow-empty -m "Update SDK based on openapi.yaml changes"
+          git commit -m "chore: build SDK from openapi.yaml changes"
           git push
