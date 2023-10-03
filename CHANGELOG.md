@@ -1,3 +1,22 @@
+# v2.2.1 (Tue Oct 03 2023)
+
+#### 🐛 Bug Fix
+
+- chore: add devx bot token [#47](https://github.com/Kong/sdk-portal-js/pull/47) ([@andrewwylde](https://github.com/andrewwylde))
+- docs: update changelog [#46](https://github.com/Kong/sdk-portal-js/pull/46) ([@andrewwylde](https://github.com/andrewwylde) [@team-devx-bot](https://github.com/team-devx-bot))
+
+#### ⚠️ Pushed to `main`
+
+- fix: ci ([@andrewwylde](https://github.com/andrewwylde))
+- chore: update CI to prevent extra commits ([@andrewwylde](https://github.com/andrewwylde))
+
+#### Authors: 2
+
+- Andrew Wylde ([@andrewwylde](https://github.com/andrewwylde))
+- Kong Team Devx Bot ([@team-devx-bot](https://github.com/team-devx-bot))
+
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
