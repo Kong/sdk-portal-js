@@ -770,7 +770,7 @@ export interface DocumentTree {
      * @type {object}
      * @memberof DocumentTree
      */
-    'meta': object;
+    'metadata': object;
     /**
      * 
      * @type {Array<DocumentTree>}
@@ -6786,6 +6786,86 @@ export class SearchApi extends BaseAPI {
 export const VersionsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked). Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
+         * @summary Get applications by product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {boolean} [unregistered] Return applications that do **not** have a registration for the product version (regardless of registration status).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationsByProductVersion: async (productId: string, versionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'productId' is not null or undefined
+            assertParamExists('getApplicationsByProductVersion', 'productId', productId)
+            // verify required parameter 'versionId' is not null or undefined
+            assertParamExists('getApplicationsByProductVersion', 'versionId', versionId)
+            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/applications`
+                .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
+                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
+            }
+
+            if (filterNameEq !== undefined) {
+                localVarQueryParameter['filter[name][eq]'] = filterNameEq;
+            }
+
+            if (filterName !== undefined) {
+                localVarQueryParameter['filter[name]'] = filterName;
+            }
+
+            if (filterNameContains !== undefined) {
+                localVarQueryParameter['filter[name][contains]'] = filterNameContains;
+            }
+
+            if (filterStatusEq !== undefined) {
+                localVarQueryParameter['filter[status][eq]'] = filterStatusEq;
+            }
+
+            if (filterStatus !== undefined) {
+                localVarQueryParameter['filter[status]'] = filterStatus;
+            }
+
+            if (unregistered !== undefined) {
+                localVarQueryParameter['unregistered'] = unregistered;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Gets the details for an existing product version.
          * @summary Get product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
@@ -6977,6 +7057,26 @@ export const VersionsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = VersionsApiAxiosParamCreator(configuration)
     return {
         /**
+         * Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked). Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
+         * @summary Get applications by product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {boolean} [unregistered] Return applications that do **not** have a registration for the product version (regardless of registration status).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApplicationsByProductVersion(productId: string, versionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListApplicationsPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationsByProductVersion(productId, versionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, unregistered, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Gets the details for an existing product version.
          * @summary Get product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
@@ -7039,6 +7139,25 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
     const localVarFp = VersionsApiFp(configuration)
     return {
         /**
+         * Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked). Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
+         * @summary Get applications by product version
+         * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
+         * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {boolean} [unregistered] Return applications that do **not** have a registration for the product version (regardless of registration status).
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationsByProductVersion(productId: string, versionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options?: any): AxiosPromise<ProductVersionListApplicationsPage> {
+            return localVarFp.getApplicationsByProductVersion(productId, versionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, unregistered, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Gets the details for an existing product version.
          * @summary Get product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
@@ -7088,6 +7207,83 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
         },
     };
 };
+
+/**
+ * Request parameters for getApplicationsByProductVersion operation in VersionsApi.
+ * @export
+ * @interface VersionsApiGetApplicationsByProductVersionRequest
+ */
+export interface VersionsApiGetApplicationsByProductVersionRequest {
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly productId: string
+
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly versionId: string
+
+    /**
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
+     * @type {number}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly pageNumber?: number
+
+    /**
+     * Filter by direct equality comparison of the name property with a supplied value.
+     * @type {string}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly filterNameEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+     * @type {string}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly filterName?: string
+
+    /**
+     * Filter by contains comparison of the name property with a supplied substring
+     * @type {string}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly filterNameContains?: string
+
+    /**
+     * Filter by direct equality comparison of the status property with a supplied value.
+     * @type {'approved' | 'pending' | 'rejected' | 'revoked'}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked'
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+     * @type {'approved' | 'pending' | 'rejected' | 'revoked'}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked'
+
+    /**
+     * Return applications that do **not** have a registration for the product version (regardless of registration status).
+     * @type {boolean}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly unregistered?: boolean
+}
 
 /**
  * Request parameters for getProductVersion operation in VersionsApi.
@@ -7208,6 +7404,18 @@ export interface VersionsApiListProductVersionsRequest {
  * @extends {BaseAPI}
  */
 export class VersionsApi extends BaseAPI {
+    /**
+     * Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked). Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
+     * @summary Get applications by product version
+     * @param {VersionsApiGetApplicationsByProductVersionRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof VersionsApi
+     */
+    public getApplicationsByProductVersion(requestParameters: VersionsApiGetApplicationsByProductVersionRequest, options?: AxiosRequestConfig) {
+        return VersionsApiFp(this.configuration).getApplicationsByProductVersion(requestParameters.productId, requestParameters.versionId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterStatusEq, requestParameters.filterStatus, requestParameters.unregistered, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Gets the details for an existing product version.
      * @summary Get product version

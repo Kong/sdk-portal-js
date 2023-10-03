@@ -771,6 +771,41 @@ paths:
       security:
         - portalAccessToken: []
         - {}
+  /api/v2/products/{productId}/versions/{versionId}/applications:
+    get:
+      summary: Get applications by product version
+      description: >-
+        Get applications that have a registration for a given product version.
+        Any registration for the version will count, regardless of status (i.e.
+        even if it is pending, rejected, or revoked).
+
+        Use the `unregistered` query param to return the inverse, only including
+        applicatons that do not have a registration (regardless of status).
+      operationId: get-applications-by-product-version
+      parameters:
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/ProductVersionId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByNameContains'
+        - $ref: '#/components/parameters/FilterByStatusEquality'
+        - $ref: '#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '#/components/parameters/QueryUnregisteredApplications'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProductVersionListApplications'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - versions
+      security:
+        - portalAccessToken: []
   /api/v2/products/{productId}/versions/{versionId}/spec:
     get:
       summary: Get spec for product version
@@ -2424,7 +2459,7 @@ components:
         - id
         - title
         - slug
-        - meta
+        - metadata
         - children
       properties:
         id:
@@ -2444,7 +2479,7 @@ components:
           type: string
           description: the slug of the document
           example: getting-started
-        meta:
+        metadata:
           type: object
           description: the metadata of the document
           example:
@@ -3109,6 +3144,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductVersion'
+    ProductVersionListApplications:
+      description: >-
+        Paginated list of applications either registered or not registered for a
+        product version.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersionListApplicationsPage'
     ProductVersionSpecGet:
       description: Product version spec document.
       content:
@@ -3540,6 +3583,16 @@ components:
       schema:
         type: string
         format: uuid
+    QueryUnregisteredApplications:
+      name: unregistered
+      description: >-
+        Return applications that do **not** have a registration for the product
+        version (regardless of registration status).
+      in: query
+      required: false
+      schema:
+        type: boolean
+      allowEmptyValue: true
     FilterByDescriptionEquality:
       name: filter[description][eq]
       description: >-
