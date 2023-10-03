@@ -9,16 +9,16 @@ permissions:
 jobs:
   get-changed-files:
     name: Get Changed Files
-      runs-on: ubuntu-latest
-      outputs:
-        oas-modified: ${{ steps.oas-modified.outputs.any_modified }}
+    runs-on: ubuntu-latest
+    outputs:
+      oas-modified: ${{ steps.oas-modified.outputs.any_modified }}
     steps:
-     - name: Check if `openapi.yaml` has changed
-        uses: tj-actions/changed-files@v35.7.1
-        id: oas-modified
-        with:
-          files: |
-            openapi.yaml
+    - name: Check if `openapi.yaml` has changed
+      uses: tj-actions/changed-files@v35.7.1
+      id: oas-modified
+      with:
+        files: |
+          openapi.yaml
   generate-js:
     name: Generate JavaScript SDK
     runs-on: ubuntu-latest
