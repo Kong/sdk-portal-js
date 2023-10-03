@@ -1,3 +1,25 @@
+# v2.2.0 (Tue Oct 03 2023)
+
+#### 🚀 Enhancement
+
+- Automated OAS Update [#45](https://github.com/Kong/sdk-portal-js/pull/45) ([@kong-apiops](https://github.com/kong-apiops) [@team-devx-bot](https://github.com/team-devx-bot))
+
+#### 🐛 Bug Fix
+
+- docs: update changelog [#46](https://github.com/Kong/sdk-portal-js/pull/46) ([@andrewwylde](https://github.com/andrewwylde) [@team-devx-bot](https://github.com/team-devx-bot))
+- Bootstrap package publishing [#30](https://github.com/Kong/sdk-portal-js/pull/30) ([@mheap](https://github.com/mheap) [@andrewwylde](https://github.com/andrewwylde) [@team-devx-bot](https://github.com/team-devx-bot))
+- Automated OAS Update [#43](https://github.com/Kong/sdk-portal-js/pull/43) ([@kong-apiops](https://github.com/kong-apiops) [@team-devx-bot](https://github.com/team-devx-bot))
+- chore(build): build proper type exports [#44](https://github.com/Kong/sdk-portal-js/pull/44) ([@andrewwylde](https://github.com/andrewwylde) [@team-devx-bot](https://github.com/team-devx-bot))
+
+#### Authors: 4
+
+- [@kong-apiops](https://github.com/kong-apiops)
+- Andrew Wylde ([@andrewwylde](https://github.com/andrewwylde))
+- Kong Team Devx Bot ([@team-devx-bot](https://github.com/team-devx-bot))
+- Michael Heap ([@mheap](https://github.com/mheap))
+
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
