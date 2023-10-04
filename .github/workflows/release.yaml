@@ -27,7 +27,7 @@ jobs:
 
       - name: Create Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GHA_TEAM_DEVX_KONG_BOT_PAT }}
+          GH_TOKEN: ${{ secrets.PORTAL_JS_SDK_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN_PRIVATE_PUBLISH }}
         run: |
           yarn install --frozen-lockfile
