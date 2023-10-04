@@ -6,6 +6,9 @@ info:
   contact:
     name: Kong
     url: https://cloud.konghq.com
+servers:
+  - url: https://custom.example.com
+    description: Production
 tags:
   - name: Application Analytics
     description: >-
