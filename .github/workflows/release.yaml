@@ -5,7 +5,7 @@ on: [push]
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
+    if: contains(github.event.head_commit.message, 'ci skip') == 'false' && contains(github.event.head_commit.message, 'skip ci') == 'false'
     steps:
       - uses: actions/checkout@v3
 
@@ -27,9 +27,9 @@ jobs:
 
       - name: Create Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GHA_TEAM_DEVX_KONG_BOT_PAT }}
+          GH_TOKEN: ${{ secrets.PORTAL_JS_SDK_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN_PRIVATE_PUBLISH }}
         run: |
           yarn install --frozen-lockfile
           yarn build
-          npx auto shipit
+          npx auto shipit -vv
