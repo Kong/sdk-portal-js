@@ -8,6 +8,9 @@ permissions:
   statuses: write
   # Needed to push git tags, release
   contents: write
+  issues: write
+  pull-requests: write
+  packages: write
 
 jobs:
   release:
