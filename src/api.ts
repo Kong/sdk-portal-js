@@ -2084,10 +2084,10 @@ export interface ProductVersion {
     'deprecated': boolean;
     /**
      * Configurations for how the product version is able to be registered for by applications.
-     * @type {Array<ProductVersionRegistrationConfigsInner>}
+     * @type {Array<RegistrationConfiguration>}
      * @memberof ProductVersion
      */
-    'registration_configs': Array<ProductVersionRegistrationConfigsInner>;
+    'registration_configs': Array<RegistrationConfiguration>;
 }
 /**
  * 
@@ -2180,27 +2180,6 @@ export interface ProductVersionListPage {
      */
     'data': Array<ProductVersion>;
 }
-/**
- * 
- * @export
- * @interface ProductVersionRegistrationConfigsInner
- */
-export interface ProductVersionRegistrationConfigsInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProductVersionRegistrationConfigsInner
-     */
-    'name': ProductVersionRegistrationConfigsInnerNameEnum;
-}
-
-export const ProductVersionRegistrationConfigsInnerNameEnum = {
-    KeyAuth: 'key-auth',
-    OpenidConnect: 'openid-connect'
-} as const;
-
-export type ProductVersionRegistrationConfigsInnerNameEnum = typeof ProductVersionRegistrationConfigsInnerNameEnum[keyof typeof ProductVersionRegistrationConfigsInnerNameEnum];
-
 /**
  * API specification document for a product version.
  * @export
@@ -2722,6 +2701,33 @@ export interface RegisterPayload {
      */
     'full_name': string;
 }
+/**
+ * 
+ * @export
+ * @interface RegistrationConfiguration
+ */
+export interface RegistrationConfiguration {
+    /**
+     * 
+     * @type {string}
+     * @memberof RegistrationConfiguration
+     */
+    'name': RegistrationConfigurationNameEnum;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof RegistrationConfiguration
+     */
+    'available_scopes'?: Array<string>;
+}
+
+export const RegistrationConfigurationNameEnum = {
+    KeyAuth: 'key-auth',
+    OpenidConnect: 'openid-connect'
+} as const;
+
+export type RegistrationConfigurationNameEnum = typeof RegistrationConfigurationNameEnum[keyof typeof RegistrationConfigurationNameEnum];
+
 /**
  * Payload required to start the reset password flow 
  * @export
