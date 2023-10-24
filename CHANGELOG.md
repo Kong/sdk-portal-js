@@ -1,3 +1,30 @@
+# v2.2.1 (Tue Oct 24 2023)
+
+#### 🐛 Bug Fix
+
+- Automated OAS Update [#53](https://github.com/Kong/sdk-portal-js/pull/53) ([@kong-apiops](https://github.com/kong-apiops) [@team-devx-bot](https://github.com/team-devx-bot))
+- chore: update workflow permissions [#55](https://github.com/Kong/sdk-portal-js/pull/55) ([@andrewwylde](https://github.com/andrewwylde))
+- fix: perhaps using different tokens [#54](https://github.com/Kong/sdk-portal-js/pull/54) ([@andrewwylde](https://github.com/andrewwylde))
+- fix(ci): use protected-branch plugin for auto [#51](https://github.com/Kong/sdk-portal-js/pull/51) ([@andrewwylde](https://github.com/andrewwylde))
+- fix: remove skip check [#50](https://github.com/Kong/sdk-portal-js/pull/50) ([@andrewwylde](https://github.com/andrewwylde))
+- Automated OAS Update [#48](https://github.com/Kong/sdk-portal-js/pull/48) ([@kong-apiops](https://github.com/kong-apiops) [@team-devx-bot](https://github.com/team-devx-bot))
+- Ci/fixes [#49](https://github.com/Kong/sdk-portal-js/pull/49) ([@andrewwylde](https://github.com/andrewwylde))
+- chore: add devx bot token [#47](https://github.com/Kong/sdk-portal-js/pull/47) ([@andrewwylde](https://github.com/andrewwylde))
+- docs: update changelog [#46](https://github.com/Kong/sdk-portal-js/pull/46) ([@andrewwylde](https://github.com/andrewwylde) [@team-devx-bot](https://github.com/team-devx-bot))
+
+#### ⚠️ Pushed to `main`
+
+- fix: ci ([@andrewwylde](https://github.com/andrewwylde))
+- chore: update CI to prevent extra commits ([@andrewwylde](https://github.com/andrewwylde))
+
+#### Authors: 3
+
+- [@kong-apiops](https://github.com/kong-apiops)
+- Andrew Wylde ([@andrewwylde](https://github.com/andrewwylde))
+- Kong Team Devx Bot ([@team-devx-bot](https://github.com/team-devx-bot))
+
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
