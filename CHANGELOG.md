@@ -1,3 +1,15 @@
+# v2.3.6 (Mon Nov 13 2023)
+
+#### 🐛 Bug Fix
+
+- build(deps): bump axios from 0.27.2 to 1.6.0 [#58](https://github.com/Kong/sdk-portal-js/pull/58) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+#### Authors: 1
+
+- [@dependabot[bot]](https://github.com/dependabot[bot])
+
+---
+
 # v2.2.1 (Tue Oct 24 2023)
 
 #### 🐛 Bug Fix
