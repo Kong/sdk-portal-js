@@ -1,3 +1,15 @@
+# v2.3.7 (Wed Nov 15 2023)
+
+#### 🐛 Bug Fix
+
+- build(deps): bump semver from 7.5.1 to 7.5.4 [#60](https://github.com/Kong/sdk-portal-js/pull/60) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+#### Authors: 1
+
+- [@dependabot[bot]](https://github.com/dependabot[bot])
+
+---
+
 # v2.3.6 (Mon Nov 13 2023)
 
 #### 🐛 Bug Fix
