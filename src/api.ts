@@ -38,12 +38,6 @@ export type AlignmentKind = typeof AlignmentKind[keyof typeof AlignmentKind];
 
 
 /**
- * @type AnyNode
- * @export
- */
-export type AnyNode = { type: 'blockquote' } & BlockQuoteBlock | { type: 'break' } & BreakBlock | { type: 'code' } & Code | { type: 'code_block' } & CodeBlock | { type: 'document' } & DocumentBlock | { type: 'emphasis' } & Emphasis | { type: 'heading' } & HeadingBlock | { type: 'image' } & Image | { type: 'link' } & Link | { type: 'list' } & ListBlock | { type: 'list_item' } & ListItemBlock | { type: 'paragraph' } & ParagraphBlock | { type: 'strikethrough' } & StrikeThrough | { type: 'table' } & TableBlock | { type: 'table_cell' } & TableCellBlock | { type: 'table_header' } & TableHeaderBlock | { type: 'table_row' } & TableRowBlock | { type: 'task_checkbox' } & TaskCheckbox | { type: 'text' } & Text | { type: 'text_block' } & TextBlock;
-
-/**
  * 
  * @export
  * @interface ApiProductVersionFilter
@@ -345,51 +339,6 @@ export interface BaseError {
 /**
  * 
  * @export
- * @interface BaseNode
- */
-export interface BaseNode {
-    /**
-     * 
-     * @type {string}
-     * @memberof BaseNode
-     */
-    'type': string;
-}
-/**
- * 
- * @export
- * @interface BlockNode
- */
-export interface BlockNode {
-    /**
-     * 
-     * @type {string}
-     * @memberof BlockNode
-     */
-    'type': string;
-    /**
-     * List of children nodes of the current node
-     * @type {Array<AnyNode>}
-     * @memberof BlockNode
-     */
-    'children'?: Array<AnyNode>;
-}
-/**
- * 
- * @export
- * @interface BlockNodeAllOf
- */
-export interface BlockNodeAllOf {
-    /**
-     * List of children nodes of the current node
-     * @type {Array<AnyNode>}
-     * @memberof BlockNodeAllOf
-     */
-    'children'?: Array<AnyNode>;
-}
-/**
- * 
- * @export
  * @interface BlockQuoteBlock
  */
 export interface BlockQuoteBlock {
@@ -398,14 +347,21 @@ export interface BlockQuoteBlock {
      * @type {string}
      * @memberof BlockQuoteBlock
      */
-    'type': string;
+    'type': BlockQuoteBlockTypeEnum;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof BlockQuoteBlock
      */
-    'children'?: Array<AnyNode>;
+    'children'?: Array<ChildNode>;
 }
+
+export const BlockQuoteBlockTypeEnum = {
+    Blockquote: 'blockquote'
+} as const;
+
+export type BlockQuoteBlockTypeEnum = typeof BlockQuoteBlockTypeEnum[keyof typeof BlockQuoteBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -417,14 +373,27 @@ export interface BreakBlock {
      * @type {string}
      * @memberof BreakBlock
      */
-    'type': string;
+    'type': BreakBlockTypeEnum;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof BreakBlock
      */
-    'children'?: Array<AnyNode>;
+    'children'?: Array<ChildNode>;
 }
+
+export const BreakBlockTypeEnum = {
+    Break: 'break'
+} as const;
+
+export type BreakBlockTypeEnum = typeof BreakBlockTypeEnum[keyof typeof BreakBlockTypeEnum];
+
+/**
+ * @type ChildNode
+ * @export
+ */
+export type ChildNode = BlockQuoteBlock | BreakBlock | Code | CodeBlock | Emphasis | HeadingBlock | Image | Link | ListBlock | ListItemBlock | ParagraphBlock | StrikeThrough | TableBlock | TableCellBlock | TableHeaderBlock | TableRowBlock | TaskCheckbox | Text | TextBlock;
+
 /**
  * 
  * @export
@@ -436,14 +405,21 @@ export interface Code {
      * @type {string}
      * @memberof Code
      */
-    'type': string;
+    'type': CodeTypeEnum;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof Code
      */
-    'children'?: Array<AnyNode>;
+    'children'?: Array<ChildNode>;
 }
+
+export const CodeTypeEnum = {
+    Code: 'code'
+} as const;
+
+export type CodeTypeEnum = typeof CodeTypeEnum[keyof typeof CodeTypeEnum];
+
 /**
  * 
  * @export
@@ -455,33 +431,27 @@ export interface CodeBlock {
      * @type {string}
      * @memberof CodeBlock
      */
-    'type': string;
+    'type': CodeBlockTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CodeBlock
+     */
+    'lang'?: string;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof CodeBlock
      */
-    'children'?: Array<AnyNode>;
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeBlock
-     */
-    'lang'?: string;
+    'children'?: Array<ChildNode>;
 }
-/**
- * 
- * @export
- * @interface CodeBlockAllOf
- */
-export interface CodeBlockAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof CodeBlockAllOf
-     */
-    'lang'?: string;
-}
+
+export const CodeBlockTypeEnum = {
+    CodeBlock: 'code_block'
+} as const;
+
+export type CodeBlockTypeEnum = typeof CodeBlockTypeEnum[keyof typeof CodeBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -575,6 +545,12 @@ export interface CreateRegistrationPayload {
      * @memberof CreateRegistrationPayload
      */
     'product_version_id': string;
+    /**
+     * The requested scopes for the registration, requires developer_managed_scopes to be enabled.
+     * @type {Array<string>}
+     * @memberof CreateRegistrationPayload
+     */
+    'scopes'?: Array<string>;
 }
 /**
  * 
@@ -649,33 +625,27 @@ export interface DocumentBlock {
      * @type {string}
      * @memberof DocumentBlock
      */
-    'type': string;
+    'type': DocumentBlockTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof DocumentBlock
+     */
+    'version'?: string;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof DocumentBlock
      */
-    'children'?: Array<AnyNode>;
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentBlock
-     */
-    'version'?: string;
+    'children'?: Array<ChildNode>;
 }
-/**
- * 
- * @export
- * @interface DocumentBlockAllOf
- */
-export interface DocumentBlockAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof DocumentBlockAllOf
-     */
-    'version'?: string;
-}
+
+export const DocumentBlockTypeEnum = {
+    Document: 'document'
+} as const;
+
+export type DocumentBlockTypeEnum = typeof DocumentBlockTypeEnum[keyof typeof DocumentBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -734,6 +704,18 @@ export interface DocumentItem {
      * @memberof DocumentItem
      */
     'title': string;
+    /**
+     * An ISO-8601 timestamp representation of entity creation date.
+     * @type {string}
+     * @memberof DocumentItem
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of entity update date.
+     * @type {string}
+     * @memberof DocumentItem
+     */
+    'updated_at': string;
 }
 /**
  * a document tree
@@ -772,6 +754,18 @@ export interface DocumentTree {
      */
     'metadata': object;
     /**
+     * An ISO-8601 timestamp representation of entity creation date.
+     * @type {string}
+     * @memberof DocumentTree
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of entity update date.
+     * @type {string}
+     * @memberof DocumentTree
+     */
+    'updated_at': string;
+    /**
      * 
      * @type {Array<DocumentTree>}
      * @memberof DocumentTree
@@ -789,33 +783,27 @@ export interface Emphasis {
      * @type {string}
      * @memberof Emphasis
      */
-    'type': string;
+    'type': EmphasisTypeEnum;
+    /**
+     * Level of emphasis 1 - italic 2 - bold 
+     * @type {number}
+     * @memberof Emphasis
+     */
+    'level'?: number;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof Emphasis
      */
-    'children'?: Array<AnyNode>;
-    /**
-     * Level of emphasis 1 - italic 2 - bold 
-     * @type {number}
-     * @memberof Emphasis
-     */
-    'level'?: number;
+    'children'?: Array<ChildNode>;
 }
-/**
- * 
- * @export
- * @interface EmphasisAllOf
- */
-export interface EmphasisAllOf {
-    /**
-     * Level of emphasis 1 - italic 2 - bold 
-     * @type {number}
-     * @memberof EmphasisAllOf
-     */
-    'level'?: number;
-}
+
+export const EmphasisTypeEnum = {
+    Emphasis: 'emphasis'
+} as const;
+
+export type EmphasisTypeEnum = typeof EmphasisTypeEnum[keyof typeof EmphasisTypeEnum];
+
 /**
  * The type of filter to apply.  `IN` filters will limit results to only the specified values, while `NOT_IN` filters will exclude the specified values.
  * @export
@@ -919,6 +907,32 @@ export interface GetApplicationResponse {
 /**
  * 
  * @export
+ * @interface GetGrantedScopesProductVersionResponse
+ */
+export interface GetGrantedScopesProductVersionResponse {
+    /**
+     * List of granted scopes, directly updated from the IDP
+     * @type {Array<string>}
+     * @memberof GetGrantedScopesProductVersionResponse
+     */
+    'scopes': Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface GetGrantedScopesResponse
+ */
+export interface GetGrantedScopesResponse {
+    /**
+     * List of granted scopes, directly updated from the IDP
+     * @type {Array<string>}
+     * @memberof GetGrantedScopesResponse
+     */
+    'scopes': Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface GetRegistrationResponse
  */
 export interface GetRegistrationResponse {
@@ -976,6 +990,12 @@ export interface GetRegistrationResponse {
      * @memberof GetRegistrationResponse
      */
     'application_id': string;
+    /**
+     * Cached list of scopes granted for the given application registration. Use `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes` to get up to date granted scopes from the IDP. This property will be omitted if not supported by the application. 
+     * @type {Array<string>}
+     * @memberof GetRegistrationResponse
+     */
+    'granted_scopes'?: Array<string>;
 }
 
 export const GetRegistrationResponseStatusEnum = {
@@ -1035,33 +1055,27 @@ export interface HeadingBlock {
      * @type {string}
      * @memberof HeadingBlock
      */
-    'type': string;
+    'type': HeadingBlockTypeEnum;
+    /**
+     * Level of the heading which maps to HTML <h> tag
+     * @type {number}
+     * @memberof HeadingBlock
+     */
+    'level'?: number;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof HeadingBlock
      */
-    'children'?: Array<AnyNode>;
-    /**
-     * Level of the heading which maps to HTML <h> tag
-     * @type {number}
-     * @memberof HeadingBlock
-     */
-    'level'?: number;
+    'children'?: Array<ChildNode>;
 }
-/**
- * 
- * @export
- * @interface HeadingBlockAllOf
- */
-export interface HeadingBlockAllOf {
-    /**
-     * Level of the heading which maps to HTML <h> tag
-     * @type {number}
-     * @memberof HeadingBlockAllOf
-     */
-    'level'?: number;
-}
+
+export const HeadingBlockTypeEnum = {
+    Heading: 'heading'
+} as const;
+
+export type HeadingBlockTypeEnum = typeof HeadingBlockTypeEnum[keyof typeof HeadingBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -1073,7 +1087,7 @@ export interface Image {
      * @type {string}
      * @memberof Image
      */
-    'type': string;
+    'type': ImageTypeEnum;
     /**
      * Url of the image
      * @type {string}
@@ -1093,31 +1107,13 @@ export interface Image {
      */
     'title'?: string;
 }
-/**
- * 
- * @export
- * @interface ImageAllOf
- */
-export interface ImageAllOf {
-    /**
-     * Url of the image
-     * @type {string}
-     * @memberof ImageAllOf
-     */
-    'url'?: string;
-    /**
-     * Alternate tag of the image
-     * @type {string}
-     * @memberof ImageAllOf
-     */
-    'alt'?: string;
-    /**
-     * Title of the image
-     * @type {string}
-     * @memberof ImageAllOf
-     */
-    'title'?: string;
-}
+
+export const ImageTypeEnum = {
+    Image: 'image'
+} as const;
+
+export type ImageTypeEnum = typeof ImageTypeEnum[keyof typeof ImageTypeEnum];
+
 /**
  * 
  * @export
@@ -1256,7 +1252,7 @@ export interface Link {
      * @type {string}
      * @memberof Link
      */
-    'type': string;
+    'type': LinkTypeEnum;
     /**
      * Target url of the link
      * @type {string}
@@ -1270,25 +1266,13 @@ export interface Link {
      */
     'title'?: string;
 }
-/**
- * 
- * @export
- * @interface LinkAllOf
- */
-export interface LinkAllOf {
-    /**
-     * Target url of the link
-     * @type {string}
-     * @memberof LinkAllOf
-     */
-    'href'?: string;
-    /**
-     * Title of the link
-     * @type {string}
-     * @memberof LinkAllOf
-     */
-    'title'?: string;
-}
+
+export const LinkTypeEnum = {
+    Link: 'link'
+} as const;
+
+export type LinkTypeEnum = typeof LinkTypeEnum[keyof typeof LinkTypeEnum];
+
 /**
  * 
  * @export
@@ -1319,33 +1303,27 @@ export interface ListBlock {
      * @type {string}
      * @memberof ListBlock
      */
-    'type': string;
+    'type': ListBlockTypeEnum;
+    /**
+     * Defines if the list is ordered or not
+     * @type {boolean}
+     * @memberof ListBlock
+     */
+    'isOrdered'?: boolean;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof ListBlock
      */
-    'children'?: Array<AnyNode>;
-    /**
-     * Defines if the list is ordered or not
-     * @type {boolean}
-     * @memberof ListBlock
-     */
-    'isOrdered'?: boolean;
+    'children'?: Array<ChildNode>;
 }
-/**
- * 
- * @export
- * @interface ListBlockAllOf
- */
-export interface ListBlockAllOf {
-    /**
-     * Defines if the list is ordered or not
-     * @type {boolean}
-     * @memberof ListBlockAllOf
-     */
-    'isOrdered'?: boolean;
-}
+
+export const ListBlockTypeEnum = {
+    List: 'list'
+} as const;
+
+export type ListBlockTypeEnum = typeof ListBlockTypeEnum[keyof typeof ListBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -1433,14 +1411,21 @@ export interface ListItemBlock {
      * @type {string}
      * @memberof ListItemBlock
      */
-    'type': string;
+    'type': ListItemBlockTypeEnum;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof ListItemBlock
      */
-    'children'?: Array<AnyNode>;
+    'children'?: Array<ChildNode>;
 }
+
+export const ListItemBlockTypeEnum = {
+    ListItem: 'list_item'
+} as const;
+
+export type ListItemBlockTypeEnum = typeof ListItemBlockTypeEnum[keyof typeof ListItemBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -1583,14 +1568,21 @@ export interface ParagraphBlock {
      * @type {string}
      * @memberof ParagraphBlock
      */
-    'type': string;
+    'type': ParagraphBlockTypeEnum;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof ParagraphBlock
      */
-    'children'?: Array<AnyNode>;
+    'children'?: Array<ChildNode>;
 }
+
+export const ParagraphBlockTypeEnum = {
+    Paragraph: 'paragraph'
+} as const;
+
+export type ParagraphBlockTypeEnum = typeof ParagraphBlockTypeEnum[keyof typeof ParagraphBlockTypeEnum];
+
 /**
  * the portal appearance
  * @export
@@ -2235,7 +2227,7 @@ export interface ProductVersionSpecOperationsOperationsInner {
      * @type {string}
      * @memberof ProductVersionSpecOperationsOperationsInner
      */
-    'method': ProductVersionSpecOperationsOperationsInnerMethodEnum;
+    'method': string;
     /**
      * 
      * @type {string}
@@ -2261,20 +2253,6 @@ export interface ProductVersionSpecOperationsOperationsInner {
      */
     'deprecated': boolean;
 }
-
-export const ProductVersionSpecOperationsOperationsInnerMethodEnum = {
-    Get: 'get',
-    Patch: 'patch',
-    Post: 'post',
-    Put: 'put',
-    Delete: 'delete',
-    Options: 'options',
-    Connect: 'connect',
-    Trace: 'trace'
-} as const;
-
-export type ProductVersionSpecOperationsOperationsInnerMethodEnum = typeof ProductVersionSpecOperationsOperationsInnerMethodEnum[keyof typeof ProductVersionSpecOperationsOperationsInnerMethodEnum];
-
 /**
  * 
  * @export
@@ -2886,21 +2864,15 @@ export interface StrikeThrough {
      * @type {string}
      * @memberof StrikeThrough
      */
-    'type': string;
+    'type': StrikeThroughTypeEnum;
 }
-/**
- * 
- * @export
- * @interface TableAlignments
- */
-export interface TableAlignments {
-    /**
-     * 
-     * @type {Array<AlignmentKind>}
-     * @memberof TableAlignments
-     */
-    'alignments': Array<AlignmentKind> | null;
-}
+
+export const StrikeThroughTypeEnum = {
+    Strikethrough: 'strikethrough'
+} as const;
+
+export type StrikeThroughTypeEnum = typeof StrikeThroughTypeEnum[keyof typeof StrikeThroughTypeEnum];
+
 /**
  * 
  * @export
@@ -2912,20 +2884,27 @@ export interface TableBlock {
      * @type {string}
      * @memberof TableBlock
      */
-    'type': string;
-    /**
-     * List of children nodes of the current node
-     * @type {Array<AnyNode>}
-     * @memberof TableBlock
-     */
-    'children'?: Array<AnyNode>;
+    'type': TableBlockTypeEnum;
     /**
      * 
      * @type {Array<AlignmentKind>}
      * @memberof TableBlock
      */
     'alignments': Array<AlignmentKind> | null;
+    /**
+     * List of children nodes of the current node
+     * @type {Array<ChildNode>}
+     * @memberof TableBlock
+     */
+    'children'?: Array<ChildNode>;
 }
+
+export const TableBlockTypeEnum = {
+    Table: 'table'
+} as const;
+
+export type TableBlockTypeEnum = typeof TableBlockTypeEnum[keyof typeof TableBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -2937,33 +2916,27 @@ export interface TableCellBlock {
      * @type {string}
      * @memberof TableCellBlock
      */
-    'type': string;
+    'type': TableCellBlockTypeEnum;
+    /**
+     * 
+     * @type {AlignmentKind}
+     * @memberof TableCellBlock
+     */
+    'alignment'?: AlignmentKind;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof TableCellBlock
      */
-    'children'?: Array<AnyNode>;
-    /**
-     * 
-     * @type {AlignmentKind}
-     * @memberof TableCellBlock
-     */
-    'alignment'?: AlignmentKind;
+    'children'?: Array<ChildNode>;
 }
-/**
- * 
- * @export
- * @interface TableCellBlockAllOf
- */
-export interface TableCellBlockAllOf {
-    /**
-     * 
-     * @type {AlignmentKind}
-     * @memberof TableCellBlockAllOf
-     */
-    'alignment'?: AlignmentKind;
-}
+
+export const TableCellBlockTypeEnum = {
+    TableCell: 'table_cell'
+} as const;
+
+export type TableCellBlockTypeEnum = typeof TableCellBlockTypeEnum[keyof typeof TableCellBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -2975,20 +2948,27 @@ export interface TableHeaderBlock {
      * @type {string}
      * @memberof TableHeaderBlock
      */
-    'type': string;
-    /**
-     * List of children nodes of the current node
-     * @type {Array<AnyNode>}
-     * @memberof TableHeaderBlock
-     */
-    'children'?: Array<AnyNode>;
+    'type': TableHeaderBlockTypeEnum;
     /**
      * 
      * @type {Array<AlignmentKind>}
      * @memberof TableHeaderBlock
      */
     'alignments': Array<AlignmentKind> | null;
+    /**
+     * List of children nodes of the current node
+     * @type {Array<ChildNode>}
+     * @memberof TableHeaderBlock
+     */
+    'children'?: Array<ChildNode>;
 }
+
+export const TableHeaderBlockTypeEnum = {
+    TableHeader: 'table_header'
+} as const;
+
+export type TableHeaderBlockTypeEnum = typeof TableHeaderBlockTypeEnum[keyof typeof TableHeaderBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -3000,20 +2980,27 @@ export interface TableRowBlock {
      * @type {string}
      * @memberof TableRowBlock
      */
-    'type': string;
-    /**
-     * List of children nodes of the current node
-     * @type {Array<AnyNode>}
-     * @memberof TableRowBlock
-     */
-    'children'?: Array<AnyNode>;
+    'type': TableRowBlockTypeEnum;
     /**
      * 
      * @type {Array<AlignmentKind>}
      * @memberof TableRowBlock
      */
     'alignments': Array<AlignmentKind> | null;
+    /**
+     * List of children nodes of the current node
+     * @type {Array<ChildNode>}
+     * @memberof TableRowBlock
+     */
+    'children'?: Array<ChildNode>;
 }
+
+export const TableRowBlockTypeEnum = {
+    TableRow: 'table_row'
+} as const;
+
+export type TableRowBlockTypeEnum = typeof TableRowBlockTypeEnum[keyof typeof TableRowBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -3025,7 +3012,7 @@ export interface TaskCheckbox {
      * @type {string}
      * @memberof TaskCheckbox
      */
-    'type': string;
+    'type': TaskCheckboxTypeEnum;
     /**
      * State of the checkbox
      * @type {boolean}
@@ -3033,19 +3020,13 @@ export interface TaskCheckbox {
      */
     'checked': boolean;
 }
-/**
- * 
- * @export
- * @interface TaskCheckboxAllOf
- */
-export interface TaskCheckboxAllOf {
-    /**
-     * State of the checkbox
-     * @type {boolean}
-     * @memberof TaskCheckboxAllOf
-     */
-    'checked': boolean;
-}
+
+export const TaskCheckboxTypeEnum = {
+    TaskCheckbox: 'task_checkbox'
+} as const;
+
+export type TaskCheckboxTypeEnum = typeof TaskCheckboxTypeEnum[keyof typeof TaskCheckboxTypeEnum];
+
 /**
  * 
  * @export
@@ -3057,57 +3038,39 @@ export interface Text {
      * @type {string}
      * @memberof Text
      */
-    'type': string;
+    'type': TextTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof Text
+     */
+    'text'?: string;
+    /**
+     * If this property is true the end of this block should be a carriage return and not concatenated to the next Text block. 
+     * @type {boolean}
+     * @memberof Text
+     */
+    'hardBreak'?: boolean;
+    /**
+     * If this property is true the end of this block should should be concatenated with a space caracter before the next block. This is the flag showing that the parsed markdown block was at the end of the line. 
+     * @type {boolean}
+     * @memberof Text
+     */
+    'softBreak'?: boolean;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof Text
      */
-    'children'?: Array<AnyNode>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Text
-     */
-    'text'?: string;
-    /**
-     * If this property is true the end of this block should be a carriage return and not concatenated to the next Text block. 
-     * @type {boolean}
-     * @memberof Text
-     */
-    'hardBreak'?: boolean;
-    /**
-     * If this property is true the end of this block should should be concatenated with a space caracter before the next block. This is the flag showing that the parsed markdown block was at the end of the line. 
-     * @type {boolean}
-     * @memberof Text
-     */
-    'softBreak'?: boolean;
+    'children'?: Array<ChildNode>;
 }
-/**
- * 
- * @export
- * @interface TextAllOf
- */
-export interface TextAllOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof TextAllOf
-     */
-    'text'?: string;
-    /**
-     * If this property is true the end of this block should be a carriage return and not concatenated to the next Text block. 
-     * @type {boolean}
-     * @memberof TextAllOf
-     */
-    'hardBreak'?: boolean;
-    /**
-     * If this property is true the end of this block should should be concatenated with a space caracter before the next block. This is the flag showing that the parsed markdown block was at the end of the line. 
-     * @type {boolean}
-     * @memberof TextAllOf
-     */
-    'softBreak'?: boolean;
-}
+
+export const TextTypeEnum = {
+    Text: 'text'
+} as const;
+
+export type TextTypeEnum = typeof TextTypeEnum[keyof typeof TextTypeEnum];
+
 /**
  * 
  * @export
@@ -3119,14 +3082,21 @@ export interface TextBlock {
      * @type {string}
      * @memberof TextBlock
      */
-    'type': string;
+    'type': TextBlockTypeEnum;
     /**
      * List of children nodes of the current node
-     * @type {Array<AnyNode>}
+     * @type {Array<ChildNode>}
      * @memberof TextBlock
      */
-    'children'?: Array<AnyNode>;
+    'children'?: Array<ChildNode>;
 }
+
+export const TextBlockTypeEnum = {
+    TextBlock: 'text_block'
+} as const;
+
+export type TextBlockTypeEnum = typeof TextBlockTypeEnum[keyof typeof TextBlockTypeEnum];
+
 /**
  * 
  * @export
@@ -6795,7 +6765,7 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked). Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
          * @summary Get applications by product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -6807,14 +6777,14 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApplicationsByProductVersion: async (productId: string, versionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getApplicationsByProductVersion: async (productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
             assertParamExists('getApplicationsByProductVersion', 'productId', productId)
-            // verify required parameter 'versionId' is not null or undefined
-            assertParamExists('getApplicationsByProductVersion', 'versionId', versionId)
-            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/applications`
+            // verify required parameter 'productVersionId' is not null or undefined
+            assertParamExists('getApplicationsByProductVersion', 'productVersionId', productVersionId)
+            const localVarPath = `/api/v2/products/{productId}/versions/{productVersionId}/applications`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
-                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
+                .replace(`{${"productVersionId"}}`, encodeURIComponent(String(productVersionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -6875,18 +6845,18 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * Gets the details for an existing product version.
          * @summary Get product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductVersion: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProductVersion: async (productId: string, productVersionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
             assertParamExists('getProductVersion', 'productId', productId)
-            // verify required parameter 'versionId' is not null or undefined
-            assertParamExists('getProductVersion', 'versionId', versionId)
-            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}`
+            // verify required parameter 'productVersionId' is not null or undefined
+            assertParamExists('getProductVersion', 'productVersionId', productVersionId)
+            const localVarPath = `/api/v2/products/{productId}/versions/{productVersionId}`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
-                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
+                .replace(`{${"productVersionId"}}`, encodeURIComponent(String(productVersionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -6915,18 +6885,18 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
          * @summary Get spec for product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductVersionSpec: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProductVersionSpec: async (productId: string, productVersionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
             assertParamExists('getProductVersionSpec', 'productId', productId)
-            // verify required parameter 'versionId' is not null or undefined
-            assertParamExists('getProductVersionSpec', 'versionId', versionId)
-            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/spec`
+            // verify required parameter 'productVersionId' is not null or undefined
+            assertParamExists('getProductVersionSpec', 'productVersionId', productVersionId)
+            const localVarPath = `/api/v2/products/{productId}/versions/{productVersionId}/spec`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
-                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
+                .replace(`{${"productVersionId"}}`, encodeURIComponent(String(productVersionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -6955,18 +6925,18 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * Returns list of operations used in the API specification document attached to given product version.
          * @summary Get operations in version spec
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductVersionSpecOperations: async (productId: string, versionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProductVersionSpecOperations: async (productId: string, productVersionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
             assertParamExists('getProductVersionSpecOperations', 'productId', productId)
-            // verify required parameter 'versionId' is not null or undefined
-            assertParamExists('getProductVersionSpecOperations', 'versionId', versionId)
-            const localVarPath = `/api/v2/products/{productId}/versions/{versionId}/spec/operations`
+            // verify required parameter 'productVersionId' is not null or undefined
+            assertParamExists('getProductVersionSpecOperations', 'productVersionId', productVersionId)
+            const localVarPath = `/api/v2/products/{productId}/versions/{productVersionId}/spec/operations`
                 .replace(`{${"productId"}}`, encodeURIComponent(String(productId)))
-                .replace(`{${"versionId"}}`, encodeURIComponent(String(versionId)));
+                .replace(`{${"productVersionId"}}`, encodeURIComponent(String(productVersionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -7066,7 +7036,7 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked). Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
          * @summary Get applications by product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -7078,44 +7048,44 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApplicationsByProductVersion(productId: string, versionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListApplicationsPage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationsByProductVersion(productId, versionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, unregistered, options);
+        async getApplicationsByProductVersion(productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListApplicationsPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationsByProductVersion(productId, productVersionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, unregistered, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * Gets the details for an existing product version.
          * @summary Get product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductVersion(productId: string, versionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersion>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersion(productId, versionId, options);
+        async getProductVersion(productId: string, productVersionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersion>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersion(productId, productVersionId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
          * @summary Get spec for product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductVersionSpec(productId: string, versionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionSpecDocument>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersionSpec(productId, versionId, options);
+        async getProductVersionSpec(productId: string, productVersionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionSpecDocument>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersionSpec(productId, productVersionId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * Returns list of operations used in the API specification document attached to given product version.
          * @summary Get operations in version spec
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProductVersionSpecOperations(productId: string, versionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionSpecOperations>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersionSpecOperations(productId, versionId, options);
+        async getProductVersionSpecOperations(productId: string, productVersionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionSpecOperations>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProductVersionSpecOperations(productId, productVersionId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -7148,7 +7118,7 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * Get applications that have a registration for a given product version. Any registration for the version will count, regardless of status (i.e. even if it is pending, rejected, or revoked). Use the `unregistered` query param to return the inverse, only including applicatons that do not have a registration (regardless of status).
          * @summary Get applications by product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
          * @param {number} [pageNumber] Determines which page of the entities to retrieve.
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
@@ -7160,41 +7130,41 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApplicationsByProductVersion(productId: string, versionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options?: any): AxiosPromise<ProductVersionListApplicationsPage> {
-            return localVarFp.getApplicationsByProductVersion(productId, versionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, unregistered, options).then((request) => request(axios, basePath));
+        getApplicationsByProductVersion(productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options?: any): AxiosPromise<ProductVersionListApplicationsPage> {
+            return localVarFp.getApplicationsByProductVersion(productId, productVersionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, unregistered, options).then((request) => request(axios, basePath));
         },
         /**
          * Gets the details for an existing product version.
          * @summary Get product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductVersion(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersion> {
-            return localVarFp.getProductVersion(productId, versionId, options).then((request) => request(axios, basePath));
+        getProductVersion(productId: string, productVersionId: string, options?: any): AxiosPromise<ProductVersion> {
+            return localVarFp.getProductVersion(productId, productVersionId, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns the API specification document attached to given product version. Currently only OpenAPI is supported.
          * @summary Get spec for product version
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductVersionSpec(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpecDocument> {
-            return localVarFp.getProductVersionSpec(productId, versionId, options).then((request) => request(axios, basePath));
+        getProductVersionSpec(productId: string, productVersionId: string, options?: any): AxiosPromise<ProductVersionSpecDocument> {
+            return localVarFp.getProductVersionSpec(productId, productVersionId, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns list of operations used in the API specification document attached to given product version.
          * @summary Get operations in version spec
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} versionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProductVersionSpecOperations(productId: string, versionId: string, options?: any): AxiosPromise<ProductVersionSpecOperations> {
-            return localVarFp.getProductVersionSpecOperations(productId, versionId, options).then((request) => request(axios, basePath));
+        getProductVersionSpecOperations(productId: string, productVersionId: string, options?: any): AxiosPromise<ProductVersionSpecOperations> {
+            return localVarFp.getProductVersionSpecOperations(productId, productVersionId, options).then((request) => request(axios, basePath));
         },
         /**
          * Returns paginated list of versions of a given product.
@@ -7232,7 +7202,7 @@ export interface VersionsApiGetApplicationsByProductVersionRequest {
      * @type {string}
      * @memberof VersionsApiGetApplicationsByProductVersion
      */
-    readonly versionId: string
+    readonly productVersionId: string
 
     /**
      * The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -7309,7 +7279,7 @@ export interface VersionsApiGetProductVersionRequest {
      * @type {string}
      * @memberof VersionsApiGetProductVersion
      */
-    readonly versionId: string
+    readonly productVersionId: string
 }
 
 /**
@@ -7330,7 +7300,7 @@ export interface VersionsApiGetProductVersionSpecRequest {
      * @type {string}
      * @memberof VersionsApiGetProductVersionSpec
      */
-    readonly versionId: string
+    readonly productVersionId: string
 }
 
 /**
@@ -7351,7 +7321,7 @@ export interface VersionsApiGetProductVersionSpecOperationsRequest {
      * @type {string}
      * @memberof VersionsApiGetProductVersionSpecOperations
      */
-    readonly versionId: string
+    readonly productVersionId: string
 }
 
 /**
@@ -7419,7 +7389,7 @@ export class VersionsApi extends BaseAPI {
      * @memberof VersionsApi
      */
     public getApplicationsByProductVersion(requestParameters: VersionsApiGetApplicationsByProductVersionRequest, options?: AxiosRequestConfig) {
-        return VersionsApiFp(this.configuration).getApplicationsByProductVersion(requestParameters.productId, requestParameters.versionId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterStatusEq, requestParameters.filterStatus, requestParameters.unregistered, options).then((request) => request(this.axios, this.basePath));
+        return VersionsApiFp(this.configuration).getApplicationsByProductVersion(requestParameters.productId, requestParameters.productVersionId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterStatusEq, requestParameters.filterStatus, requestParameters.unregistered, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7431,7 +7401,7 @@ export class VersionsApi extends BaseAPI {
      * @memberof VersionsApi
      */
     public getProductVersion(requestParameters: VersionsApiGetProductVersionRequest, options?: AxiosRequestConfig) {
-        return VersionsApiFp(this.configuration).getProductVersion(requestParameters.productId, requestParameters.versionId, options).then((request) => request(this.axios, this.basePath));
+        return VersionsApiFp(this.configuration).getProductVersion(requestParameters.productId, requestParameters.productVersionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7443,7 +7413,7 @@ export class VersionsApi extends BaseAPI {
      * @memberof VersionsApi
      */
     public getProductVersionSpec(requestParameters: VersionsApiGetProductVersionSpecRequest, options?: AxiosRequestConfig) {
-        return VersionsApiFp(this.configuration).getProductVersionSpec(requestParameters.productId, requestParameters.versionId, options).then((request) => request(this.axios, this.basePath));
+        return VersionsApiFp(this.configuration).getProductVersionSpec(requestParameters.productId, requestParameters.productVersionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7455,7 +7425,7 @@ export class VersionsApi extends BaseAPI {
      * @memberof VersionsApi
      */
     public getProductVersionSpecOperations(requestParameters: VersionsApiGetProductVersionSpecOperationsRequest, options?: AxiosRequestConfig) {
-        return VersionsApiFp(this.configuration).getProductVersionSpecOperations(requestParameters.productId, requestParameters.versionId, options).then((request) => request(this.axios, this.basePath));
+        return VersionsApiFp(this.configuration).getProductVersionSpecOperations(requestParameters.productId, requestParameters.productVersionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
