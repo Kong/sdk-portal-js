@@ -251,6 +251,40 @@ paths:
         - credentials
       security:
         - portalAccessToken: []
+  /api/v2/applications/{applicationId}/product-versions/{productVersionId}/granted-scopes:
+    get:
+      x-unstable: true
+      summary: Get the granted scopes
+      description: >-
+        **Pre-release Endpoint**
+
+        This endpoint is currently in beta and is subject to change.
+
+
+        Retrieves the granted scopes of a specified application and product
+        version directly from the IDP.
+
+        Scopes shared between product versions will be returned, even if not
+        currently registered for given product version.
+
+        Will return 409 if this feature is not supported by the application.
+      operationId: get-application-product-version-granted-scopes
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/ProductVersionId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetGrantedScopesProductVersion'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - applications
+      security:
+        - portalAccessToken: []
   /api/v2/applications/{applicationId}/refresh-token:
     post:
       summary: Refresh Client Secret
@@ -3142,6 +3176,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApplicationUpdateResponse'
+    GetGrantedScopesProductVersion:
+      description: Get granted scopes response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetGrantedScopesProductVersionResponse'
     BadRequest:
       description: Bad Request
       content:
