@@ -3486,6 +3486,46 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
+         * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application.
+         * @summary Get the granted scopes
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationProductVersionGrantedScopes: async (applicationId: string, productVersionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'applicationId' is not null or undefined
+            assertParamExists('getApplicationProductVersionGrantedScopes', 'applicationId', applicationId)
+            // verify required parameter 'productVersionId' is not null or undefined
+            assertParamExists('getApplicationProductVersionGrantedScopes', 'productVersionId', productVersionId)
+            const localVarPath = `/api/v2/applications/{applicationId}/product-versions/{productVersionId}/granted-scopes`
+                .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)))
+                .replace(`{${"productVersionId"}}`, encodeURIComponent(String(productVersionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * List applications owned by the developer currently logged in.
          * @summary List Applications
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -3628,6 +3668,18 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application.
+         * @summary Get the granted scopes
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApplicationProductVersionGrantedScopes(applicationId: string, productVersionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetGrantedScopesProductVersionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationProductVersionGrantedScopes(applicationId, productVersionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * List applications owned by the developer currently logged in.
          * @summary List Applications
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -3693,6 +3745,17 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
          */
         getApplication(applicationId: string, options?: any): AxiosPromise<GetApplicationResponse> {
             return localVarFp.getApplication(applicationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application.
+         * @summary Get the granted scopes
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationProductVersionGrantedScopes(applicationId: string, productVersionId: string, options?: any): AxiosPromise<GetGrantedScopesProductVersionResponse> {
+            return localVarFp.getApplicationProductVersionGrantedScopes(applicationId, productVersionId, options).then((request) => request(axios, basePath));
         },
         /**
          * List applications owned by the developer currently logged in.
@@ -3762,6 +3825,27 @@ export interface ApplicationsApiGetApplicationRequest {
      * @memberof ApplicationsApiGetApplication
      */
     readonly applicationId: string
+}
+
+/**
+ * Request parameters for getApplicationProductVersionGrantedScopes operation in ApplicationsApi.
+ * @export
+ * @interface ApplicationsApiGetApplicationProductVersionGrantedScopesRequest
+ */
+export interface ApplicationsApiGetApplicationProductVersionGrantedScopesRequest {
+    /**
+     * Id of the targeted application
+     * @type {string}
+     * @memberof ApplicationsApiGetApplicationProductVersionGrantedScopes
+     */
+    readonly applicationId: string
+
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof ApplicationsApiGetApplicationProductVersionGrantedScopes
+     */
+    readonly productVersionId: string
 }
 
 /**
@@ -3868,6 +3952,18 @@ export class ApplicationsApi extends BaseAPI {
      */
     public getApplication(requestParameters: ApplicationsApiGetApplicationRequest, options?: AxiosRequestConfig) {
         return ApplicationsApiFp(this.configuration).getApplication(requestParameters.applicationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application.
+     * @summary Get the granted scopes
+     * @param {ApplicationsApiGetApplicationProductVersionGrantedScopesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationsApi
+     */
+    public getApplicationProductVersionGrantedScopes(requestParameters: ApplicationsApiGetApplicationProductVersionGrantedScopesRequest, options?: AxiosRequestConfig) {
+        return ApplicationsApiFp(this.configuration).getApplicationProductVersionGrantedScopes(requestParameters.applicationId, requestParameters.productVersionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
