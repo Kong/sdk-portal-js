@@ -56,6 +56,8 @@ paths:
         - $ref: '#/components/parameters/FilterByNameEquality'
         - $ref: '#/components/parameters/FilterByNameEqualityShort'
         - $ref: '#/components/parameters/FilterByNameContains'
+        - $ref: '#/components/parameters/FilterByAuthStrategyEquality'
+        - $ref: '#/components/parameters/FilterByAuthStrategyEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ListApplications'
@@ -253,14 +255,8 @@ paths:
         - portalAccessToken: []
   /api/v2/applications/{applicationId}/product-versions/{productVersionId}/granted-scopes:
     get:
-      x-unstable: true
       summary: Get the granted scopes
-      description: >-
-        **Pre-release Endpoint**
-
-        This endpoint is currently in beta and is subject to change.
-
-
+      description: >
         Retrieves the granted scopes of a specified application and product
         version directly from the IDP.
 
@@ -279,8 +275,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/GetGrantedScopesProductVersion422Response'
       tags:
         - applications
       security:
@@ -389,6 +385,62 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - registrations
+      security:
+        - portalAccessToken: []
+  /api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes:
+    get:
+      summary: Get the granted scopes of an application registration
+      description: >
+        Retrieves the granted scopes of a specified product registration
+        directly from the IDP for an application.
+
+        Will return 409 if this feature is not supported by the application.
+      operationId: get-application-registration-granted-scopes
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+        - $ref: '#/components/parameters/RegistrationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetGrantedScopes'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+      tags:
+        - registrations
+      security:
+        - portalAccessToken: []
+  /api/v2/applications/auth-strategies:
+    get:
+      summary: List the available auth strategies
+      description: >
+        Retrieve the available Auth Strategies on this portal.
+
+        An Auth Strategy is a set of plugin configurations that represent how
+        the gateway will perform authentication and authorization for a Product
+        Version.
+
+        It may reference to Key-Auth or an OIDC configuration (with or without
+        DCR).
+      operationId: list-application-auth-strategies
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByNameContains'
+        - $ref: '#/components/parameters/FilterByCredentialTypeEquality'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListAuthStrategies'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - applications
       security:
         - portalAccessToken: []
   /api/v2/developer:
@@ -916,6 +968,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
       parameters:
         - $ref: '#/components/parameters/SearchIndices'
+        - $ref: '#/components/parameters/FilterByAuthStrategyEqualityIdShort'
         - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/SearchJoin'
         - $ref: '#/components/parameters/PageSize'
@@ -1410,6 +1463,40 @@ components:
           example: Forbidden
       allOf:
         - $ref: '#/components/schemas/BaseError'
+    AuthStrategyId:
+      description: >-
+        ID of the auth strategy to use for the application. If null or not
+        included, the default application auth strategy will be used.
+      type: string
+      format: uuid
+      nullable: true
+    ListAuthStrategiesItem:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/AuthStrategyId'
+        name:
+          type: string
+          example: Okta Strategy
+        credential_type:
+          type: string
+          enum:
+            - client_credentials
+            - self_managed_client_credentials
+            - key_auth
+          example: client_credentials
+        auth_methods:
+          type: array
+          items:
+            description: Auth Methods enabled for this strategy
+            type: string
+          example:
+            - bearer
+      required:
+        - id
+        - credential_type
+        - name
     CreateCredentialPayload:
       additionalProperties: false
       type: object
@@ -1455,6 +1542,8 @@ components:
         redirect_uri:
           type: string
           nullable: true
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1537,6 +1626,8 @@ components:
           description: A brief description of the application
           type: string
           maxLength: 255
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
     ApplicationCreationResponse:
       additionalProperties: false
       type: object
@@ -1549,6 +1640,7 @@ components:
         - description
         - created_at
         - updated_at
+        - auth_strategy_id
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -1573,6 +1665,8 @@ components:
               type: string
             client_secret:
               type: string
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1626,6 +1720,8 @@ components:
           type: string
           example: https://example.com/callback
           nullable: true
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -1638,6 +1734,19 @@ components:
       properties:
         scopes:
           $ref: '#/components/schemas/RefreshedGrantedScopes'
+    ListAuthStrategiesResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListAuthStrategiesItem'
     PageMeta:
       type: object
       description: >-
@@ -1862,6 +1971,21 @@ components:
       type: array
       items:
         type: string
+    UnprocessableContentError:
+      type: object
+      properties:
+        status:
+          example: 422
+        title:
+          example: Unprocessable Content
+        type:
+          example: https://httpstatuses.com/422
+        instance:
+          example: kong:trace:1234567891
+        detail:
+          example: Unprocessable Content
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
     AuthenticateRequest:
       type: object
       additionalProperties: false
@@ -2219,18 +2343,33 @@ components:
         - registration_configs
     RegistrationConfiguration:
       type: object
+      additionalProperties: false
       required:
         - name
       properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        auth_methods:
+          type: array
+          items:
+            description: Auth Methods enabled for this strategy
+            type: string
+          example:
+            - bearer
+        credential_type:
+          $ref: '#/components/schemas/CredentialType'
         name:
           type: string
-          enum:
-            - key-auth
-            - openid-connect
         available_scopes:
           type: array
           items:
             type: string
+    CredentialType:
+      type: string
+      enum:
+        - client_credentials
+        - self_managed_client_credentials
+        - key_auth
     LatestVersion:
       type: object
       additionalProperties: false
@@ -2468,8 +2607,6 @@ components:
         - parent_document_id
         - slug
         - title
-        - created_at
-        - updated_at
       properties:
         id:
           type: string
@@ -2490,10 +2627,6 @@ components:
           type: string
           description: the title of the document
           example: Getting Started
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
     ListDocuments:
       type: object
       additionalProperties: false
@@ -2517,8 +2650,6 @@ components:
         - slug
         - metadata
         - children
-        - created_at
-        - updated_at
       properties:
         id:
           type: string
@@ -2544,10 +2675,6 @@ components:
             author: Jane Doe
             description: This is a description
             keywords: hello, world
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
         children:
           type: array
           items:
@@ -3182,6 +3309,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/GetGrantedScopesProductVersionResponse'
+          examples:
+            GetGrantedScopesProductVersion200Response:
+              $ref: '#/components/examples/GetGrantedScopesProductVersion200Response'
+    GetGrantedScopesProductVersion422Response:
+      description: Get granted with application using unsupported IDP.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnprocessableContentError'
+          examples:
+            GetGrantedScopesProductVersion422Example:
+              $ref: '#/components/examples/GetGrantedScopesProductVersion422Example'
+    ListAuthStrategies:
+      description: List auth strategies response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListAuthStrategiesResponse'
     BadRequest:
       description: Bad Request
       content:
@@ -3382,6 +3527,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ListRegistrationsResponse'
+    GetGrantedScopes:
+      description: Get granted scopes response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetGrantedScopesResponse'
+    UnprocessableContent:
+      description: Unprocessable Content
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnprocessableContentError'
+          examples:
+            UnprocessableContentExample:
+              $ref: '#/components/examples/UnprocessableContentExample'
     SearchResponse:
       description: Search Results
       content:
@@ -3588,6 +3748,17 @@ components:
         title: Forbidden
         instance: kong:trace:2723154947768991354
         detail: You do not have permission to perform this action
+    GetGrantedScopesProductVersion200Response:
+      value:
+        scopes:
+          - openid
+    GetGrantedScopesProductVersion422Example:
+      value:
+        status: 422
+        title: Unsupported IDP
+        type: https://kongapi.info/konnect/portal/granted-scopes-unavailable
+        detail: This feature is not supported by the application.
+        instance: kong:trace:2724154947768991354
     NotFoundExample:
       value:
         status: 404
@@ -3661,6 +3832,12 @@ components:
           register: false
           view: true
           view_documentation: true
+    UnprocessableContentExample:
+      value:
+        status: 422
+        title: Unprocessable Content
+        instance: kong:trace:8347343766220159419
+        detail: The requested operation cannot be performed with the provided data
     SearchResponseExample:
       value:
         data:
@@ -3690,6 +3867,38 @@ components:
       schema:
         type: string
         format: uuid
+    FilterByCredentialTypeEquality:
+      name: filter[credential_type][eq]
+      description: >-
+        Filter by direct equality comparison of the credential_type with a
+        supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - client_credentials
+          - self_managed_client_credentials
+          - key_auth
+        example: key_auth
+    FilterByAuthStrategyEquality:
+      name: filter[auth_strategy_id][eq]
+      description: Filter by the id of the auth strategy supported by the application.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByAuthStrategyEqualityShort:
+      name: filter[auth_strategy_id]
+      description: >-
+        Filter by the id of the auth strategy supported by the application
+        (short-hand).
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
     PageSize:
       name: page[size]
       description: >-
@@ -3870,6 +4079,16 @@ components:
       schema:
         type: string
         format: uuid
+    FilterByAuthStrategyEqualityIdShort:
+      name: filter[auth_strategy_id]
+      description: >-
+        Filter by direct equality comparison (short-hand) of the
+        auth_strategy_id property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
     SearchQuery:
       name: q
       description: Determines how to filter search results
