@@ -125,6 +125,12 @@ export interface ApplicationCreationResponse {
      */
     'credentials'?: ApplicationCreationResponseCredentials;
     /**
+     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
+     * @type {string}
+     * @memberof ApplicationCreationResponse
+     */
+    'auth_strategy_id': string | null;
+    /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof ApplicationCreationResponse
@@ -224,6 +230,12 @@ export interface ApplicationUpdateResponse {
      * @memberof ApplicationUpdateResponse
      */
     'redirect_uri'?: string | null;
+    /**
+     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
+     * @type {string}
+     * @memberof ApplicationUpdateResponse
+     */
+    'auth_strategy_id'?: string | null;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -519,6 +531,12 @@ export interface CreateApplicationPayload {
      * @memberof CreateApplicationPayload
      */
     'description'?: string;
+    /**
+     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
+     * @type {string}
+     * @memberof CreateApplicationPayload
+     */
+    'auth_strategy_id'?: string | null;
 }
 /**
  * 
@@ -577,6 +595,21 @@ export interface CredentialCreationResponse {
      */
     'display_name': string;
 }
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const CredentialType = {
+    ClientCredentials: 'client_credentials',
+    SelfManagedClientCredentials: 'self_managed_client_credentials',
+    KeyAuth: 'key_auth'
+} as const;
+
+export type CredentialType = typeof CredentialType[keyof typeof CredentialType];
+
+
 /**
  * A user who can use a developer portal
  * @export
@@ -704,18 +737,6 @@ export interface DocumentItem {
      * @memberof DocumentItem
      */
     'title': string;
-    /**
-     * An ISO-8601 timestamp representation of entity creation date.
-     * @type {string}
-     * @memberof DocumentItem
-     */
-    'created_at': string;
-    /**
-     * An ISO-8601 timestamp representation of entity update date.
-     * @type {string}
-     * @memberof DocumentItem
-     */
-    'updated_at': string;
 }
 /**
  * a document tree
@@ -753,18 +774,6 @@ export interface DocumentTree {
      * @memberof DocumentTree
      */
     'metadata': object;
-    /**
-     * An ISO-8601 timestamp representation of entity creation date.
-     * @type {string}
-     * @memberof DocumentTree
-     */
-    'created_at': string;
-    /**
-     * An ISO-8601 timestamp representation of entity update date.
-     * @type {string}
-     * @memberof DocumentTree
-     */
-    'updated_at': string;
     /**
      * 
      * @type {Array<DocumentTree>}
@@ -891,6 +900,12 @@ export interface GetApplicationResponse {
      * @memberof GetApplicationResponse
      */
     'redirect_uri'?: string | null;
+    /**
+     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
+     * @type {string}
+     * @memberof GetApplicationResponse
+     */
+    'auth_strategy_id'?: string | null;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -1291,6 +1306,65 @@ export interface ListApplicationsResponse {
      * @memberof ListApplicationsResponse
      */
     'data': Array<GetApplicationResponse>;
+}
+/**
+ * 
+ * @export
+ * @interface ListAuthStrategiesItem
+ */
+export interface ListAuthStrategiesItem {
+    /**
+     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
+     * @type {string}
+     * @memberof ListAuthStrategiesItem
+     */
+    'id': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ListAuthStrategiesItem
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ListAuthStrategiesItem
+     */
+    'credential_type': ListAuthStrategiesItemCredentialTypeEnum;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ListAuthStrategiesItem
+     */
+    'auth_methods'?: Array<string>;
+}
+
+export const ListAuthStrategiesItemCredentialTypeEnum = {
+    ClientCredentials: 'client_credentials',
+    SelfManagedClientCredentials: 'self_managed_client_credentials',
+    KeyAuth: 'key_auth'
+} as const;
+
+export type ListAuthStrategiesItemCredentialTypeEnum = typeof ListAuthStrategiesItemCredentialTypeEnum[keyof typeof ListAuthStrategiesItemCredentialTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface ListAuthStrategiesResponse
+ */
+export interface ListAuthStrategiesResponse {
+    /**
+     * 
+     * @type {PaginatedMeta}
+     * @memberof ListAuthStrategiesResponse
+     */
+    'meta': PaginatedMeta;
+    /**
+     * 
+     * @type {Array<ListAuthStrategiesItem>}
+     * @memberof ListAuthStrategiesResponse
+     */
+    'data': Array<ListAuthStrategiesItem>;
 }
 /**
  * 
@@ -2686,11 +2760,29 @@ export interface RegisterPayload {
  */
 export interface RegistrationConfiguration {
     /**
+     * Contains a unique identifier used by the API for this resource.
+     * @type {string}
+     * @memberof RegistrationConfiguration
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof RegistrationConfiguration
+     */
+    'auth_methods'?: Array<string>;
+    /**
+     * 
+     * @type {CredentialType}
+     * @memberof RegistrationConfiguration
+     */
+    'credential_type'?: CredentialType;
+    /**
      * 
      * @type {string}
      * @memberof RegistrationConfiguration
      */
-    'name': RegistrationConfigurationNameEnum;
+    'name': string;
     /**
      * 
      * @type {Array<string>}
@@ -2698,14 +2790,6 @@ export interface RegistrationConfiguration {
      */
     'available_scopes'?: Array<string>;
 }
-
-export const RegistrationConfigurationNameEnum = {
-    KeyAuth: 'key-auth',
-    OpenidConnect: 'openid-connect'
-} as const;
-
-export type RegistrationConfigurationNameEnum = typeof RegistrationConfigurationNameEnum[keyof typeof RegistrationConfigurationNameEnum];
-
 /**
  * Payload required to start the reset password flow 
  * @export
@@ -3172,6 +3256,43 @@ export interface UnauthorizedError {
     'detail'?: any;
 }
 /**
+ * 
+ * @export
+ * @interface UnprocessableContentError
+ */
+export interface UnprocessableContentError {
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentError
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentError
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentError
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentError
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentError
+     */
+    'detail'?: any;
+}
+/**
  * Payload required to update an application
  * @export
  * @interface UpdateApplicationPayload
@@ -3486,7 +3607,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application.
+         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application. 
          * @summary Get the granted scopes
          * @param {string} applicationId Id of the targeted application
          * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
@@ -3526,6 +3647,68 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
+         * Retrieve the available Auth Strategies on this portal. An Auth Strategy is a set of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. It may reference to Key-Auth or an OIDC configuration (with or without DCR). 
+         * @summary List the available auth strategies
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {'client_credentials' | 'self_managed_client_credentials' | 'key_auth'} [filterCredentialTypeEq] Filter by direct equality comparison of the credential_type with a supplied value.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listApplicationAuthStrategies: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterCredentialTypeEq?: 'client_credentials' | 'self_managed_client_credentials' | 'key_auth', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/applications/auth-strategies`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page[size]'] = pageSize;
+            }
+
+            if (pageNumber !== undefined) {
+                localVarQueryParameter['page[number]'] = pageNumber;
+            }
+
+            if (filterNameEq !== undefined) {
+                localVarQueryParameter['filter[name][eq]'] = filterNameEq;
+            }
+
+            if (filterName !== undefined) {
+                localVarQueryParameter['filter[name]'] = filterName;
+            }
+
+            if (filterNameContains !== undefined) {
+                localVarQueryParameter['filter[name][contains]'] = filterNameContains;
+            }
+
+            if (filterCredentialTypeEq !== undefined) {
+                localVarQueryParameter['filter[credential_type][eq]'] = filterCredentialTypeEq;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * List applications owned by the developer currently logged in.
          * @summary List Applications
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -3533,10 +3716,12 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
          * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {string} [filterAuthStrategyIdEq] Filter by the id of the auth strategy supported by the application.
+         * @param {string} [filterAuthStrategyId] Filter by the id of the auth strategy supported by the application (short-hand).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listApplications: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listApplications: async (pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterAuthStrategyIdEq?: string, filterAuthStrategyId?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v2/applications`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3569,6 +3754,14 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
 
             if (filterNameContains !== undefined) {
                 localVarQueryParameter['filter[name][contains]'] = filterNameContains;
+            }
+
+            if (filterAuthStrategyIdEq !== undefined) {
+                localVarQueryParameter['filter[auth_strategy_id][eq]'] = filterAuthStrategyIdEq;
+            }
+
+            if (filterAuthStrategyId !== undefined) {
+                localVarQueryParameter['filter[auth_strategy_id]'] = filterAuthStrategyId;
             }
 
 
@@ -3668,7 +3861,7 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application.
+         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application. 
          * @summary Get the granted scopes
          * @param {string} applicationId Id of the targeted application
          * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
@@ -3680,6 +3873,22 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Retrieve the available Auth Strategies on this portal. An Auth Strategy is a set of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. It may reference to Key-Auth or an OIDC configuration (with or without DCR). 
+         * @summary List the available auth strategies
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {'client_credentials' | 'self_managed_client_credentials' | 'key_auth'} [filterCredentialTypeEq] Filter by direct equality comparison of the credential_type with a supplied value.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listApplicationAuthStrategies(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterCredentialTypeEq?: 'client_credentials' | 'self_managed_client_credentials' | 'key_auth', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListAuthStrategiesResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplicationAuthStrategies(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterCredentialTypeEq, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * List applications owned by the developer currently logged in.
          * @summary List Applications
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -3687,11 +3896,13 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
          * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {string} [filterAuthStrategyIdEq] Filter by the id of the auth strategy supported by the application.
+         * @param {string} [filterAuthStrategyId] Filter by the id of the auth strategy supported by the application (short-hand).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListApplicationsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options);
+        async listApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterAuthStrategyIdEq?: string, filterAuthStrategyId?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListApplicationsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterAuthStrategyIdEq, filterAuthStrategyId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3747,7 +3958,7 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
             return localVarFp.getApplication(applicationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application.
+         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application. 
          * @summary Get the granted scopes
          * @param {string} applicationId Id of the targeted application
          * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
@@ -3758,6 +3969,21 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
             return localVarFp.getApplicationProductVersionGrantedScopes(applicationId, productVersionId, options).then((request) => request(axios, basePath));
         },
         /**
+         * Retrieve the available Auth Strategies on this portal. An Auth Strategy is a set of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. It may reference to Key-Auth or an OIDC configuration (with or without DCR). 
+         * @summary List the available auth strategies
+         * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
+         * @param {number} [pageNumber] Determines which page of the entities to retrieve.
+         * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
+         * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+         * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {'client_credentials' | 'self_managed_client_credentials' | 'key_auth'} [filterCredentialTypeEq] Filter by direct equality comparison of the credential_type with a supplied value.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listApplicationAuthStrategies(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterCredentialTypeEq?: 'client_credentials' | 'self_managed_client_credentials' | 'key_auth', options?: any): AxiosPromise<ListAuthStrategiesResponse> {
+            return localVarFp.listApplicationAuthStrategies(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterCredentialTypeEq, options).then((request) => request(axios, basePath));
+        },
+        /**
          * List applications owned by the developer currently logged in.
          * @summary List Applications
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -3765,11 +3991,13 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
          * @param {string} [filterNameEq] Filter by direct equality comparison of the name property with a supplied value.
          * @param {string} [filterName] Filter by direct equality comparison (short-hand) of the name property with a supplied value.
          * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
+         * @param {string} [filterAuthStrategyIdEq] Filter by the id of the auth strategy supported by the application.
+         * @param {string} [filterAuthStrategyId] Filter by the id of the auth strategy supported by the application (short-hand).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, options?: any): AxiosPromise<ListApplicationsResponse> {
-            return localVarFp.listApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, options).then((request) => request(axios, basePath));
+        listApplications(pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterAuthStrategyIdEq?: string, filterAuthStrategyId?: string, options?: any): AxiosPromise<ListApplicationsResponse> {
+            return localVarFp.listApplications(pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterAuthStrategyIdEq, filterAuthStrategyId, options).then((request) => request(axios, basePath));
         },
         /**
          * Updates an application, replacing specified properties with any new values supplied in the request body.
@@ -3849,6 +4077,55 @@ export interface ApplicationsApiGetApplicationProductVersionGrantedScopesRequest
 }
 
 /**
+ * Request parameters for listApplicationAuthStrategies operation in ApplicationsApi.
+ * @export
+ * @interface ApplicationsApiListApplicationAuthStrategiesRequest
+ */
+export interface ApplicationsApiListApplicationAuthStrategiesRequest {
+    /**
+     * The maximum number of items to include per page. The last page of a collection may include fewer items.
+     * @type {number}
+     * @memberof ApplicationsApiListApplicationAuthStrategies
+     */
+    readonly pageSize?: number
+
+    /**
+     * Determines which page of the entities to retrieve.
+     * @type {number}
+     * @memberof ApplicationsApiListApplicationAuthStrategies
+     */
+    readonly pageNumber?: number
+
+    /**
+     * Filter by direct equality comparison of the name property with a supplied value.
+     * @type {string}
+     * @memberof ApplicationsApiListApplicationAuthStrategies
+     */
+    readonly filterNameEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+     * @type {string}
+     * @memberof ApplicationsApiListApplicationAuthStrategies
+     */
+    readonly filterName?: string
+
+    /**
+     * Filter by contains comparison of the name property with a supplied substring
+     * @type {string}
+     * @memberof ApplicationsApiListApplicationAuthStrategies
+     */
+    readonly filterNameContains?: string
+
+    /**
+     * Filter by direct equality comparison of the credential_type with a supplied value.
+     * @type {'client_credentials' | 'self_managed_client_credentials' | 'key_auth'}
+     * @memberof ApplicationsApiListApplicationAuthStrategies
+     */
+    readonly filterCredentialTypeEq?: 'client_credentials' | 'self_managed_client_credentials' | 'key_auth'
+}
+
+/**
  * Request parameters for listApplications operation in ApplicationsApi.
  * @export
  * @interface ApplicationsApiListApplicationsRequest
@@ -3888,6 +4165,20 @@ export interface ApplicationsApiListApplicationsRequest {
      * @memberof ApplicationsApiListApplications
      */
     readonly filterNameContains?: string
+
+    /**
+     * Filter by the id of the auth strategy supported by the application.
+     * @type {string}
+     * @memberof ApplicationsApiListApplications
+     */
+    readonly filterAuthStrategyIdEq?: string
+
+    /**
+     * Filter by the id of the auth strategy supported by the application (short-hand).
+     * @type {string}
+     * @memberof ApplicationsApiListApplications
+     */
+    readonly filterAuthStrategyId?: string
 }
 
 /**
@@ -3955,7 +4246,7 @@ export class ApplicationsApi extends BaseAPI {
     }
 
     /**
-     * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application.
+     * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application. 
      * @summary Get the granted scopes
      * @param {ApplicationsApiGetApplicationProductVersionGrantedScopesRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -3967,6 +4258,18 @@ export class ApplicationsApi extends BaseAPI {
     }
 
     /**
+     * Retrieve the available Auth Strategies on this portal. An Auth Strategy is a set of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. It may reference to Key-Auth or an OIDC configuration (with or without DCR). 
+     * @summary List the available auth strategies
+     * @param {ApplicationsApiListApplicationAuthStrategiesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationsApi
+     */
+    public listApplicationAuthStrategies(requestParameters: ApplicationsApiListApplicationAuthStrategiesRequest = {}, options?: AxiosRequestConfig) {
+        return ApplicationsApiFp(this.configuration).listApplicationAuthStrategies(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterCredentialTypeEq, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * List applications owned by the developer currently logged in.
      * @summary List Applications
      * @param {ApplicationsApiListApplicationsRequest} requestParameters Request parameters.
@@ -3975,7 +4278,7 @@ export class ApplicationsApi extends BaseAPI {
      * @memberof ApplicationsApi
      */
     public listApplications(requestParameters: ApplicationsApiListApplicationsRequest = {}, options?: AxiosRequestConfig) {
-        return ApplicationsApiFp(this.configuration).listApplications(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, options).then((request) => request(this.axios, this.basePath));
+        return ApplicationsApiFp(this.configuration).listApplications(requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterAuthStrategyIdEq, requestParameters.filterAuthStrategyId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6308,6 +6611,46 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
             };
         },
         /**
+         * Retrieves the granted scopes of a specified product registration directly from the IDP for an application. Will return 409 if this feature is not supported by the application. 
+         * @summary Get the granted scopes of an application registration
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationRegistrationGrantedScopes: async (applicationId: string, registrationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'applicationId' is not null or undefined
+            assertParamExists('getApplicationRegistrationGrantedScopes', 'applicationId', applicationId)
+            // verify required parameter 'registrationId' is not null or undefined
+            assertParamExists('getApplicationRegistrationGrantedScopes', 'registrationId', registrationId)
+            const localVarPath = `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes`
+                .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)))
+                .replace(`{${"registrationId"}}`, encodeURIComponent(String(registrationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Lists product registrations for an application.
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
@@ -6420,6 +6763,18 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Retrieves the granted scopes of a specified product registration directly from the IDP for an application. Will return 409 if this feature is not supported by the application. 
+         * @summary Get the granted scopes of an application registration
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApplicationRegistrationGrantedScopes(applicationId: string, registrationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetGrantedScopesResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationRegistrationGrantedScopes(applicationId, registrationId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Lists product registrations for an application.
          * @summary Get application registrations
          * @param {string} applicationId Id of the targeted application
@@ -6478,6 +6833,17 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
          */
         getApplicationRegistration(applicationId: string, registrationId: string, options?: any): AxiosPromise<GetRegistrationResponse> {
             return localVarFp.getApplicationRegistration(applicationId, registrationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieves the granted scopes of a specified product registration directly from the IDP for an application. Will return 409 if this feature is not supported by the application. 
+         * @summary Get the granted scopes of an application registration
+         * @param {string} applicationId Id of the targeted application
+         * @param {string} registrationId Contains a unique identifier used by the Portal API for this resource.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationRegistrationGrantedScopes(applicationId: string, registrationId: string, options?: any): AxiosPromise<GetGrantedScopesResponse> {
+            return localVarFp.getApplicationRegistrationGrantedScopes(applicationId, registrationId, options).then((request) => request(axios, basePath));
         },
         /**
          * Lists product registrations for an application.
@@ -6557,6 +6923,27 @@ export interface RegistrationsApiGetApplicationRegistrationRequest {
      * Contains a unique identifier used by the Portal API for this resource.
      * @type {string}
      * @memberof RegistrationsApiGetApplicationRegistration
+     */
+    readonly registrationId: string
+}
+
+/**
+ * Request parameters for getApplicationRegistrationGrantedScopes operation in RegistrationsApi.
+ * @export
+ * @interface RegistrationsApiGetApplicationRegistrationGrantedScopesRequest
+ */
+export interface RegistrationsApiGetApplicationRegistrationGrantedScopesRequest {
+    /**
+     * Id of the targeted application
+     * @type {string}
+     * @memberof RegistrationsApiGetApplicationRegistrationGrantedScopes
+     */
+    readonly applicationId: string
+
+    /**
+     * Contains a unique identifier used by the Portal API for this resource.
+     * @type {string}
+     * @memberof RegistrationsApiGetApplicationRegistrationGrantedScopes
      */
     readonly registrationId: string
 }
@@ -6661,6 +7048,18 @@ export class RegistrationsApi extends BaseAPI {
     }
 
     /**
+     * Retrieves the granted scopes of a specified product registration directly from the IDP for an application. Will return 409 if this feature is not supported by the application. 
+     * @summary Get the granted scopes of an application registration
+     * @param {RegistrationsApiGetApplicationRegistrationGrantedScopesRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RegistrationsApi
+     */
+    public getApplicationRegistrationGrantedScopes(requestParameters: RegistrationsApiGetApplicationRegistrationGrantedScopesRequest, options?: AxiosRequestConfig) {
+        return RegistrationsApiFp(this.configuration).getApplicationRegistrationGrantedScopes(requestParameters.applicationId, requestParameters.registrationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Lists product registrations for an application.
      * @summary Get application registrations
      * @param {RegistrationsApiListApplicationRegistrationsRequest} requestParameters Request parameters.
@@ -6684,6 +7083,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * Returns paginated search results from the specified entities with the given search parameters.
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
+         * @param {string} [filterAuthStrategyId] Filter by direct equality comparison (short-hand) of the auth_strategy_id property with a supplied value.
          * @param {string} [q] Determines how to filter search results
          * @param {string} [join] Determines which sub-entities to include in search results
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -6691,7 +7091,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchPortalEntities: async (indices: SearchIndicesParameters, q?: string, join?: string, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchPortalEntities: async (indices: SearchIndicesParameters, filterAuthStrategyId?: string, q?: string, join?: string, pageSize?: number, pageNumber?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'indices' is not null or undefined
             assertParamExists('searchPortalEntities', 'indices', indices)
             const localVarPath = `/api/v2/search/{indices}`
@@ -6708,6 +7108,10 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarQueryParameter = {} as any;
 
             // authentication portalAccessToken required
+
+            if (filterAuthStrategyId !== undefined) {
+                localVarQueryParameter['filter[auth_strategy_id]'] = filterAuthStrategyId;
+            }
 
             if (q !== undefined) {
                 localVarQueryParameter['q'] = q;
@@ -6750,6 +7154,7 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * Returns paginated search results from the specified entities with the given search parameters.
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
+         * @param {string} [filterAuthStrategyId] Filter by direct equality comparison (short-hand) of the auth_strategy_id property with a supplied value.
          * @param {string} [q] Determines how to filter search results
          * @param {string} [join] Determines which sub-entities to include in search results
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -6757,8 +7162,8 @@ export const SearchApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: string, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResults>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchPortalEntities(indices, q, join, pageSize, pageNumber, options);
+        async searchPortalEntities(indices: SearchIndicesParameters, filterAuthStrategyId?: string, q?: string, join?: string, pageSize?: number, pageNumber?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResults>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchPortalEntities(indices, filterAuthStrategyId, q, join, pageSize, pageNumber, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -6775,6 +7180,7 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
          * Returns paginated search results from the specified entities with the given search parameters.
          * @summary Search Portal Entities
          * @param {SearchIndicesParameters} indices Determines which entity sets to search
+         * @param {string} [filterAuthStrategyId] Filter by direct equality comparison (short-hand) of the auth_strategy_id property with a supplied value.
          * @param {string} [q] Determines how to filter search results
          * @param {string} [join] Determines which sub-entities to include in search results
          * @param {number} [pageSize] The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -6782,8 +7188,8 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchPortalEntities(indices: SearchIndicesParameters, q?: string, join?: string, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<SearchResults> {
-            return localVarFp.searchPortalEntities(indices, q, join, pageSize, pageNumber, options).then((request) => request(axios, basePath));
+        searchPortalEntities(indices: SearchIndicesParameters, filterAuthStrategyId?: string, q?: string, join?: string, pageSize?: number, pageNumber?: number, options?: any): AxiosPromise<SearchResults> {
+            return localVarFp.searchPortalEntities(indices, filterAuthStrategyId, q, join, pageSize, pageNumber, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -6800,6 +7206,13 @@ export interface SearchApiSearchPortalEntitiesRequest {
      * @memberof SearchApiSearchPortalEntities
      */
     readonly indices: SearchIndicesParameters
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the auth_strategy_id property with a supplied value.
+     * @type {string}
+     * @memberof SearchApiSearchPortalEntities
+     */
+    readonly filterAuthStrategyId?: string
 
     /**
      * Determines how to filter search results
@@ -6846,7 +7259,7 @@ export class SearchApi extends BaseAPI {
      * @memberof SearchApi
      */
     public searchPortalEntities(requestParameters: SearchApiSearchPortalEntitiesRequest, options?: AxiosRequestConfig) {
-        return SearchApiFp(this.configuration).searchPortalEntities(requestParameters.indices, requestParameters.q, requestParameters.join, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
+        return SearchApiFp(this.configuration).searchPortalEntities(requestParameters.indices, requestParameters.filterAuthStrategyId, requestParameters.q, requestParameters.join, requestParameters.pageSize, requestParameters.pageNumber, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
