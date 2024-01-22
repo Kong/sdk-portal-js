@@ -1,3 +1,21 @@
+# v2.6.0 (Mon Jan 22 2024)
+
+#### 🚀 Enhancement
+
+- Automated OAS Update [#65](https://github.com/Kong/sdk-portal-js/pull/65) ([@kong-apiops](https://github.com/kong-apiops) [@team-devx-bot](https://github.com/team-devx-bot))
+
+#### 🐛 Bug Fix
+
+- chore/update-gh-token [#66](https://github.com/Kong/sdk-portal-js/pull/66) ([@andrewwylde](https://github.com/andrewwylde))
+
+#### Authors: 3
+
+- [@kong-apiops](https://github.com/kong-apiops)
+- Andrew Wylde ([@andrewwylde](https://github.com/andrewwylde))
+- Kong Team Devx Bot ([@team-devx-bot](https://github.com/team-devx-bot))
+
+---
+
 # v2.5.0 (Thu Nov 23 2023)
 
 #### 🚀 Enhancement
