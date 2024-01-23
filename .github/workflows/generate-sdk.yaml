@@ -33,13 +33,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.ref }}
           path: actions
+          token: ${{ secrets.API_OPS_GH_PAT }}
 
       - name: Build JavaScript SDK
         uses: Kong/public-shared-actions/code-build-actions/build-js-sdk@main
         with:
           app_directory: ${{ github.workspace }}
           sdk_output_directory: ${{ github.workspace }}/actions
-          token: ${{ secrets.API_OPS_GH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Commit SDK changes to the PR
         shell: bash
