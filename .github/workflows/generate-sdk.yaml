@@ -40,7 +40,7 @@ jobs:
         with:
           app_directory: ${{ github.workspace }}
           sdk_output_directory: ${{ github.workspace }}/actions
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.API_OPS_GH_PAT }}
           
       - name: Commit SDK changes to the PR
         shell: bash
