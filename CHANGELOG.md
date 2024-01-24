@@ -1,3 +1,23 @@
+# v2.6.1 (Wed Jan 24 2024)
+
+#### 🐛 Bug Fix
+
+- build(deps): bump follow-redirects from 1.15.3 to 1.15.5 [#70](https://github.com/Kong/sdk-portal-js/pull/70) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+- chore: update setup npm [#76](https://github.com/Kong/sdk-portal-js/pull/76) ([@davidma415](https://github.com/davidma415))
+- chore: update token passed in [#75](https://github.com/Kong/sdk-portal-js/pull/75) ([@davidma415](https://github.com/davidma415))
+- ci: update check-pr-labels.yaml with protected branch token [#74](https://github.com/Kong/sdk-portal-js/pull/74) ([@andrewwylde](https://github.com/andrewwylde))
+- chore: update tokens [#73](https://github.com/Kong/sdk-portal-js/pull/73) ([@davidma415](https://github.com/davidma415))
+- chore: update token for build to use api ops token [#72](https://github.com/Kong/sdk-portal-js/pull/72) ([@davidma415](https://github.com/davidma415))
+- Revert "chore/update-gh-token" [#71](https://github.com/Kong/sdk-portal-js/pull/71) ([@davidma415](https://github.com/davidma415))
+
+#### Authors: 3
+
+- [@dependabot[bot]](https://github.com/dependabot[bot])
+- Andrew Wylde ([@andrewwylde](https://github.com/andrewwylde))
+- David Ma ([@davidma415](https://github.com/davidma415))
+
+---
+
 # v2.6.0 (Mon Jan 22 2024)
 
 #### 🚀 Enhancement
