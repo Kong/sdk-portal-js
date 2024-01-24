@@ -38,7 +38,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROTECTED_BRANCH_REVIEWER_TOKEN: ${{ secrets.PORTAL_JS_SDK_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN_PRIVATE_PUBLISH }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_PRIVATE_PUBLISH }}
         run: |
           yarn install --frozen-lockfile
           yarn build
