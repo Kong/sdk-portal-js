@@ -27,6 +27,7 @@ jobs:
         if: github.event_name == 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROTECTED_BRANCH_REVIEWER_TOKEN: ${{ secrets.PORTAL_JS_SDK_TOKEN }}
         run: |
           yarn install --frozen-lockfile
           npx auto pr-check --url https://konghq.com --context auto/check-semver-label --pr ${{ github.event.pull_request.number }}
