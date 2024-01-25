@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened, labeled, unlabeled]
 
 jobs:
-  release:
+  check-pr-labels:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
