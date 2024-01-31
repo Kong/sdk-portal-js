@@ -53,9 +53,9 @@ jobs:
           gh pr checkout ${{ github.event.pull_request.number }}
           
           if git diff src --exit-code; then
-            echo "::set-env name=changes_exist::false"
+            echo "changes_exist=false" >> $GITHUB_ENV
           else
-            echo "::set-env name=changes_exist::true"
+            echo "changes_exist=true" >> $GITHUB_ENV
           fi
       - name: Commit SDK changes to the PR
         if: ${{ env.changes_exist == 'true' }}
