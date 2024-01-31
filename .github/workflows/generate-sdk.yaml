@@ -47,6 +47,8 @@ jobs:
       - name: Check if SDK output has changed
         shell: bash
         working-directory: ${{ github.workspace }}/actions
+        env:
+          GH_TOKEN: ${{ secrets.PORTAL_JS_SDK_TOKEN }}
         run: |
           gh pr checkout ${{ github.event.pull_request.number }}
           
