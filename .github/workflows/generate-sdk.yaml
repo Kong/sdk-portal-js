@@ -27,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [get-changed-files]
     if: needs.get-changed-files.outputs.oas-modified == 'true'
+    env:
+      changes_exist: false
     steps:
 
       - uses: actions/checkout@v4
@@ -42,7 +44,19 @@ jobs:
           sdk_output_directory: ${{ github.workspace }}/actions
           token: ${{ secrets.GITHUB_TOKEN }}
           
+      - name: Check if SDK output has changed
+        shell: bash
+        working-directory: ${{ github.workspace }}/actions
+        run: |
+          gh pr checkout ${{ github.event.pull_request.number }}
+          
+          if git diff src --exit-code; then
+            echo "::set-env name=changes_exist::false"
+          else
+            echo "::set-env name=changes_exist::true"
+          fi
       - name: Commit SDK changes to the PR
+        if: ${{ env.changes_exist == 'true' }}
         shell: bash
         working-directory: ${{ github.workspace }}/actions
         env:
