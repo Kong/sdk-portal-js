@@ -7282,11 +7282,13 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {string} [filterAuthStrategyIdEq] Filter by the id of the auth strategy supported by the application.
+         * @param {string} [filterAuthStrategyId] Filter by the id of the auth strategy supported by the application (short-hand).
          * @param {boolean} [unregistered] Return applications that do **not** have a registration for the product version (regardless of registration status).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApplicationsByProductVersion: async (productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getApplicationsByProductVersion: async (productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterAuthStrategyIdEq?: string, filterAuthStrategyId?: string, unregistered?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'productId' is not null or undefined
             assertParamExists('getApplicationsByProductVersion', 'productId', productId)
             // verify required parameter 'productVersionId' is not null or undefined
@@ -7333,6 +7335,14 @@ export const VersionsApiAxiosParamCreator = function (configuration?: Configurat
 
             if (filterStatus !== undefined) {
                 localVarQueryParameter['filter[status]'] = filterStatus;
+            }
+
+            if (filterAuthStrategyIdEq !== undefined) {
+                localVarQueryParameter['filter[auth_strategy_id][eq]'] = filterAuthStrategyIdEq;
+            }
+
+            if (filterAuthStrategyId !== undefined) {
+                localVarQueryParameter['filter[auth_strategy_id]'] = filterAuthStrategyId;
             }
 
             if (unregistered !== undefined) {
@@ -7553,12 +7563,14 @@ export const VersionsApiFp = function(configuration?: Configuration) {
          * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {string} [filterAuthStrategyIdEq] Filter by the id of the auth strategy supported by the application.
+         * @param {string} [filterAuthStrategyId] Filter by the id of the auth strategy supported by the application (short-hand).
          * @param {boolean} [unregistered] Return applications that do **not** have a registration for the product version (regardless of registration status).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getApplicationsByProductVersion(productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListApplicationsPage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationsByProductVersion(productId, productVersionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, unregistered, options);
+        async getApplicationsByProductVersion(productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterAuthStrategyIdEq?: string, filterAuthStrategyId?: string, unregistered?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductVersionListApplicationsPage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationsByProductVersion(productId, productVersionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, filterAuthStrategyIdEq, filterAuthStrategyId, unregistered, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -7635,12 +7647,14 @@ export const VersionsApiFactory = function (configuration?: Configuration, baseP
          * @param {string} [filterNameContains] Filter by contains comparison of the name property with a supplied substring
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {string} [filterAuthStrategyIdEq] Filter by the id of the auth strategy supported by the application.
+         * @param {string} [filterAuthStrategyId] Filter by the id of the auth strategy supported by the application (short-hand).
          * @param {boolean} [unregistered] Return applications that do **not** have a registration for the product version (regardless of registration status).
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getApplicationsByProductVersion(productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', unregistered?: boolean, options?: any): AxiosPromise<ProductVersionListApplicationsPage> {
-            return localVarFp.getApplicationsByProductVersion(productId, productVersionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, unregistered, options).then((request) => request(axios, basePath));
+        getApplicationsByProductVersion(productId: string, productVersionId: string, pageSize?: number, pageNumber?: number, filterNameEq?: string, filterName?: string, filterNameContains?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterAuthStrategyIdEq?: string, filterAuthStrategyId?: string, unregistered?: boolean, options?: any): AxiosPromise<ProductVersionListApplicationsPage> {
+            return localVarFp.getApplicationsByProductVersion(productId, productVersionId, pageSize, pageNumber, filterNameEq, filterName, filterNameContains, filterStatusEq, filterStatus, filterAuthStrategyIdEq, filterAuthStrategyId, unregistered, options).then((request) => request(axios, basePath));
         },
         /**
          * Gets the details for an existing product version.
@@ -7761,6 +7775,20 @@ export interface VersionsApiGetApplicationsByProductVersionRequest {
      * @memberof VersionsApiGetApplicationsByProductVersion
      */
     readonly filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked'
+
+    /**
+     * Filter by the id of the auth strategy supported by the application.
+     * @type {string}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly filterAuthStrategyIdEq?: string
+
+    /**
+     * Filter by the id of the auth strategy supported by the application (short-hand).
+     * @type {string}
+     * @memberof VersionsApiGetApplicationsByProductVersion
+     */
+    readonly filterAuthStrategyId?: string
 
     /**
      * Return applications that do **not** have a registration for the product version (regardless of registration status).
@@ -7898,7 +7926,7 @@ export class VersionsApi extends BaseAPI {
      * @memberof VersionsApi
      */
     public getApplicationsByProductVersion(requestParameters: VersionsApiGetApplicationsByProductVersionRequest, options?: AxiosRequestConfig) {
-        return VersionsApiFp(this.configuration).getApplicationsByProductVersion(requestParameters.productId, requestParameters.productVersionId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterStatusEq, requestParameters.filterStatus, requestParameters.unregistered, options).then((request) => request(this.axios, this.basePath));
+        return VersionsApiFp(this.configuration).getApplicationsByProductVersion(requestParameters.productId, requestParameters.productVersionId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterNameEq, requestParameters.filterName, requestParameters.filterNameContains, requestParameters.filterStatusEq, requestParameters.filterStatus, requestParameters.filterAuthStrategyIdEq, requestParameters.filterAuthStrategyId, requestParameters.unregistered, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
