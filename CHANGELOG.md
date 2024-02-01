@@ -1,3 +1,30 @@
+# v2.7.0 (Thu Feb 01 2024)
+
+#### 🚀 Enhancement
+
+- Automated OAS Update [#80](https://github.com/Kong/sdk-portal-js/pull/80) ([@kong-apiops](https://github.com/kong-apiops) [@team-devx-bot](https://github.com/team-devx-bot))
+
+#### 🐛 Bug Fix
+
+- chore: generate-sdk.yaml [#84](https://github.com/Kong/sdk-portal-js/pull/84) ([@andrewwylde](https://github.com/andrewwylde))
+- chore: update generate-sdk.yaml [#83](https://github.com/Kong/sdk-portal-js/pull/83) ([@andrewwylde](https://github.com/andrewwylde))
+- chore: update generate-sdk.yaml [#82](https://github.com/Kong/sdk-portal-js/pull/82) ([@andrewwylde](https://github.com/andrewwylde))
+- ci: check for empty changes before trying to commit [#81](https://github.com/Kong/sdk-portal-js/pull/81) ([@andrewwylde](https://github.com/andrewwylde))
+- ci: update job name so it's not all "release" [#79](https://github.com/Kong/sdk-portal-js/pull/79) ([@andrewwylde](https://github.com/andrewwylde))
+
+#### 🔩 Dependency Updates
+
+- build(deps): bump tj-actions/changed-files from 35.7.1 to 41.0.0 in /.github/workflows [#67](https://github.com/Kong/sdk-portal-js/pull/67) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+#### Authors: 4
+
+- [@dependabot[bot]](https://github.com/dependabot[bot])
+- [@kong-apiops](https://github.com/kong-apiops)
+- Andrew Wylde ([@andrewwylde](https://github.com/andrewwylde))
+- Kong Team Devx Bot ([@team-devx-bot](https://github.com/team-devx-bot))
+
+---
+
 # v2.6.1 (Wed Jan 24 2024)
 
 #### 🐛 Bug Fix
