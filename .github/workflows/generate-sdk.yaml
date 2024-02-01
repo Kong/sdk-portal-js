@@ -52,7 +52,7 @@ jobs:
         run: |
           gh pr checkout ${{ github.event.pull_request.number }}
           
-          if git diff src --exit-code; then
+          if git diff --exit-code src; then
             echo "changes_exist=false" >> $GITHUB_ENV
           else
             echo "changes_exist=true" >> $GITHUB_ENV
