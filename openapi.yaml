@@ -9,41 +9,6 @@ info:
 servers:
   - url: https://custom.example.com
     description: Production
-tags:
-  - name: Application Analytics
-    description: >-
-      The API for querying Application Analytics. Application Analytics is only
-      available for private portals.
-  - name: applications
-    description: >-
-      The API for Konnect Portal developer applications within a private portal
-      (i.e. requires registration/authentication). When a portal is in `public`
-      mode, all of the described endpoints will return a 404 error. A public
-      portal means that applications and registrations are not available/needed.
-      In this API's context, "you" and "your" refers to the developer consuming
-      the API.
-  - name: credentials
-    description: >-
-      The API for Konnect Portal developer credentials within a private portal
-      (i.e. requires registration/authentication).
-  - name: developer
-    description: API for managing a Konnect Portal Developer.
-  - name: portal
-    description: The API for retrieving details about a single Konnect Portal.
-  - name: products
-    description: The API for Konnect Portal Products.
-  - name: versions
-    description: The API for Konnect Portal Product Versions.
-  - name: documentation
-    description: The API for Konnect Portal Product Documentation.
-  - name: registrations
-    description: >
-      The API for Konnect Portal application registrations. If the portal is
-      public
-
-      all of the described endpoints will return a 404 error
-  - name: search
-    description: The API for Konnect Portal Search.
 paths:
   /api/v2/applications:
     get:
@@ -884,6 +849,8 @@ paths:
         - $ref: '#/components/parameters/FilterByNameContains'
         - $ref: '#/components/parameters/FilterByStatusEquality'
         - $ref: '#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '#/components/parameters/FilterByAuthStrategyEquality'
+        - $ref: '#/components/parameters/FilterByAuthStrategyEqualityShort'
         - $ref: '#/components/parameters/QueryUnregisteredApplications'
       responses:
         '200':
@@ -3881,24 +3848,6 @@ components:
           - self_managed_client_credentials
           - key_auth
         example: key_auth
-    FilterByAuthStrategyEquality:
-      name: filter[auth_strategy_id][eq]
-      description: Filter by the id of the auth strategy supported by the application.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
-    FilterByAuthStrategyEqualityShort:
-      name: filter[auth_strategy_id]
-      description: >-
-        Filter by the id of the auth strategy supported by the application
-        (short-hand).
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
     PageSize:
       name: page[size]
       description: >-
@@ -3949,6 +3898,24 @@ components:
       schema:
         type: string
         example: good service
+    FilterByAuthStrategyEquality:
+      name: filter[auth_strategy_id][eq]
+      description: Filter by the id of the auth strategy supported by the application.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
+    FilterByAuthStrategyEqualityShort:
+      name: filter[auth_strategy_id]
+      description: >-
+        Filter by the id of the auth strategy supported by the application
+        (short-hand).
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
     ApplicationId:
       name: applicationId
       in: path
@@ -4173,3 +4140,38 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateRegistrationPayload'
+tags:
+  - name: Application Analytics
+    description: >-
+      The API for querying Application Analytics. Application Analytics is only
+      available for private portals.
+  - name: applications
+    description: >-
+      The API for Konnect Portal developer applications within a private portal
+      (i.e. requires registration/authentication). When a portal is in `public`
+      mode, all of the described endpoints will return a 404 error. A public
+      portal means that applications and registrations are not available/needed.
+      In this API's context, "you" and "your" refers to the developer consuming
+      the API.
+  - name: credentials
+    description: >-
+      The API for Konnect Portal developer credentials within a private portal
+      (i.e. requires registration/authentication).
+  - name: developer
+    description: API for managing a Konnect Portal Developer.
+  - name: portal
+    description: The API for retrieving details about a single Konnect Portal.
+  - name: products
+    description: The API for Konnect Portal Products.
+  - name: versions
+    description: The API for Konnect Portal Product Versions.
+  - name: documentation
+    description: The API for Konnect Portal Product Documentation.
+  - name: registrations
+    description: >
+      The API for Konnect Portal application registrations. If the portal is
+      public
+
+      all of the described endpoints will return a 404 error
+  - name: search
+    description: The API for Konnect Portal Search.
