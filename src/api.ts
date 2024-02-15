@@ -125,11 +125,11 @@ export interface ApplicationCreationResponse {
      */
     'credentials'?: ApplicationCreationResponseCredentials;
     /**
-     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
-     * @type {string}
+     * 
+     * @type {AuthStrategy}
      * @memberof ApplicationCreationResponse
      */
-    'auth_strategy_id': string | null;
+    'auth_strategy': AuthStrategy;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -231,11 +231,11 @@ export interface ApplicationUpdateResponse {
      */
     'redirect_uri'?: string | null;
     /**
-     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
-     * @type {string}
+     * 
+     * @type {AuthStrategy}
      * @memberof ApplicationUpdateResponse
      */
-    'auth_strategy_id'?: string | null;
+    'auth_strategy'?: AuthStrategy;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -249,6 +249,98 @@ export interface ApplicationUpdateResponse {
      */
     'updated_at': string;
 }
+/**
+ * @type AuthStrategy
+ * @export
+ */
+export type AuthStrategy = AuthStrategyClientCredentials | AuthStrategyKeyAuth;
+
+/**
+ * Client Credential Auth strategy that the application uses.
+ * @export
+ * @interface AuthStrategyClientCredentials
+ */
+export interface AuthStrategyClientCredentials {
+    /**
+     * The Application Auth Strategy ID.
+     * @type {string}
+     * @memberof AuthStrategyClientCredentials
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthStrategyClientCredentials
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthStrategyClientCredentials
+     */
+    'credential_type': AuthStrategyClientCredentialsCredentialTypeEnum;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AuthStrategyClientCredentials
+     */
+    'auth_methods': Array<string>;
+}
+
+export const AuthStrategyClientCredentialsCredentialTypeEnum = {
+    ClientCredentials: 'client_credentials',
+    SelfManagedClientCredentials: 'self_managed_client_credentials'
+} as const;
+
+export type AuthStrategyClientCredentialsCredentialTypeEnum = typeof AuthStrategyClientCredentialsCredentialTypeEnum[keyof typeof AuthStrategyClientCredentialsCredentialTypeEnum];
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const AuthStrategyCredentialType = {
+    ClientCredentials: 'client_credentials',
+    SelfManagedClientCredentials: 'self_managed_client_credentials',
+    KeyAuth: 'key_auth'
+} as const;
+
+export type AuthStrategyCredentialType = typeof AuthStrategyCredentialType[keyof typeof AuthStrategyCredentialType];
+
+
+/**
+ * KeyAuth Auth strategy that the application uses.
+ * @export
+ * @interface AuthStrategyKeyAuth
+ */
+export interface AuthStrategyKeyAuth {
+    /**
+     * The Application Auth Strategy ID.
+     * @type {string}
+     * @memberof AuthStrategyKeyAuth
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthStrategyKeyAuth
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthStrategyKeyAuth
+     */
+    'credential_type': AuthStrategyKeyAuthCredentialTypeEnum;
+}
+
+export const AuthStrategyKeyAuthCredentialTypeEnum = {
+    KeyAuth: 'key_auth'
+} as const;
+
+export type AuthStrategyKeyAuthCredentialTypeEnum = typeof AuthStrategyKeyAuthCredentialTypeEnum[keyof typeof AuthStrategyKeyAuthCredentialTypeEnum];
+
 /**
  * The request schema for the authenticate endpoint.
  * @export
@@ -901,11 +993,11 @@ export interface GetApplicationResponse {
      */
     'redirect_uri'?: string | null;
     /**
-     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
-     * @type {string}
+     * 
+     * @type {AuthStrategy}
      * @memberof GetApplicationResponse
      */
-    'auth_strategy_id'?: string | null;
+    'auth_strategy'?: AuthStrategy;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -1327,10 +1419,10 @@ export interface ListAuthStrategiesItem {
     'name': string;
     /**
      * 
-     * @type {string}
+     * @type {AuthStrategyCredentialType}
      * @memberof ListAuthStrategiesItem
      */
-    'credential_type': ListAuthStrategiesItemCredentialTypeEnum;
+    'credential_type': AuthStrategyCredentialType;
     /**
      * 
      * @type {Array<string>}
@@ -1338,15 +1430,6 @@ export interface ListAuthStrategiesItem {
      */
     'auth_methods'?: Array<string>;
 }
-
-export const ListAuthStrategiesItemCredentialTypeEnum = {
-    ClientCredentials: 'client_credentials',
-    SelfManagedClientCredentials: 'self_managed_client_credentials',
-    KeyAuth: 'key_auth'
-} as const;
-
-export type ListAuthStrategiesItemCredentialTypeEnum = typeof ListAuthStrategiesItemCredentialTypeEnum[keyof typeof ListAuthStrategiesItemCredentialTypeEnum];
-
 /**
  * 
  * @export
