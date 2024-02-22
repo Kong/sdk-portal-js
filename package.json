@@ -10,8 +10,8 @@
   },
   "repository": "git@github.com:Kong/sdk-portal-js.git",
   "devDependencies": {
-    "@auto-it/protected-branch": "11.0.4",
-    "auto": "10.46.0",
+    "@auto-it/protected-branch": "11.0.6",
+    "auto": "11.0.6",
     "typescript": "5.0.2"
   },
   "dependencies": {
