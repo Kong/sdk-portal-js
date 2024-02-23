@@ -1,3 +1,21 @@
+# v2.9.0 (Fri Feb 23 2024)
+
+#### 🚀 Enhancement
+
+- Automated OAS Update [#88](https://github.com/Kong/sdk-portal-js/pull/88) ([@kong-apiops](https://github.com/kong-apiops) [@team-devx-bot](https://github.com/team-devx-bot))
+
+#### 🔩 Dependency Updates
+
+- chore(deps): update auto version [#89](https://github.com/Kong/sdk-portal-js/pull/89) ([@andrewwylde](https://github.com/andrewwylde))
+
+#### Authors: 3
+
+- [@kong-apiops](https://github.com/kong-apiops)
+- Andrew Wylde ([@andrewwylde](https://github.com/andrewwylde))
+- Kong Team Devx Bot ([@team-devx-bot](https://github.com/team-devx-bot))
+
+---
+
 # v2.8.0 (Thu Feb 15 2024)
 
 #### 🚀 Enhancement
