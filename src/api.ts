@@ -126,10 +126,16 @@ export interface ApplicationCreationResponse {
     'credentials'?: ApplicationCreationResponseCredentials;
     /**
      * 
-     * @type {AuthStrategy}
+     * @type {PortalAuthStrategy}
      * @memberof ApplicationCreationResponse
      */
-    'auth_strategy': AuthStrategy;
+    'auth_strategy': PortalAuthStrategy | null;
+    /**
+     * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  The granted scopes for the application. Will only be included if supported by the application\'s auth strategy.
+     * @type {Array<string>}
+     * @memberof ApplicationCreationResponse
+     */
+    'scopes'?: Array<string>;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -232,10 +238,16 @@ export interface ApplicationUpdateResponse {
     'redirect_uri'?: string | null;
     /**
      * 
-     * @type {AuthStrategy}
+     * @type {PortalAuthStrategy}
      * @memberof ApplicationUpdateResponse
      */
-    'auth_strategy'?: AuthStrategy;
+    'auth_strategy'?: PortalAuthStrategy | null;
+    /**
+     * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  The granted scopes for the application. Will only be included if supported by the application\'s auth strategy.
+     * @type {Array<string>}
+     * @memberof ApplicationUpdateResponse
+     */
+    'scopes'?: Array<string>;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -293,21 +305,6 @@ export const AuthStrategyClientCredentialsCredentialTypeEnum = {
 } as const;
 
 export type AuthStrategyClientCredentialsCredentialTypeEnum = typeof AuthStrategyClientCredentialsCredentialTypeEnum[keyof typeof AuthStrategyClientCredentialsCredentialTypeEnum];
-
-/**
- * 
- * @export
- * @enum {string}
- */
-
-export const AuthStrategyCredentialType = {
-    ClientCredentials: 'client_credentials',
-    SelfManagedClientCredentials: 'self_managed_client_credentials',
-    KeyAuth: 'key_auth'
-} as const;
-
-export type AuthStrategyCredentialType = typeof AuthStrategyCredentialType[keyof typeof AuthStrategyCredentialType];
-
 
 /**
  * KeyAuth Auth strategy that the application uses.
@@ -629,6 +626,12 @@ export interface CreateApplicationPayload {
      * @memberof CreateApplicationPayload
      */
     'auth_strategy_id'?: string | null;
+    /**
+     * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  The granted scopes for the application. Will only be included if supported by the application\'s auth strategy.
+     * @type {Array<string>}
+     * @memberof CreateApplicationPayload
+     */
+    'scopes'?: Array<string>;
 }
 /**
  * 
@@ -792,8 +795,9 @@ export type DocumentContentTypeEnum = typeof DocumentContentTypeEnum[keyof typeo
  */
 
 export const DocumentFormatContentTypeEnum = {
-    Json: 'application/json',
-    VndKonnectDocumentNodesjson: 'application/vnd.konnect.document-nodes+json'
+    TextMarkdown: 'text/markdown',
+    ApplicationJson: 'application/json',
+    ApplicationVndKonnectDocumentNodesjson: 'application/vnd.konnect.document-nodes+json'
 } as const;
 
 export type DocumentFormatContentTypeEnum = typeof DocumentFormatContentTypeEnum[keyof typeof DocumentFormatContentTypeEnum];
@@ -994,10 +998,16 @@ export interface GetApplicationResponse {
     'redirect_uri'?: string | null;
     /**
      * 
-     * @type {AuthStrategy}
+     * @type {PortalAuthStrategy}
      * @memberof GetApplicationResponse
      */
-    'auth_strategy'?: AuthStrategy;
+    'auth_strategy'?: PortalAuthStrategy | null;
+    /**
+     * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  The granted scopes for the application. Will only be included if supported by the application\'s auth strategy.
+     * @type {Array<string>}
+     * @memberof GetApplicationResponse
+     */
+    'scopes'?: Array<string>;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -1402,37 +1412,6 @@ export interface ListApplicationsResponse {
 /**
  * 
  * @export
- * @interface ListAuthStrategiesItem
- */
-export interface ListAuthStrategiesItem {
-    /**
-     * ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.
-     * @type {string}
-     * @memberof ListAuthStrategiesItem
-     */
-    'id': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof ListAuthStrategiesItem
-     */
-    'name': string;
-    /**
-     * 
-     * @type {AuthStrategyCredentialType}
-     * @memberof ListAuthStrategiesItem
-     */
-    'credential_type': AuthStrategyCredentialType;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ListAuthStrategiesItem
-     */
-    'auth_methods'?: Array<string>;
-}
-/**
- * 
- * @export
  * @interface ListAuthStrategiesResponse
  */
 export interface ListAuthStrategiesResponse {
@@ -1444,10 +1423,10 @@ export interface ListAuthStrategiesResponse {
     'meta': PaginatedMeta;
     /**
      * 
-     * @type {Array<ListAuthStrategiesItem>}
+     * @type {Array<PortalAuthStrategy>}
      * @memberof ListAuthStrategiesResponse
      */
-    'data': Array<ListAuthStrategiesItem>;
+    'data': Array<PortalAuthStrategy>;
 }
 /**
  * 
@@ -1869,6 +1848,89 @@ export interface PortalAppearanceVariablesCatalogPrimaryHeader {
     'text'?: string;
 }
 /**
+ * @type PortalAuthStrategy
+ * @export
+ */
+export type PortalAuthStrategy = PortalAuthStrategyClientCredentials | PortalAuthStrategyKeyAuth;
+
+/**
+ * Client Credential Auth strategy that the application uses.
+ * @export
+ * @interface PortalAuthStrategyClientCredentials
+ */
+export interface PortalAuthStrategyClientCredentials {
+    /**
+     * The Application Auth Strategy ID.
+     * @type {string}
+     * @memberof PortalAuthStrategyClientCredentials
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PortalAuthStrategyClientCredentials
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PortalAuthStrategyClientCredentials
+     */
+    'credential_type': PortalAuthStrategyClientCredentialsCredentialTypeEnum;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof PortalAuthStrategyClientCredentials
+     */
+    'auth_methods': Array<string>;
+}
+
+export const PortalAuthStrategyClientCredentialsCredentialTypeEnum = {
+    ClientCredentials: 'client_credentials',
+    SelfManagedClientCredentials: 'self_managed_client_credentials'
+} as const;
+
+export type PortalAuthStrategyClientCredentialsCredentialTypeEnum = typeof PortalAuthStrategyClientCredentialsCredentialTypeEnum[keyof typeof PortalAuthStrategyClientCredentialsCredentialTypeEnum];
+
+/**
+ * KeyAuth Auth strategy that the application uses.
+ * @export
+ * @interface PortalAuthStrategyKeyAuth
+ */
+export interface PortalAuthStrategyKeyAuth {
+    /**
+     * The Application Auth Strategy ID.
+     * @type {string}
+     * @memberof PortalAuthStrategyKeyAuth
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PortalAuthStrategyKeyAuth
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PortalAuthStrategyKeyAuth
+     */
+    'credential_type': PortalAuthStrategyKeyAuthCredentialTypeEnum;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof PortalAuthStrategyKeyAuth
+     */
+    'key_names': Array<string>;
+}
+
+export const PortalAuthStrategyKeyAuthCredentialTypeEnum = {
+    KeyAuth: 'key_auth'
+} as const;
+
+export type PortalAuthStrategyKeyAuthCredentialTypeEnum = typeof PortalAuthStrategyKeyAuthCredentialTypeEnum[keyof typeof PortalAuthStrategyKeyAuthCredentialTypeEnum];
+
+/**
  * describe the portal execution context
  * @export
  * @interface PortalContext
@@ -2268,6 +2330,12 @@ export interface ProductVersionApplication {
      * @memberof ProductVersionApplication
      */
     'registration_status': ProductVersionApplicationRegistrationStatusEnum;
+    /**
+     * 
+     * @type {AuthStrategy}
+     * @memberof ProductVersionApplication
+     */
+    'auth_strategy'?: AuthStrategy;
     /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
@@ -3405,6 +3473,12 @@ export interface UpdateApplicationPayload {
      * @memberof UpdateApplicationPayload
      */
     'description'?: string;
+    /**
+     * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  The granted scopes for the application. Will only be included if supported by the application\'s auth strategy.
+     * @type {Array<string>}
+     * @memberof UpdateApplicationPayload
+     */
+    'scopes'?: Array<string>;
 }
 /**
  * 
