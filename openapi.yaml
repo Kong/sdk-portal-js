@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Portal API
-  version: 2.0.0
+  version: 2.1.0
   description: Portal API
   contact:
     name: Kong
@@ -713,9 +713,6 @@ paths:
           $ref: '#/components/responses/NotAvailable'
       tags:
         - products
-    description: |-
-      **Pre-release Endpoint**
-      This endpoint is currently in beta and is subject to change.
   /api/v2/products/{productId}/documents:
     get:
       summary: List product documents
@@ -934,7 +931,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
       parameters:
         - $ref: '#/components/parameters/SearchIndices'
-        - $ref: '#/components/parameters/FilterByAuthStrategyEqualityIdShort'
         - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/SearchJoin'
         - $ref: '#/components/parameters/PageSize'
@@ -1777,6 +1773,16 @@ components:
             type: string
           example:
             - apikey
+    AvailableScopes:
+      description: >-
+        Possible developer selectable scopes for an application. Only present
+        when using DCR Provider that supports it.
+      type: array
+      items:
+        type: string
+      example:
+        - scope1
+        - scope2
     AuthMethods:
       type: array
       items:
@@ -1799,6 +1805,8 @@ components:
           example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
           description: The Application Auth Strategy ID.
           readOnly: true
+        available_scopes:
+          $ref: '#/components/schemas/AvailableScopes'
         name:
           type: string
           example: name
@@ -2392,9 +2400,7 @@ components:
         name:
           type: string
         available_scopes:
-          type: array
-          items:
-            type: string
+          $ref: '#/components/schemas/AvailableScopes'
     CredentialType:
       type: string
       enum:
@@ -4168,16 +4174,6 @@ components:
       schema:
         type: string
         format: uuid
-    FilterByAuthStrategyEqualityIdShort:
-      name: filter[auth_strategy_id]
-      description: >-
-        Filter by direct equality comparison (short-hand) of the
-        auth_strategy_id property with a supplied value.
-      in: query
-      required: false
-      schema:
-        type: string
-        example: 5be86298-147b-45ab-bfaf-a1bff97dce39
     SearchQuery:
       name: q
       description: Determines how to filter search results
