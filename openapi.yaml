@@ -165,6 +165,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/PostCredentials403Response'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -984,6 +986,20 @@ paths:
         - Application Analytics
       security:
         - portalAccessToken: []
+  /api/v2/stats/config:
+    get:
+      summary: Application Analytics Config
+      operationId: get-application-analytics-config
+      description: Get config for application analytics
+      responses:
+        '200':
+          $ref: '#/components/responses/GetConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      tags:
+        - Application Analytics
+      security:
+        - portalAccessToken: []
 components:
   securitySchemes:
     portalAccessToken:
@@ -1360,6 +1376,24 @@ components:
       description: Query response data.
       items:
         $ref: '#/components/schemas/QueryResponseRecord'
+    GetConfigResponse:
+      additionalProperties: false
+      type: object
+      required:
+        - analytics
+      properties:
+        analytics:
+          type: object
+          nullable: true
+          additionalProperties: false
+          description: Null if analytics is not enabled.
+          properties:
+            percentiles:
+              type: boolean
+              description: True if analytics percentiles are enabled.
+            retention_ms:
+              type: integer
+              description: Analytics retention in milliseconds.
     BaseError:
       type: object
       title: Error
@@ -1423,6 +1457,21 @@ components:
           example: kong:trace:1234567890
         detail:
           example: Forbidden
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+    UnauthorizedError:
+      type: object
+      properties:
+        status:
+          example: 401
+        title:
+          example: Unauthorized
+        type:
+          example: https://httpstatuses.com/401
+        instance:
+          example: kong:trace:1234567890
+        detail:
+          example: Invalid credentials
       allOf:
         - $ref: '#/components/schemas/BaseError'
     AuthStrategyId:
@@ -1629,8 +1678,6 @@ components:
       type: object
       title: UpdateApplicationPayload
       description: Payload required to update an application
-      required:
-        - name
       properties:
         name:
           description: The name of the application
@@ -1943,21 +1990,6 @@ components:
           example: Invalid request body
         invalid_parameters:
           $ref: '#/components/schemas/InvalidParameters'
-      allOf:
-        - $ref: '#/components/schemas/BaseError'
-    UnauthorizedError:
-      type: object
-      properties:
-        status:
-          example: 401
-        title:
-          example: Unauthorized
-        type:
-          example: https://httpstatuses.com/401
-        instance:
-          example: kong:trace:1234567890
-        detail:
-          example: Invalid credentials
       allOf:
         - $ref: '#/components/schemas/BaseError'
     NotFoundError:
@@ -3347,6 +3379,17 @@ components:
                 #/components/examples/ResponseExampleWithMetricAndMultipleDimensions
             Response with time dimension:
               $ref: '#/components/examples/ResponseExampleWithTimeDimension'
+    GetConfig:
+      description: Get config
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GetConfigResponse'
+          examples:
+            GetConfigNoAnalytics200response:
+              $ref: '#/components/examples/GetConfigNoAnalytics200response'
+            GetConfigAnalytics200response:
+              $ref: '#/components/examples/GetConfigAnalytics200response'
     Forbidden:
       description: Forbidden
       content:
@@ -3356,6 +3399,19 @@ components:
           examples:
             UnauthorizedExample:
               $ref: '#/components/examples/ForbiddenExample'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+            401-Unauthorized:
+              $ref: '#/components/examples/401-Unauthorized'
+            401-Account-Not-Approved:
+              $ref: '#/components/examples/401-Account-Not-Approved'
     ListApplications:
       description: Get applications response
       content:
@@ -3416,6 +3472,15 @@ components:
           examples:
             GetGrantedScopesProductVersion422Example:
               $ref: '#/components/examples/GetGrantedScopesProductVersion422Example'
+    PostCredentials403Response:
+      description: Error returned when the number of credentials exceed the quota.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            PostCredentials403Example:
+              $ref: '#/components/examples/PostCredentials403Example'
     ListAuthStrategies:
       description: List auth strategies response
       content:
@@ -3433,19 +3498,6 @@ components:
               $ref: '#/components/examples/400-Invalid-Token'
             400-Login-Failed:
               $ref: '#/components/examples/400-Login-Failed'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/UnauthorizedExample'
-            401-Unauthorized:
-              $ref: '#/components/examples/401-Unauthorized'
-            401-Account-Not-Approved:
-              $ref: '#/components/examples/401-Account-Not-Approved'
     NotFound:
       description: Not Found
       content:
@@ -3837,6 +3889,14 @@ components:
         instance: kong:trace:8347343766220159418
         detail: Unauthorized
         invalid_parameters: []
+    GetConfigNoAnalytics200response:
+      value:
+        analytics: null
+    GetConfigAnalytics200response:
+      value:
+        analytics:
+          percentiles: true
+          retention_ms: 31536000000
     ForbiddenExample:
       value:
         status: 403
@@ -3854,6 +3914,12 @@ components:
         type: https://kongapi.info/konnect/portal/granted-scopes-unavailable
         detail: This feature is not supported by the application.
         instance: kong:trace:2724154947768991354
+    PostCredentials403Example:
+      value:
+        status: 403
+        title: Forbidden
+        detail: 'Maximum number of Credentials exceeded. Max Allowed: 20'
+        instance: kong:trace:2724154947768991355
     NotFoundExample:
       value:
         status: 404
