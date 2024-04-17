@@ -1024,6 +1024,38 @@ export interface GetApplicationResponse {
 /**
  * 
  * @export
+ * @interface GetConfigResponse
+ */
+export interface GetConfigResponse {
+    /**
+     * 
+     * @type {GetConfigResponseAnalytics}
+     * @memberof GetConfigResponse
+     */
+    'analytics': GetConfigResponseAnalytics | null;
+}
+/**
+ * Null if analytics is not enabled.
+ * @export
+ * @interface GetConfigResponseAnalytics
+ */
+export interface GetConfigResponseAnalytics {
+    /**
+     * True if analytics percentiles are enabled.
+     * @type {boolean}
+     * @memberof GetConfigResponseAnalytics
+     */
+    'percentiles'?: boolean;
+    /**
+     * Analytics retention in milliseconds.
+     * @type {number}
+     * @memberof GetConfigResponseAnalytics
+     */
+    'retention_ms'?: number;
+}
+/**
+ * 
+ * @export
  * @interface GetGrantedScopesProductVersionResponse
  */
 export interface GetGrantedScopesProductVersionResponse {
@@ -3460,7 +3492,7 @@ export interface UpdateApplicationPayload {
      * @type {string}
      * @memberof UpdateApplicationPayload
      */
-    'name': string;
+    'name'?: string;
     /**
      * An identifier to correlate the application with an external system. Cannot be set when using Dynamic Client Registration. 
      * @type {string}
@@ -3539,6 +3571,38 @@ export interface VerifyEmailResponse {
 export const ApplicationAnalyticsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Get config for application analytics
+         * @summary Application Analytics Config
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationAnalyticsConfig: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/stats/config`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication portalAccessToken required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Query
          * @summary Query Application Analytics
          * @param {QueryApplicationAnalytics} [queryApplicationAnalytics] Object describing the query sent to analytics API.
@@ -3585,6 +3649,16 @@ export const ApplicationAnalyticsApiFp = function(configuration?: Configuration)
     const localVarAxiosParamCreator = ApplicationAnalyticsApiAxiosParamCreator(configuration)
     return {
         /**
+         * Get config for application analytics
+         * @summary Application Analytics Config
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getApplicationAnalyticsConfig(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConfigResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getApplicationAnalyticsConfig(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Query
          * @summary Query Application Analytics
          * @param {QueryApplicationAnalytics} [queryApplicationAnalytics] Object describing the query sent to analytics API.
@@ -3605,6 +3679,15 @@ export const ApplicationAnalyticsApiFp = function(configuration?: Configuration)
 export const ApplicationAnalyticsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = ApplicationAnalyticsApiFp(configuration)
     return {
+        /**
+         * Get config for application analytics
+         * @summary Application Analytics Config
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getApplicationAnalyticsConfig(options?: any): AxiosPromise<GetConfigResponse> {
+            return localVarFp.getApplicationAnalyticsConfig(options).then((request) => request(axios, basePath));
+        },
         /**
          * Query
          * @summary Query Application Analytics
@@ -3639,6 +3722,17 @@ export interface ApplicationAnalyticsApiQueryApplicationAnalyticsRequest {
  * @extends {BaseAPI}
  */
 export class ApplicationAnalyticsApi extends BaseAPI {
+    /**
+     * Get config for application analytics
+     * @summary Application Analytics Config
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ApplicationAnalyticsApi
+     */
+    public getApplicationAnalyticsConfig(options?: AxiosRequestConfig) {
+        return ApplicationAnalyticsApiFp(this.configuration).getApplicationAnalyticsConfig(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Query
      * @summary Query Application Analytics
