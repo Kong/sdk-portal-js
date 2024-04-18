@@ -1045,13 +1045,13 @@ export interface GetConfigResponseAnalytics {
      * @type {boolean}
      * @memberof GetConfigResponseAnalytics
      */
-    'percentiles'?: boolean;
+    'percentiles': boolean;
     /**
      * Analytics retention in milliseconds.
      * @type {number}
      * @memberof GetConfigResponseAnalytics
      */
-    'retention_ms'?: number;
+    'retention_ms': number;
 }
 /**
  * 
