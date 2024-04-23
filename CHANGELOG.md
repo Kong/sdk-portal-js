@@ -1,3 +1,15 @@
+# v2.12.1 (Tue Apr 23 2024)
+
+#### 🐛 Bug Fix
+
+- build(deps): bump follow-redirects from 1.15.5 to 1.15.6 [#93](https://github.com/Kong/sdk-portal-js/pull/93) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+#### Authors: 1
+
+- [@dependabot[bot]](https://github.com/dependabot[bot])
+
+---
+
 # v2.12.0 (Tue Apr 23 2024)
 
 #### 🚀 Enhancement
