@@ -833,6 +833,18 @@ export interface DocumentItem {
      * @memberof DocumentItem
      */
     'title': string;
+    /**
+     * An ISO-8601 timestamp representation of entity creation date.
+     * @type {string}
+     * @memberof DocumentItem
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of entity update date.
+     * @type {string}
+     * @memberof DocumentItem
+     */
+    'updated_at': string;
 }
 /**
  * a document tree
