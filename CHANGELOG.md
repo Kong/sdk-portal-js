@@ -1,3 +1,16 @@
+# v2.13.0 (Wed Jun 12 2024)
+
+#### 🚀 Enhancement
+
+- Automated OAS Update [#101](https://github.com/Kong/sdk-portal-js/pull/101) ([@kong-apiops](https://github.com/kong-apiops) [@team-devx-bot](https://github.com/team-devx-bot))
+
+#### Authors: 2
+
+- [@kong-apiops](https://github.com/kong-apiops)
+- Kong Team Devx Bot ([@team-devx-bot](https://github.com/team-devx-bot))
+
+---
+
 # v2.12.1 (Tue Apr 23 2024)
 
 #### 🐛 Bug Fix
