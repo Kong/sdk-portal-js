@@ -364,39 +364,52 @@ export interface AuthenticateRequest {
  */
 export interface BadRequestError {
     /**
-     * 
-     * @type {any}
+     * The HTTP status code of the error. Useful when passing the response body to child properties in a frontend UI. Must be returned as an integer. 
+     * @type {number}
      * @memberof BadRequestError
      */
-    'status'?: any;
+    'status': number;
     /**
-     * 
-     * @type {any}
+     * A short, human-readable summary of the problem. It should not change between occurences of a problem, except for localization. Should be provided as \"Sentence case\" for direct use in the UI. 
+     * @type {string}
      * @memberof BadRequestError
      */
-    'title'?: any;
+    'title': string;
     /**
-     * 
-     * @type {any}
+     * The error type.
+     * @type {string}
      * @memberof BadRequestError
      */
-    'type'?: any;
+    'type'?: string;
     /**
-     * 
-     * @type {any}
+     * Used to return the correlation ID back to the user, in the format kong:trace:<correlation_id>. This helps us find the relevant logs when a customer reports an issue. 
+     * @type {string}
      * @memberof BadRequestError
      */
-    'instance'?: any;
+    'instance': string;
     /**
-     * 
-     * @type {any}
+     * A human readable explanation specific to this occurence of the problem. This field may contain request/entity data to help the user understand what went wrong. Enclose variable values in square brackets. Should be provided as \"Sentence case\" for direct use in the UI. 
+     * @type {string}
      * @memberof BadRequestError
      */
-    'detail'?: any;
+    'detail': string;
     /**
      * invalid parameters
      * @type {Set<InvalidParametersInner>}
      * @memberof BadRequestError
+     */
+    'invalid_parameters': Set<InvalidParametersInner>;
+}
+/**
+ * 
+ * @export
+ * @interface BadRequestErrorAllOf
+ */
+export interface BadRequestErrorAllOf {
+    /**
+     * invalid parameters
+     * @type {Set<InvalidParametersInner>}
+     * @memberof BadRequestErrorAllOf
      */
     'invalid_parameters': Set<InvalidParametersInner>;
 }
@@ -564,13 +577,13 @@ export interface ConflictError {
      * @type {any}
      * @memberof ConflictError
      */
-    'status'?: any;
+    'status': any;
     /**
      * 
      * @type {any}
      * @memberof ConflictError
      */
-    'title'?: any;
+    'title': any;
     /**
      * 
      * @type {any}
@@ -582,11 +595,48 @@ export interface ConflictError {
      * @type {any}
      * @memberof ConflictError
      */
-    'instance'?: any;
+    'instance': any;
     /**
      * 
      * @type {any}
      * @memberof ConflictError
+     */
+    'detail': any;
+}
+/**
+ * 
+ * @export
+ * @interface ConflictErrorAllOf
+ */
+export interface ConflictErrorAllOf {
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictErrorAllOf
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictErrorAllOf
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictErrorAllOf
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictErrorAllOf
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ConflictErrorAllOf
      */
     'detail'?: any;
 }
@@ -834,6 +884,12 @@ export interface DocumentItem {
      */
     'title': string;
     /**
+     * Contains key value pairs information about entity\'s metadata.
+     * @type {{ [key: string]: any; }}
+     * @memberof DocumentItem
+     */
+    'metadata': { [key: string]: any; };
+    /**
      * An ISO-8601 timestamp representation of entity creation date.
      * @type {string}
      * @memberof DocumentItem
@@ -877,11 +933,11 @@ export interface DocumentTree {
      */
     'slug': string;
     /**
-     * the metadata of the document
-     * @type {object}
+     * Contains key value pairs information about entity\'s metadata.
+     * @type {{ [key: string]: any; }}
      * @memberof DocumentTree
      */
-    'metadata': object;
+    'metadata': { [key: string]: any; };
     /**
      * 
      * @type {Array<DocumentTree>}
@@ -946,13 +1002,13 @@ export interface ForbiddenError {
      * @type {any}
      * @memberof ForbiddenError
      */
-    'status'?: any;
+    'status': any;
     /**
      * 
      * @type {any}
      * @memberof ForbiddenError
      */
-    'title'?: any;
+    'title': any;
     /**
      * 
      * @type {any}
@@ -964,11 +1020,48 @@ export interface ForbiddenError {
      * @type {any}
      * @memberof ForbiddenError
      */
-    'instance'?: any;
+    'instance': any;
     /**
      * 
      * @type {any}
      * @memberof ForbiddenError
+     */
+    'detail': any;
+}
+/**
+ * 
+ * @export
+ * @interface ForbiddenErrorAllOf
+ */
+export interface ForbiddenErrorAllOf {
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenErrorAllOf
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenErrorAllOf
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenErrorAllOf
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenErrorAllOf
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof ForbiddenErrorAllOf
      */
     'detail'?: any;
 }
@@ -1179,13 +1272,13 @@ export interface GoneError {
      * @type {any}
      * @memberof GoneError
      */
-    'status'?: any;
+    'status': any;
     /**
      * 
      * @type {any}
      * @memberof GoneError
      */
-    'title'?: any;
+    'title': any;
     /**
      * 
      * @type {any}
@@ -1197,11 +1290,48 @@ export interface GoneError {
      * @type {any}
      * @memberof GoneError
      */
-    'instance'?: any;
+    'instance': any;
     /**
      * 
      * @type {any}
      * @memberof GoneError
+     */
+    'detail': any;
+}
+/**
+ * 
+ * @export
+ * @interface GoneErrorAllOf
+ */
+export interface GoneErrorAllOf {
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneErrorAllOf
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneErrorAllOf
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneErrorAllOf
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneErrorAllOf
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof GoneErrorAllOf
      */
     'detail'?: any;
 }
@@ -1288,11 +1418,11 @@ export interface InvalidParameterChoiceItem {
      */
     'field': string;
     /**
-     * 
-     * @type {InvalidRules}
+     * invalid parameters rules
+     * @type {string}
      * @memberof InvalidParameterChoiceItem
      */
-    'rule'?: InvalidRules | null;
+    'rule': InvalidParameterChoiceItemRuleEnum;
     /**
      * 
      * @type {string}
@@ -1304,8 +1434,21 @@ export interface InvalidParameterChoiceItem {
      * @type {Set<any>}
      * @memberof InvalidParameterChoiceItem
      */
-    'choices'?: Set<any> | null;
+    'choices': Set<any>;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterChoiceItem
+     */
+    'source'?: string;
 }
+
+export const InvalidParameterChoiceItemRuleEnum = {
+    Enum: 'enum'
+} as const;
+
+export type InvalidParameterChoiceItemRuleEnum = typeof InvalidParameterChoiceItemRuleEnum[keyof typeof InvalidParameterChoiceItemRuleEnum];
+
 /**
  * 
  * @export
@@ -1336,6 +1479,12 @@ export interface InvalidParameterDependentItem {
      * @memberof InvalidParameterDependentItem
      */
     'dependents': Set<any> | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterDependentItem
+     */
+    'source'?: string;
 }
 
 export const InvalidParameterDependentItemRuleEnum = {
@@ -1345,10 +1494,89 @@ export const InvalidParameterDependentItemRuleEnum = {
 export type InvalidParameterDependentItemRuleEnum = typeof InvalidParameterDependentItemRuleEnum[keyof typeof InvalidParameterDependentItemRuleEnum];
 
 /**
+ * 
+ * @export
+ * @interface InvalidParameterMinimumLength
+ */
+export interface InvalidParameterMinimumLength {
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterMinimumLength
+     */
+    'field': string;
+    /**
+     * invalid parameters rules
+     * @type {string}
+     * @memberof InvalidParameterMinimumLength
+     */
+    'rule': InvalidParameterMinimumLengthRuleEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof InvalidParameterMinimumLength
+     */
+    'minimum': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterMinimumLength
+     */
+    'source'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterMinimumLength
+     */
+    'reason': string;
+}
+
+export const InvalidParameterMinimumLengthRuleEnum = {
+    Length: 'min_length',
+    Digits: 'min_digits',
+    Lowercase: 'min_lowercase',
+    Uppercase: 'min_uppercase',
+    Symbols: 'min_symbols'
+} as const;
+
+export type InvalidParameterMinimumLengthRuleEnum = typeof InvalidParameterMinimumLengthRuleEnum[keyof typeof InvalidParameterMinimumLengthRuleEnum];
+
+/**
+ * 
+ * @export
+ * @interface InvalidParameterStandard
+ */
+export interface InvalidParameterStandard {
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterStandard
+     */
+    'field': string;
+    /**
+     * 
+     * @type {InvalidRules}
+     * @memberof InvalidParameterStandard
+     */
+    'rule'?: InvalidRules | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterStandard
+     */
+    'source'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterStandard
+     */
+    'reason': string;
+}
+/**
  * @type InvalidParametersInner
  * @export
  */
-export type InvalidParametersInner = InvalidParameterChoiceItem | InvalidParameterDependentItem;
+export type InvalidParametersInner = InvalidParameterChoiceItem | InvalidParameterDependentItem | InvalidParameterMinimumLength | InvalidParameterStandard;
 
 /**
  * invalid parameters rules
@@ -1358,13 +1586,7 @@ export type InvalidParametersInner = InvalidParameterChoiceItem | InvalidParamet
 
 export const InvalidRules = {
     Required: 'required',
-    Enum: 'enum',
-    MinLength: 'min_length',
     MaxLength: 'max_length',
-    MinDigits: 'min_digits',
-    MinLowercase: 'min_lowercase',
-    MinUppercase: 'min_uppercase',
-    MinSymbols: 'min_symbols',
     IsArray: 'is_array',
     IsBase64: 'is_base64',
     IsBoolean: 'is_boolean',
@@ -1375,9 +1597,15 @@ export const InvalidRules = {
     IsObject: 'is_object',
     IsString: 'is_string',
     IsUuid: 'is_uuid',
+    IsFqdn: 'is_fqdn',
+    IsArn: 'is_arn',
     UnknownProperty: 'unknown_property',
     IsLabel: 'is_label',
-    MatchesRegex: 'matches_regex'
+    MatchesRegex: 'matches_regex',
+    Invalid: 'invalid',
+    IsSupportedNetworkAvailabilityZoneList: 'is_supported_network_availability_zone_list',
+    IsSupportedNetworkCidrBlock: 'is_supported_network_cidr_block',
+    IsSupportedProviderRegion: 'is_supported_provider_region'
 } as const;
 
 export type InvalidRules = typeof InvalidRules[keyof typeof InvalidRules];
@@ -1628,43 +1856,6 @@ export interface ListRegistrationsResponse {
 /**
  * 
  * @export
- * @interface NotAvailableError
- */
-export interface NotAvailableError {
-    /**
-     * The HTTP status code of the error. Useful when passing the response body to child properties in a frontend UI. Must be returned as an integer. 
-     * @type {number}
-     * @memberof NotAvailableError
-     */
-    'status': number;
-    /**
-     * A short, human-readable summary of the problem. It should not change between occurences of a problem, except for localization. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
-     * @memberof NotAvailableError
-     */
-    'title': string;
-    /**
-     * The error type.
-     * @type {string}
-     * @memberof NotAvailableError
-     */
-    'type'?: string;
-    /**
-     * Used to return the correlation ID back to the user, in the format kong:trace:<correlation_id>. This helps us find the relevant logs when a customer reports an issue. 
-     * @type {string}
-     * @memberof NotAvailableError
-     */
-    'instance': string;
-    /**
-     * A human readable explanation specific to this occurence of the problem. This field may contain request/entity data to help the user understand what went wrong. Enclose variable values in square brackets. Should be provided as \"Sentence case\" for direct use in the UI. 
-     * @type {string}
-     * @memberof NotAvailableError
-     */
-    'detail': string;
-}
-/**
- * 
- * @export
  * @interface NotFoundError
  */
 export interface NotFoundError {
@@ -1673,13 +1864,13 @@ export interface NotFoundError {
      * @type {any}
      * @memberof NotFoundError
      */
-    'status'?: any;
+    'status': any;
     /**
      * 
      * @type {any}
      * @memberof NotFoundError
      */
-    'title'?: any;
+    'title': any;
     /**
      * 
      * @type {any}
@@ -1691,11 +1882,48 @@ export interface NotFoundError {
      * @type {any}
      * @memberof NotFoundError
      */
-    'instance'?: any;
+    'instance': any;
     /**
      * 
      * @type {any}
      * @memberof NotFoundError
+     */
+    'detail': any;
+}
+/**
+ * 
+ * @export
+ * @interface NotFoundErrorAllOf
+ */
+export interface NotFoundErrorAllOf {
+    /**
+     * 
+     * @type {any}
+     * @memberof NotFoundErrorAllOf
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof NotFoundErrorAllOf
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof NotFoundErrorAllOf
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof NotFoundErrorAllOf
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof NotFoundErrorAllOf
      */
     'detail'?: any;
 }
@@ -2046,6 +2274,12 @@ export interface PortalContext {
      * @memberof PortalContext
      */
     'allowed_time_period': string;
+    /**
+     * Name of the developer portal.
+     * @type {string}
+     * @memberof PortalContext
+     */
+    'name': string;
 }
 /**
  * 
@@ -3393,13 +3627,13 @@ export interface TooManyRequestsError {
      * @type {any}
      * @memberof TooManyRequestsError
      */
-    'status'?: any;
+    'status': any;
     /**
      * 
      * @type {any}
      * @memberof TooManyRequestsError
      */
-    'title'?: any;
+    'title': any;
     /**
      * 
      * @type {any}
@@ -3411,11 +3645,48 @@ export interface TooManyRequestsError {
      * @type {any}
      * @memberof TooManyRequestsError
      */
-    'instance'?: any;
+    'instance': any;
     /**
      * 
      * @type {any}
      * @memberof TooManyRequestsError
+     */
+    'detail': any;
+}
+/**
+ * 
+ * @export
+ * @interface TooManyRequestsErrorAllOf
+ */
+export interface TooManyRequestsErrorAllOf {
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsErrorAllOf
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsErrorAllOf
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsErrorAllOf
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsErrorAllOf
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof TooManyRequestsErrorAllOf
      */
     'detail'?: any;
 }
@@ -3430,13 +3701,13 @@ export interface UnauthorizedError {
      * @type {any}
      * @memberof UnauthorizedError
      */
-    'status'?: any;
+    'status': any;
     /**
      * 
      * @type {any}
      * @memberof UnauthorizedError
      */
-    'title'?: any;
+    'title': any;
     /**
      * 
      * @type {any}
@@ -3448,11 +3719,48 @@ export interface UnauthorizedError {
      * @type {any}
      * @memberof UnauthorizedError
      */
-    'instance'?: any;
+    'instance': any;
     /**
      * 
      * @type {any}
      * @memberof UnauthorizedError
+     */
+    'detail': any;
+}
+/**
+ * 
+ * @export
+ * @interface UnauthorizedErrorAllOf
+ */
+export interface UnauthorizedErrorAllOf {
+    /**
+     * 
+     * @type {any}
+     * @memberof UnauthorizedErrorAllOf
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnauthorizedErrorAllOf
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnauthorizedErrorAllOf
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnauthorizedErrorAllOf
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnauthorizedErrorAllOf
      */
     'detail'?: any;
 }
@@ -3467,13 +3775,13 @@ export interface UnprocessableContentError {
      * @type {any}
      * @memberof UnprocessableContentError
      */
-    'status'?: any;
+    'status': any;
     /**
      * 
      * @type {any}
      * @memberof UnprocessableContentError
      */
-    'title'?: any;
+    'title': any;
     /**
      * 
      * @type {any}
@@ -3485,11 +3793,48 @@ export interface UnprocessableContentError {
      * @type {any}
      * @memberof UnprocessableContentError
      */
-    'instance'?: any;
+    'instance': any;
     /**
      * 
      * @type {any}
      * @memberof UnprocessableContentError
+     */
+    'detail': any;
+}
+/**
+ * 
+ * @export
+ * @interface UnprocessableContentErrorAllOf
+ */
+export interface UnprocessableContentErrorAllOf {
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentErrorAllOf
+     */
+    'status'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentErrorAllOf
+     */
+    'title'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentErrorAllOf
+     */
+    'type'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentErrorAllOf
+     */
+    'instance'?: any;
+    /**
+     * 
+     * @type {any}
+     * @memberof UnprocessableContentErrorAllOf
      */
     'detail'?: any;
 }
@@ -3876,7 +4221,7 @@ export const ApplicationsApiAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application. 
+         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 422 if this feature is not supported by the application. 
          * @summary Get the granted scopes
          * @param {string} applicationId Id of the targeted application
          * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
@@ -4130,7 +4475,7 @@ export const ApplicationsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application. 
+         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 422 if this feature is not supported by the application. 
          * @summary Get the granted scopes
          * @param {string} applicationId Id of the targeted application
          * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
@@ -4227,7 +4572,7 @@ export const ApplicationsApiFactory = function (configuration?: Configuration, b
             return localVarFp.getApplication(applicationId, options).then((request) => request(axios, basePath));
         },
         /**
-         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application. 
+         * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 422 if this feature is not supported by the application. 
          * @summary Get the granted scopes
          * @param {string} applicationId Id of the targeted application
          * @param {string} productVersionId Contains a unique identifier used by the Portal API for this resource.
@@ -4515,7 +4860,7 @@ export class ApplicationsApi extends BaseAPI {
     }
 
     /**
-     * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 409 if this feature is not supported by the application. 
+     * Retrieves the granted scopes of a specified application and product version directly from the IDP. Scopes shared between product versions will be returned, even if not currently registered for given product version. Will return 422 if this feature is not supported by the application. 
      * @summary Get the granted scopes
      * @param {ApplicationsApiGetApplicationProductVersionGrantedScopesRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
