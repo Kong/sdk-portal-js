@@ -3199,7 +3199,7 @@ export interface RegistrationConfiguration {
      * @type {string}
      * @memberof RegistrationConfiguration
      */
-    'id'?: string;
+    'id': string;
     /**
      * 
      * @type {Array<string>}
@@ -3211,7 +3211,7 @@ export interface RegistrationConfiguration {
      * @type {CredentialType}
      * @memberof RegistrationConfiguration
      */
-    'credential_type'?: CredentialType;
+    'credential_type': CredentialType;
     /**
      * 
      * @type {string}
@@ -3224,6 +3224,18 @@ export interface RegistrationConfiguration {
      * @memberof RegistrationConfiguration
      */
     'available_scopes'?: Array<string>;
+    /**
+     * If true, application registration is allowed for this configuration.
+     * @type {boolean}
+     * @memberof RegistrationConfiguration
+     */
+    'registration_enabled': boolean;
+    /**
+     * If true, applications are automatically approved for registration.
+     * @type {boolean}
+     * @memberof RegistrationConfiguration
+     */
+    'registration_auto_approve': boolean;
 }
 /**
  * Payload required to start the reset password flow 
