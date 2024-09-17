@@ -1,3 +1,15 @@
+# v2.15.1 (Tue Sep 17 2024)
+
+#### 🐛 Bug Fix
+
+- build(deps): bump braces from 3.0.2 to 3.0.3 [#103](https://github.com/Kong/sdk-portal-js/pull/103) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+#### Authors: 1
+
+- [@dependabot[bot]](https://github.com/dependabot[bot])
+
+---
+
 # v2.15.0 (Tue Sep 17 2024)
 
 #### 🚀 Enhancement
