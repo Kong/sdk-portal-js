@@ -1248,6 +1248,7 @@ export interface GetRegistrationResponse {
      * Cached list of scopes granted for the given application registration. Use `/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes` to get up to date granted scopes from the IDP. This property will be omitted if not supported by the application. 
      * @type {Array<string>}
      * @memberof GetRegistrationResponse
+     * @deprecated
      */
     'granted_scopes'?: Array<string>;
 }
@@ -7286,10 +7287,14 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {string} [filterProductNameEq] Filter by direct equality comparison of the product_name property with a supplied value.
+         * @param {string} [filterProductName] Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
+         * @param {string} [filterProductVersionNameEq] Filter by direct equality comparison of the product_version_name property with a supplied value.
+         * @param {string} [filterProductVersionName] Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listApplicationRegistrations: async (applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listApplicationRegistrations: async (applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
             assertParamExists('listApplicationRegistrations', 'applicationId', applicationId)
             const localVarPath = `/api/v2/applications/{applicationId}/registrations`
@@ -7329,6 +7334,22 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
 
             if (filterStatus !== undefined) {
                 localVarQueryParameter['filter[status]'] = filterStatus;
+            }
+
+            if (filterProductNameEq !== undefined) {
+                localVarQueryParameter['filter[product_name][eq]'] = filterProductNameEq;
+            }
+
+            if (filterProductName !== undefined) {
+                localVarQueryParameter['filter[product_name]'] = filterProductName;
+            }
+
+            if (filterProductVersionNameEq !== undefined) {
+                localVarQueryParameter['filter[product_version_name][eq]'] = filterProductVersionNameEq;
+            }
+
+            if (filterProductVersionName !== undefined) {
+                localVarQueryParameter['filter[product_version_name]'] = filterProductVersionName;
             }
 
 
@@ -7410,11 +7431,15 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {string} [filterProductNameEq] Filter by direct equality comparison of the product_name property with a supplied value.
+         * @param {string} [filterProductName] Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
+         * @param {string} [filterProductVersionNameEq] Filter by direct equality comparison of the product_version_name property with a supplied value.
+         * @param {string} [filterProductVersionName] Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListRegistrationsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, options);
+        async listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListRegistrationsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, filterProductNameEq, filterProductName, filterProductVersionNameEq, filterProductVersionName, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -7481,11 +7506,15 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
          * @param {string} [filterId] Filter by direct equality comparison (short-hand) of the id property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatusEq] Filter by direct equality comparison of the status property with a supplied value.
          * @param {'approved' | 'pending' | 'rejected' | 'revoked'} [filterStatus] Filter by direct equality comparison (short-hand) of the status property with a supplied value.
+         * @param {string} [filterProductNameEq] Filter by direct equality comparison of the product_name property with a supplied value.
+         * @param {string} [filterProductName] Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
+         * @param {string} [filterProductVersionNameEq] Filter by direct equality comparison of the product_version_name property with a supplied value.
+         * @param {string} [filterProductVersionName] Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', options?: any): AxiosPromise<ListRegistrationsResponse> {
-            return localVarFp.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, options).then((request) => request(axios, basePath));
+        listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, options?: any): AxiosPromise<ListRegistrationsResponse> {
+            return localVarFp.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, filterProductNameEq, filterProductName, filterProductVersionNameEq, filterProductVersionName, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -7628,6 +7657,34 @@ export interface RegistrationsApiListApplicationRegistrationsRequest {
      * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked'
+
+    /**
+     * Filter by direct equality comparison of the product_name property with a supplied value.
+     * @type {string}
+     * @memberof RegistrationsApiListApplicationRegistrations
+     */
+    readonly filterProductNameEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
+     * @type {string}
+     * @memberof RegistrationsApiListApplicationRegistrations
+     */
+    readonly filterProductName?: string
+
+    /**
+     * Filter by direct equality comparison of the product_version_name property with a supplied value.
+     * @type {string}
+     * @memberof RegistrationsApiListApplicationRegistrations
+     */
+    readonly filterProductVersionNameEq?: string
+
+    /**
+     * Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
+     * @type {string}
+     * @memberof RegistrationsApiListApplicationRegistrations
+     */
+    readonly filterProductVersionName?: string
 }
 
 /**
@@ -7694,7 +7751,7 @@ export class RegistrationsApi extends BaseAPI {
      * @memberof RegistrationsApi
      */
     public listApplicationRegistrations(requestParameters: RegistrationsApiListApplicationRegistrationsRequest, options?: AxiosRequestConfig) {
-        return RegistrationsApiFp(this.configuration).listApplicationRegistrations(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, options).then((request) => request(this.axios, this.basePath));
+        return RegistrationsApiFp(this.configuration).listApplicationRegistrations(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, requestParameters.filterProductNameEq, requestParameters.filterProductName, requestParameters.filterProductVersionNameEq, requestParameters.filterProductVersionName, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
