@@ -2281,6 +2281,12 @@ export interface PortalContext {
      * @memberof PortalContext
      */
     'name': string;
+    /**
+     * The canonical domain of the developer portal.
+     * @type {string}
+     * @memberof PortalContext
+     */
+    'canonical_domain': string;
 }
 /**
  * 
@@ -7291,10 +7297,12 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
          * @param {string} [filterProductName] Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
          * @param {string} [filterProductVersionNameEq] Filter by direct equality comparison of the product_version_name property with a supplied value.
          * @param {string} [filterProductVersionName] Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
+         * @param {string} [filterProductVersionNameContains] Filter by contains comparison of the product_version_name property with a supplied substring
+         * @param {string} [filterProductNameContains] Filter by contains comparison of the product_name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listApplicationRegistrations: async (applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listApplicationRegistrations: async (applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, filterProductVersionNameContains?: string, filterProductNameContains?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
             assertParamExists('listApplicationRegistrations', 'applicationId', applicationId)
             const localVarPath = `/api/v2/applications/{applicationId}/registrations`
@@ -7350,6 +7358,14 @@ export const RegistrationsApiAxiosParamCreator = function (configuration?: Confi
 
             if (filterProductVersionName !== undefined) {
                 localVarQueryParameter['filter[product_version_name]'] = filterProductVersionName;
+            }
+
+            if (filterProductVersionNameContains !== undefined) {
+                localVarQueryParameter['filter[product_version_name][contains]'] = filterProductVersionNameContains;
+            }
+
+            if (filterProductNameContains !== undefined) {
+                localVarQueryParameter['filter[product_name][contains]'] = filterProductNameContains;
             }
 
 
@@ -7435,11 +7451,13 @@ export const RegistrationsApiFp = function(configuration?: Configuration) {
          * @param {string} [filterProductName] Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
          * @param {string} [filterProductVersionNameEq] Filter by direct equality comparison of the product_version_name property with a supplied value.
          * @param {string} [filterProductVersionName] Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
+         * @param {string} [filterProductVersionNameContains] Filter by contains comparison of the product_version_name property with a supplied substring
+         * @param {string} [filterProductNameContains] Filter by contains comparison of the product_name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListRegistrationsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, filterProductNameEq, filterProductName, filterProductVersionNameEq, filterProductVersionName, options);
+        async listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, filterProductVersionNameContains?: string, filterProductNameContains?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListRegistrationsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, filterProductNameEq, filterProductName, filterProductVersionNameEq, filterProductVersionName, filterProductVersionNameContains, filterProductNameContains, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -7510,11 +7528,13 @@ export const RegistrationsApiFactory = function (configuration?: Configuration, 
          * @param {string} [filterProductName] Filter by direct equality comparison (short-hand) of the product_name property with a supplied value.
          * @param {string} [filterProductVersionNameEq] Filter by direct equality comparison of the product_version_name property with a supplied value.
          * @param {string} [filterProductVersionName] Filter by direct equality comparison (short-hand) of the product_version_name property with a supplied value.
+         * @param {string} [filterProductVersionNameContains] Filter by contains comparison of the product_version_name property with a supplied substring
+         * @param {string} [filterProductNameContains] Filter by contains comparison of the product_name property with a supplied substring
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, options?: any): AxiosPromise<ListRegistrationsResponse> {
-            return localVarFp.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, filterProductNameEq, filterProductName, filterProductVersionNameEq, filterProductVersionName, options).then((request) => request(axios, basePath));
+        listApplicationRegistrations(applicationId: string, pageSize?: number, pageNumber?: number, filterIdEq?: string, filterId?: string, filterStatusEq?: 'approved' | 'pending' | 'rejected' | 'revoked', filterStatus?: 'approved' | 'pending' | 'rejected' | 'revoked', filterProductNameEq?: string, filterProductName?: string, filterProductVersionNameEq?: string, filterProductVersionName?: string, filterProductVersionNameContains?: string, filterProductNameContains?: string, options?: any): AxiosPromise<ListRegistrationsResponse> {
+            return localVarFp.listApplicationRegistrations(applicationId, pageSize, pageNumber, filterIdEq, filterId, filterStatusEq, filterStatus, filterProductNameEq, filterProductName, filterProductVersionNameEq, filterProductVersionName, filterProductVersionNameContains, filterProductNameContains, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -7685,6 +7705,20 @@ export interface RegistrationsApiListApplicationRegistrationsRequest {
      * @memberof RegistrationsApiListApplicationRegistrations
      */
     readonly filterProductVersionName?: string
+
+    /**
+     * Filter by contains comparison of the product_version_name property with a supplied substring
+     * @type {string}
+     * @memberof RegistrationsApiListApplicationRegistrations
+     */
+    readonly filterProductVersionNameContains?: string
+
+    /**
+     * Filter by contains comparison of the product_name property with a supplied substring
+     * @type {string}
+     * @memberof RegistrationsApiListApplicationRegistrations
+     */
+    readonly filterProductNameContains?: string
 }
 
 /**
@@ -7751,7 +7785,7 @@ export class RegistrationsApi extends BaseAPI {
      * @memberof RegistrationsApi
      */
     public listApplicationRegistrations(requestParameters: RegistrationsApiListApplicationRegistrationsRequest, options?: AxiosRequestConfig) {
-        return RegistrationsApiFp(this.configuration).listApplicationRegistrations(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, requestParameters.filterProductNameEq, requestParameters.filterProductName, requestParameters.filterProductVersionNameEq, requestParameters.filterProductVersionName, options).then((request) => request(this.axios, this.basePath));
+        return RegistrationsApiFp(this.configuration).listApplicationRegistrations(requestParameters.applicationId, requestParameters.pageSize, requestParameters.pageNumber, requestParameters.filterIdEq, requestParameters.filterId, requestParameters.filterStatusEq, requestParameters.filterStatus, requestParameters.filterProductNameEq, requestParameters.filterProductName, requestParameters.filterProductVersionNameEq, requestParameters.filterProductVersionName, requestParameters.filterProductVersionNameContains, requestParameters.filterProductNameContains, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
