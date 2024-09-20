@@ -1,3 +1,15 @@
+# v2.15.4 (Fri Sep 20 2024)
+
+#### 🐛 Bug Fix
+
+- build(deps): bump micromatch from 4.0.5 to 4.0.8 [#107](https://github.com/Kong/sdk-portal-js/pull/107) ([@dependabot[bot]](https://github.com/dependabot[bot]))
+
+#### Authors: 1
+
+- [@dependabot[bot]](https://github.com/dependabot[bot])
+
+---
+
 # v2.15.3 (Fri Sep 20 2024)
 
 #### 🐛 Bug Fix
