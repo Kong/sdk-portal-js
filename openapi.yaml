@@ -2040,7 +2040,6 @@ components:
       type: string
       enum:
         - required
-        - max_length
         - is_array
         - is_base64
         - is_boolean
@@ -2098,6 +2097,8 @@ components:
             - min_lowercase
             - min_uppercase
             - min_symbols
+            - min_items
+            - min
           nullable: false
           readOnly: true
         minimum:
@@ -2108,7 +2109,7 @@ components:
           example: body
         reason:
           type: string
-          example: is a required field
+          example: must have at least 8 characters
           readOnly: true
       additionalProperties: false
       required:
@@ -2116,6 +2117,38 @@ components:
         - reason
         - rule
         - minimum
+    InvalidParameterMaximumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - max_length
+            - max_items
+            - max
+          nullable: false
+          readOnly: true
+        maximum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: must not have more than 8 characters
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - maximum
     InvalidParameterChoiceItem:
       type: object
       properties:
@@ -2190,6 +2223,7 @@ components:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
           - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterMaximumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
       minItems: 1
@@ -2575,9 +2609,12 @@ components:
           readOnly: true
         latest_version:
           $ref: '#/components/schemas/LatestVersion'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabels'
       additionalProperties: false
       required:
         - id
+        - public_labels
         - created_at
         - updated_at
         - name
@@ -2858,6 +2895,23 @@ components:
         - title
         - content
       title: ProductDocumentRaw
+    PublicLabels:
+      description: |
+        Public labels store information about an entity that can be used for filtering a list of objects.
+
+        Public labels are intended to store **PUBLIC** metadata. 
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        category: finance
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 50
+      title: PublicLabels
     NullableUUID:
       description: Contains a unique identifier for a resource.
       type: string
@@ -3523,6 +3577,8 @@ components:
           required:
             - name
             - id
+        public_labels:
+          $ref: '#/components/schemas/PublicLabels'
       additionalProperties: false
       required:
         - id
@@ -3532,6 +3588,7 @@ components:
         - document_count
         - version_count
         - latest_version
+        - public_labels
       title: ProductCatalogIndexSource
     SearchIndicesParameters:
       type: string
@@ -3859,6 +3916,8 @@ components:
               description: Great products are built with great care
               document_count: 5
               version_count: 5
+              public_labels:
+                env: test
               latest_version:
                 name: v5
                 id: 455b0beb-c3f7-4f8f-95f7-cd8ff0ee478e
@@ -4299,3 +4358,9 @@ tags:
       all of the described endpoints will return a 404 error
   - name: search
     description: The API for Konnect Portal Search.
+x-errors:
+  granted-scopes-unavailable:
+    description: |
+      The IDP used does not support granted scopes.
+    resolution: |
+      Switch to an IDP that allows you to grant specific scopes.
