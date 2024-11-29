@@ -1497,6 +1497,52 @@ export type InvalidParameterDependentItemRuleEnum = typeof InvalidParameterDepen
 /**
  * 
  * @export
+ * @interface InvalidParameterMaximumLength
+ */
+export interface InvalidParameterMaximumLength {
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterMaximumLength
+     */
+    'field': string;
+    /**
+     * invalid parameters rules
+     * @type {string}
+     * @memberof InvalidParameterMaximumLength
+     */
+    'rule': InvalidParameterMaximumLengthRuleEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof InvalidParameterMaximumLength
+     */
+    'maximum': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterMaximumLength
+     */
+    'source'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InvalidParameterMaximumLength
+     */
+    'reason': string;
+}
+
+export const InvalidParameterMaximumLengthRuleEnum = {
+    MaxLength: 'max_length',
+    MaxItems: 'max_items',
+    Max: 'max'
+} as const;
+
+export type InvalidParameterMaximumLengthRuleEnum = typeof InvalidParameterMaximumLengthRuleEnum[keyof typeof InvalidParameterMaximumLengthRuleEnum];
+
+/**
+ * 
+ * @export
  * @interface InvalidParameterMinimumLength
  */
 export interface InvalidParameterMinimumLength {
@@ -1533,11 +1579,13 @@ export interface InvalidParameterMinimumLength {
 }
 
 export const InvalidParameterMinimumLengthRuleEnum = {
-    Length: 'min_length',
-    Digits: 'min_digits',
-    Lowercase: 'min_lowercase',
-    Uppercase: 'min_uppercase',
-    Symbols: 'min_symbols'
+    MinLength: 'min_length',
+    MinDigits: 'min_digits',
+    MinLowercase: 'min_lowercase',
+    MinUppercase: 'min_uppercase',
+    MinSymbols: 'min_symbols',
+    MinItems: 'min_items',
+    Min: 'min'
 } as const;
 
 export type InvalidParameterMinimumLengthRuleEnum = typeof InvalidParameterMinimumLengthRuleEnum[keyof typeof InvalidParameterMinimumLengthRuleEnum];
@@ -1577,7 +1625,7 @@ export interface InvalidParameterStandard {
  * @type InvalidParametersInner
  * @export
  */
-export type InvalidParametersInner = InvalidParameterChoiceItem | InvalidParameterDependentItem | InvalidParameterMinimumLength | InvalidParameterStandard;
+export type InvalidParametersInner = InvalidParameterChoiceItem | InvalidParameterDependentItem | InvalidParameterMaximumLength | InvalidParameterMinimumLength | InvalidParameterStandard;
 
 /**
  * invalid parameters rules
@@ -1587,7 +1635,6 @@ export type InvalidParametersInner = InvalidParameterChoiceItem | InvalidParamet
 
 export const InvalidRules = {
     Required: 'required',
-    MaxLength: 'max_length',
     IsArray: 'is_array',
     IsBase64: 'is_base64',
     IsBoolean: 'is_boolean',
@@ -2342,6 +2389,12 @@ export interface Product {
      * @memberof Product
      */
     'latest_version'?: LatestVersion | null;
+    /**
+     * Public labels store information about an entity that can be used for filtering a list of objects.  Public labels are intended to store **PUBLIC** metadata.   Keys must be of length 1-63 characters, and cannot start with \"kong\", \"konnect\", \"mesh\", \"kic\", or \"_\". 
+     * @type {{ [key: string]: string; }}
+     * @memberof Product
+     */
+    'public_labels': { [key: string]: string; };
 }
 /**
  * 
@@ -2435,6 +2488,12 @@ export interface ProductCatalogIndexSource {
      * @memberof ProductCatalogIndexSource
      */
     'latest_version': ProductCatalogIndexSourceLatestVersion | null;
+    /**
+     * Public labels store information about an entity that can be used for filtering a list of objects.  Public labels are intended to store **PUBLIC** metadata.   Keys must be of length 1-63 characters, and cannot start with \"kong\", \"konnect\", \"mesh\", \"kic\", or \"_\". 
+     * @type {{ [key: string]: string; }}
+     * @memberof ProductCatalogIndexSource
+     */
+    'public_labels': { [key: string]: string; };
 }
 /**
  * Last created version.
