@@ -6217,7 +6217,7 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
          * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId ID of the document.
          * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6327,7 +6327,7 @@ export const DocumentationApiFp = function(configuration?: Configuration) {
          * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId ID of the document.
          * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6364,7 +6364,7 @@ export const DocumentationApiFactory = function (configuration?: Configuration, 
          * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId ID of the document.
          * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6402,7 +6402,7 @@ export interface DocumentationApiGetProductDocumentRequest {
     readonly productId: string
 
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * ID of the document.
      * @type {string}
      * @memberof DocumentationApiGetProductDocument
      */
