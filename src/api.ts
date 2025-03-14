@@ -129,7 +129,7 @@ export interface ApplicationCreationResponse {
      * @type {PortalAuthStrategy}
      * @memberof ApplicationCreationResponse
      */
-    'auth_strategy': PortalAuthStrategy | null;
+    'auth_strategy': PortalAuthStrategy;
     /**
      * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  The granted scopes for the application. Will only be included if supported by the application\'s auth strategy.
      * @type {Array<string>}
@@ -241,7 +241,7 @@ export interface ApplicationUpdateResponse {
      * @type {PortalAuthStrategy}
      * @memberof ApplicationUpdateResponse
      */
-    'auth_strategy'?: PortalAuthStrategy | null;
+    'auth_strategy'?: PortalAuthStrategy;
     /**
      * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  The granted scopes for the application. Will only be included if supported by the application\'s auth strategy.
      * @type {Array<string>}
@@ -297,6 +297,12 @@ export interface AuthStrategyClientCredentials {
      * @memberof AuthStrategyClientCredentials
      */
     'auth_methods': Array<string>;
+    /**
+     * Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+     * @type {Array<string>}
+     * @memberof AuthStrategyClientCredentials
+     */
+    'available_scopes'?: Array<string>;
 }
 
 export const AuthStrategyClientCredentialsCredentialTypeEnum = {
@@ -330,6 +336,12 @@ export interface AuthStrategyKeyAuth {
      * @memberof AuthStrategyKeyAuth
      */
     'credential_type': AuthStrategyKeyAuthCredentialTypeEnum;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AuthStrategyKeyAuth
+     */
+    'key_names': Array<string>;
 }
 
 export const AuthStrategyKeyAuthCredentialTypeEnum = {
@@ -395,10 +407,10 @@ export interface BadRequestError {
     'detail': string;
     /**
      * invalid parameters
-     * @type {Set<InvalidParametersInner>}
+     * @type {Array<InvalidParametersInner>}
      * @memberof BadRequestError
      */
-    'invalid_parameters': Set<InvalidParametersInner>;
+    'invalid_parameters': Array<InvalidParametersInner>;
 }
 /**
  * 
@@ -408,10 +420,10 @@ export interface BadRequestError {
 export interface BadRequestErrorAllOf {
     /**
      * invalid parameters
-     * @type {Set<InvalidParametersInner>}
+     * @type {Array<InvalidParametersInner>}
      * @memberof BadRequestErrorAllOf
      */
-    'invalid_parameters': Set<InvalidParametersInner>;
+    'invalid_parameters': Array<InvalidParametersInner>;
 }
 /**
  * standard error
@@ -686,13 +698,13 @@ export interface CreateApplicationPayload {
 /**
  * 
  * @export
- * @interface CreateCredentialPayload
+ * @interface CreateCredentialRequest
  */
-export interface CreateCredentialPayload {
+export interface CreateCredentialRequest {
     /**
      * 
      * @type {string}
-     * @memberof CreateCredentialPayload
+     * @memberof CreateCredentialRequest
      */
     'display_name'?: string;
 }
@@ -944,6 +956,18 @@ export interface DocumentTree {
      * @memberof DocumentTree
      */
     'children': Array<DocumentTree>;
+    /**
+     * An ISO-8601 timestamp representation of entity creation date.
+     * @type {string}
+     * @memberof DocumentTree
+     */
+    'created_at': string;
+    /**
+     * An ISO-8601 timestamp representation of entity update date.
+     * @type {string}
+     * @memberof DocumentTree
+     */
+    'updated_at': string;
 }
 /**
  * 
@@ -1106,7 +1130,7 @@ export interface GetApplicationResponse {
      * @type {PortalAuthStrategy}
      * @memberof GetApplicationResponse
      */
-    'auth_strategy'?: PortalAuthStrategy | null;
+    'auth_strategy'?: PortalAuthStrategy;
     /**
      * **Pre-release Endpoint** This endpoint is currently in beta and is subject to change.  The granted scopes for the application. Will only be included if supported by the application\'s auth strategy.
      * @type {Array<string>}
@@ -1432,10 +1456,10 @@ export interface InvalidParameterChoiceItem {
     'reason': string;
     /**
      * 
-     * @type {Set<any>}
+     * @type {Array<any>}
      * @memberof InvalidParameterChoiceItem
      */
-    'choices': Set<any>;
+    'choices': Array<any>;
     /**
      * 
      * @type {string}
@@ -1476,10 +1500,10 @@ export interface InvalidParameterDependentItem {
     'reason': string;
     /**
      * 
-     * @type {Set<any>}
+     * @type {Array<any>}
      * @memberof InvalidParameterDependentItem
      */
-    'dependents': Set<any> | null;
+    'dependents': Array<any> | null;
     /**
      * 
      * @type {string}
@@ -1648,6 +1672,7 @@ export const InvalidRules = {
     IsFqdn: 'is_fqdn',
     IsArn: 'is_arn',
     UnknownProperty: 'unknown_property',
+    MissingReference: 'missing_reference',
     IsLabel: 'is_label',
     MatchesRegex: 'matches_regex',
     Invalid: 'invalid',
@@ -3956,13 +3981,13 @@ export interface UpdateApplicationPayload {
 /**
  * 
  * @export
- * @interface UpdateCredentialPayload
+ * @interface UpdateCredentialRequest
  */
-export interface UpdateCredentialPayload {
+export interface UpdateCredentialRequest {
     /**
      * 
      * @type {string}
-     * @memberof UpdateCredentialPayload
+     * @memberof UpdateCredentialRequest
      */
     'display_name': string;
 }
@@ -4997,11 +5022,11 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
          * Allows a developer to create a credential for an application they own.
          * @summary Create Credential for Application
          * @param {string} applicationId Id of the targeted application
-         * @param {CreateCredentialPayload} [createCredentialPayload] Create a credential
+         * @param {CreateCredentialRequest} [createCredentialRequest] Create a credential
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCredential: async (applicationId: string, createCredentialPayload?: CreateCredentialPayload, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createCredential: async (applicationId: string, createCredentialRequest?: CreateCredentialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
             assertParamExists('createCredential', 'applicationId', applicationId)
             const localVarPath = `/api/v2/applications/{applicationId}/credentials`
@@ -5026,7 +5051,7 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createCredentialPayload, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createCredentialRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5160,17 +5185,17 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
          * @summary Update Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
-         * @param {UpdateCredentialPayload} updateCredentialPayload Update a credential
+         * @param {UpdateCredentialRequest} updateCredentialRequest Update a credential
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCredential: async (applicationId: string, credentialId: string, updateCredentialPayload: UpdateCredentialPayload, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateCredential: async (applicationId: string, credentialId: string, updateCredentialRequest: UpdateCredentialRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'applicationId' is not null or undefined
             assertParamExists('updateCredential', 'applicationId', applicationId)
             // verify required parameter 'credentialId' is not null or undefined
             assertParamExists('updateCredential', 'credentialId', credentialId)
-            // verify required parameter 'updateCredentialPayload' is not null or undefined
-            assertParamExists('updateCredential', 'updateCredentialPayload', updateCredentialPayload)
+            // verify required parameter 'updateCredentialRequest' is not null or undefined
+            assertParamExists('updateCredential', 'updateCredentialRequest', updateCredentialRequest)
             const localVarPath = `/api/v2/applications/{applicationId}/credentials/{credentialId}`
                 .replace(`{${"applicationId"}}`, encodeURIComponent(String(applicationId)))
                 .replace(`{${"credentialId"}}`, encodeURIComponent(String(credentialId)));
@@ -5194,7 +5219,7 @@ export const CredentialsApiAxiosParamCreator = function (configuration?: Configu
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateCredentialPayload, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(updateCredentialRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5215,12 +5240,12 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
          * Allows a developer to create a credential for an application they own.
          * @summary Create Credential for Application
          * @param {string} applicationId Id of the targeted application
-         * @param {CreateCredentialPayload} [createCredentialPayload] Create a credential
+         * @param {CreateCredentialRequest} [createCredentialRequest] Create a credential
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createCredential(applicationId: string, createCredentialPayload?: CreateCredentialPayload, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CredentialCreationResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createCredential(applicationId, createCredentialPayload, options);
+        async createCredential(applicationId: string, createCredentialRequest?: CreateCredentialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CredentialCreationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createCredential(applicationId, createCredentialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5264,12 +5289,12 @@ export const CredentialsApiFp = function(configuration?: Configuration) {
          * @summary Update Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
-         * @param {UpdateCredentialPayload} updateCredentialPayload Update a credential
+         * @param {UpdateCredentialRequest} updateCredentialRequest Update a credential
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCredential(applicationId: string, credentialId: string, updateCredentialPayload: UpdateCredentialPayload, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCredential(applicationId, credentialId, updateCredentialPayload, options);
+        async updateCredential(applicationId: string, credentialId: string, updateCredentialRequest: UpdateCredentialRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateCredential(applicationId, credentialId, updateCredentialRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -5286,12 +5311,12 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
          * Allows a developer to create a credential for an application they own.
          * @summary Create Credential for Application
          * @param {string} applicationId Id of the targeted application
-         * @param {CreateCredentialPayload} [createCredentialPayload] Create a credential
+         * @param {CreateCredentialRequest} [createCredentialRequest] Create a credential
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCredential(applicationId: string, createCredentialPayload?: CreateCredentialPayload, options?: any): AxiosPromise<CredentialCreationResponse> {
-            return localVarFp.createCredential(applicationId, createCredentialPayload, options).then((request) => request(axios, basePath));
+        createCredential(applicationId: string, createCredentialRequest?: CreateCredentialRequest, options?: any): AxiosPromise<CredentialCreationResponse> {
+            return localVarFp.createCredential(applicationId, createCredentialRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Deletes a credential for an application they own.
@@ -5331,12 +5356,12 @@ export const CredentialsApiFactory = function (configuration?: Configuration, ba
          * @summary Update Credential
          * @param {string} applicationId Id of the targeted application
          * @param {string} credentialId Id of the targeted credential
-         * @param {UpdateCredentialPayload} updateCredentialPayload Update a credential
+         * @param {UpdateCredentialRequest} updateCredentialRequest Update a credential
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCredential(applicationId: string, credentialId: string, updateCredentialPayload: UpdateCredentialPayload, options?: any): AxiosPromise<void> {
-            return localVarFp.updateCredential(applicationId, credentialId, updateCredentialPayload, options).then((request) => request(axios, basePath));
+        updateCredential(applicationId: string, credentialId: string, updateCredentialRequest: UpdateCredentialRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.updateCredential(applicationId, credentialId, updateCredentialRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -5356,10 +5381,10 @@ export interface CredentialsApiCreateCredentialRequest {
 
     /**
      * Create a credential
-     * @type {CreateCredentialPayload}
+     * @type {CreateCredentialRequest}
      * @memberof CredentialsApiCreateCredential
      */
-    readonly createCredentialPayload?: CreateCredentialPayload
+    readonly createCredentialRequest?: CreateCredentialRequest
 }
 
 /**
@@ -5447,10 +5472,10 @@ export interface CredentialsApiUpdateCredentialRequest {
 
     /**
      * Update a credential
-     * @type {UpdateCredentialPayload}
+     * @type {UpdateCredentialRequest}
      * @memberof CredentialsApiUpdateCredential
      */
-    readonly updateCredentialPayload: UpdateCredentialPayload
+    readonly updateCredentialRequest: UpdateCredentialRequest
 }
 
 /**
@@ -5469,7 +5494,7 @@ export class CredentialsApi extends BaseAPI {
      * @memberof CredentialsApi
      */
     public createCredential(requestParameters: CredentialsApiCreateCredentialRequest, options?: AxiosRequestConfig) {
-        return CredentialsApiFp(this.configuration).createCredential(requestParameters.applicationId, requestParameters.createCredentialPayload, options).then((request) => request(this.axios, this.basePath));
+        return CredentialsApiFp(this.configuration).createCredential(requestParameters.applicationId, requestParameters.createCredentialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5517,7 +5542,7 @@ export class CredentialsApi extends BaseAPI {
      * @memberof CredentialsApi
      */
     public updateCredential(requestParameters: CredentialsApiUpdateCredentialRequest, options?: AxiosRequestConfig) {
-        return CredentialsApiFp(this.configuration).updateCredential(requestParameters.applicationId, requestParameters.credentialId, requestParameters.updateCredentialPayload, options).then((request) => request(this.axios, this.basePath));
+        return CredentialsApiFp(this.configuration).updateCredential(requestParameters.applicationId, requestParameters.credentialId, requestParameters.updateCredentialRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -6217,7 +6242,7 @@ export const DocumentationApiAxiosParamCreator = function (configuration?: Confi
          * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId ID of the document.
          * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6327,7 +6352,7 @@ export const DocumentationApiFp = function(configuration?: Configuration) {
          * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId ID of the document.
          * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6364,7 +6389,7 @@ export const DocumentationApiFactory = function (configuration?: Configuration, 
          * Returns the specified document from the product\'s document tree.
          * @summary Get one product document
          * @param {string} productId Contains a unique identifier used by the Portal API for this resource.
-         * @param {string} documentId Contains a unique identifier used by the Portal API for this resource.
+         * @param {string} documentId ID of the document.
          * @param {DocumentFormatContentTypeEnum} [accept] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6402,7 +6427,7 @@ export interface DocumentationApiGetProductDocumentRequest {
     readonly productId: string
 
     /**
-     * Contains a unique identifier used by the Portal API for this resource.
+     * ID of the document.
      * @type {string}
      * @memberof DocumentationApiGetProductDocument
      */
