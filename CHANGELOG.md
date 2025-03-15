@@ -1,3 +1,15 @@
+# v2.16.1 (Sat Mar 15 2025)
+
+#### 🐛 Bug Fix
+
+- Security fix: INC-456 [#120](https://github.com/Kong/sdk-portal-js/pull/120) ([@healthy-pod](https://github.com/healthy-pod))
+
+#### Authors: 1
+
+- Ahmad Abedalqader ([@healthy-pod](https://github.com/healthy-pod))
+
+---
+
 # v2.16.0 (Fri Nov 29 2024)
 
 #### 🚀 Enhancement
