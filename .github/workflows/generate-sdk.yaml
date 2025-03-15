@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check if `openapi.yaml` has changed
-        uses: tj-actions/changed-files@v41.0.0
+        uses: tj-actions/changed-files@4edd678ac3f81e2dc578756871e4d00c19191daf
         id: oas-modified
         with:
           files: |
