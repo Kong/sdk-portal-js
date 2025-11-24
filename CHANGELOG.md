@@ -1,3 +1,22 @@
+# v2.17.0 (Mon Nov 24 2025)
+
+#### 🚀 Enhancement
+
+- fix: axios-vulnerabilities [#127](https://github.com/Kong/sdk-portal-js/pull/127) ([@ValeryG](https://github.com/ValeryG))
+
+#### 🐛 Bug Fix
+
+- Pin all GitHub Actions [#121](https://github.com/Kong/sdk-portal-js/pull/121) ([@mheap](https://github.com/mheap))
+- Security fix: INC-456 [#120](https://github.com/Kong/sdk-portal-js/pull/120) ([@healthy-pod](https://github.com/healthy-pod))
+
+#### Authors: 3
+
+- [@ValeryG](https://github.com/ValeryG)
+- Ahmad Abedalqader ([@healthy-pod](https://github.com/healthy-pod))
+- Michael Heap ([@mheap](https://github.com/mheap))
+
+---
+
 # v2.16.0 (Fri Nov 29 2024)
 
 #### 🚀 Enhancement
