@@ -6,6 +6,8 @@ info:
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
+  x-oas-source: kong/platform-api@a618e5e337e2918b1df2c26a5faa3ef2b9f1c8c0
+  x-oas-source-link: 'https://github.com/Kong/platform-api/commit/a618e5e337e2918b1df2c26a5faa3ef2b9f1c8c0'
 servers:
   - url: 'https://custom.example.com'
     description: Production
@@ -350,7 +352,7 @@ paths:
   '/api/v2/applications/{applicationId}/registrations/{registrationId}/granted-scopes':
     get:
       operationId: get-application-registration-granted-scopes
-      summary: Get the granted scopes of an application registration
+      summary: Get App Registration Granted Scopes
       description: |
         Retrieves the granted scopes of a specified product registration directly from the IDP for an application.
         Will return 409 if this feature is not supported by the application.
@@ -448,7 +450,7 @@ paths:
   /api/v2/developer/authenticate/sso:
     get:
       operationId: authenticate-sso
-      summary: Authenticate SSO
+      summary: Get Developer Authentication via SSO
       description: This endpoint allows a developer to authenticate to their portal using an external IdP.
       responses:
         '302':
@@ -492,7 +494,7 @@ paths:
   /api/v2/developer/me:
     get:
       operationId: get-developer-me
-      summary: Retrieve My Account
+      summary: Get My Account
       description: Returns info about the current developer.
       responses:
         '200':
@@ -542,7 +544,6 @@ paths:
           $ref: '#/components/responses/Gone'
       tags:
         - developer
-    parameters: []
   /api/v2/developer/verify-email:
     post:
       operationId: verify-email
@@ -561,7 +562,6 @@ paths:
           $ref: '#/components/responses/Gone'
       tags:
         - developer
-    parameters: []
   /api/v2/portal:
     get:
       operationId: get-portal-context
@@ -577,7 +577,7 @@ paths:
   /api/v2/portal/appearance:
     get:
       operationId: get-portal-appearance
-      summary: Portal Appearance Details
+      summary: Get Portal Appearance Details
       description: Gets appearance configuration object for the portal. This object is set in Konnect.
       responses:
         '200':
@@ -589,7 +589,7 @@ paths:
   /api/v2/portal/catalog-cover:
     get:
       operationId: get-portal-catalog-cover
-      summary: Portal Catalog Cover Banner
+      summary: Get Portal Catalog Cover Banner
       description: Gets cover banner for the developer portal. This object is set in Konnect.
       responses:
         '200':
@@ -601,7 +601,7 @@ paths:
   /api/v2/portal/logo:
     get:
       operationId: get-portal-logo
-      summary: Portal Logo
+      summary: Get Portal Logo
       description: Gets logo of the developer portal. This object is set in Konnect.
       responses:
         '200':
@@ -869,7 +869,7 @@ paths:
   '/api/v2/search/{indices}':
     get:
       operationId: search-portal-entities
-      summary: Search Portal Entities
+      summary: List Portal Entities via Search
       description: Returns paginated search results from the specified entities with the given search parameters.
       parameters:
         - $ref: '#/components/parameters/SearchIndices'
@@ -935,7 +935,7 @@ paths:
   /api/v2/stats/config:
     get:
       operationId: get-application-analytics-config
-      summary: Application Analytics Config
+      summary: Get Application Analytics Config
       description: Get config for application analytics
       responses:
         '200':
@@ -960,18 +960,20 @@ components:
       name: credentialId
       in: path
       required: true
-      description: Id of the targeted credential
+      description: |
+        Id of the targeted credential.
+        Use the list-credentials endpoint to obtain the `id` field for each credential.
+      schema:
+        type: string
+    DocumentId:
       schema:
         type: string
         format: uuid
-    DocumentId:
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
       name: documentId
       in: path
       required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
+      description: ID of the document.
     FilterByAuthStrategyEquality:
       name: 'filter[auth_strategy_id][eq]'
       description: Filter by the id of the auth strategy supported by the application.
@@ -1633,278 +1635,6 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Invalid credentials
-    AuthStrategyId:
-      description: 'ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.'
-      type: string
-      format: uuid
-      nullable: true
-    Scopes:
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        The granted scopes for the application. Will only be included if supported by the application's auth strategy.
-      type: array
-      items:
-        type: string
-    CreateCredentialPayload:
-      type: object
-      properties:
-        display_name:
-          type: string
-          maxLength: 255
-      additionalProperties: false
-    UpdateCredentialPayload:
-      type: object
-      properties:
-        display_name:
-          type: string
-          maxLength: 255
-      additionalProperties: false
-      required:
-        - display_name
-    ListApplicationsResponse:
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/GetApplicationResponse'
-      additionalProperties: false
-      required:
-        - data
-        - meta
-    GetApplicationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          type: string
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        description:
-          type: string
-          nullable: true
-        redirect_uri:
-          type: string
-          nullable: true
-        auth_strategy:
-          $ref: '#/components/schemas/PortalAuthStrategy'
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      required:
-        - id
-        - name
-        - reference_id
-        - description
-        - updated_at
-        - created_at
-    ListCredentialsResponse:
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: false
-            properties:
-              id:
-                $ref: '#/components/schemas/UUID'
-              display_name:
-                type: string
-            required:
-              - id
-              - display_name
-      additionalProperties: false
-      required:
-        - data
-        - meta
-    CredentialCreationResponse:
-      type: object
-      properties:
-        credential:
-          type: string
-        id:
-          $ref: '#/components/schemas/UUID'
-        display_name:
-          type: string
-      additionalProperties: false
-      required:
-        - credential
-        - id
-        - display_name
-    RefreshTokenResponse:
-      description: Refresh token response
-      type: object
-      properties:
-        client_id:
-          type: string
-        client_secret:
-          type: string
-      additionalProperties: false
-      required:
-        - client_id
-        - client_secret
-      title: Refresh token response
-    CreateApplicationPayload:
-      description: Application creation payload
-      type: object
-      properties:
-        name:
-          description: The name of the application
-          type: string
-          maxLength: 255
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        redirect_uri:
-          description: URL to redirect to after completing an OIDC auth flow
-          type: string
-          format: uri
-        description:
-          description: A brief description of the application
-          type: string
-          maxLength: 255
-        auth_strategy_id:
-          $ref: '#/components/schemas/AuthStrategyId'
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-      additionalProperties: false
-      required:
-        - name
-      title: CreateApplicationPayload
-    ApplicationCreationResponse:
-      description: Application creation response payload
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          type: string
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        description:
-          type: string
-          nullable: true
-        redirect_uri:
-          type: string
-          nullable: true
-        credentials:
-          type: object
-          additionalProperties: false
-          properties:
-            client_id:
-              type: string
-            client_secret:
-              type: string
-          required:
-            - client_id
-            - client_secret
-        auth_strategy:
-          $ref: '#/components/schemas/PortalAuthStrategy'
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      required:
-        - id
-        - name
-        - reference_id
-        - description
-        - created_at
-        - updated_at
-        - auth_strategy
-      title: ApplicationCreationResponse
-    UpdateApplicationPayload:
-      description: Payload required to update an application
-      type: object
-      properties:
-        name:
-          description: The name of the application
-          type: string
-          maxLength: 255
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        redirect_uri:
-          description: URL to redirect to after completing an OIDC auth flow
-          type: string
-          format: uri
-        description:
-          description: A brief description of the application
-          type: string
-          maxLength: 255
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-      additionalProperties: false
-      title: UpdateApplicationPayload
-    ApplicationUpdateResponse:
-      description: Application update response payload
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/UUID'
-        name:
-          type: string
-        reference_id:
-          $ref: '#/components/schemas/ApplicationReferenceId'
-        description:
-          type: string
-          example: A brief description of the application
-          nullable: true
-        redirect_uri:
-          type: string
-          example: 'https://example.com/callback'
-          nullable: true
-        auth_strategy:
-          $ref: '#/components/schemas/PortalAuthStrategy'
-        scopes:
-          $ref: '#/components/schemas/Scopes'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      required:
-        - id
-        - name
-        - reference_id
-        - description
-        - updated_at
-        - created_at
-      title: ApplicationUpdateResponse
-    GetGrantedScopesProductVersionResponse:
-      type: object
-      properties:
-        scopes:
-          $ref: '#/components/schemas/RefreshedGrantedScopes'
-      additionalProperties: false
-      required:
-        - scopes
-    ListAuthStrategiesResponse:
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/PaginatedMeta'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalAuthStrategy'
-      additionalProperties: false
-      required:
-        - data
-        - meta
     PageMeta:
       description: Contains pagination query parameters and the total number of objects returned.
       type: object
@@ -1932,7 +1662,7 @@ components:
         - page
       title: PaginatedMeta
     UUID:
-      description: Contains a unique identifier used by the API for this resource.
+      description: Contains a unique identifier used for this resource.
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
@@ -1967,6 +1697,29 @@ components:
             type: string
           example:
             - apikey
+        ttl:
+          description: Default maximum Time-To-Live for keys created under this strategy.
+          type: object
+          properties:
+            value:
+              type: integer
+              minimum: 1
+            unit:
+              type: string
+              enum:
+                - days
+                - weeks
+                - years
+          required:
+            - value
+            - unit
+        supports_multiple_credentials:
+          description: |
+            Indicates whether this auth strategy supports multiple credentials.
+            Always `true` for KEY_AUTH.
+          type: boolean
+          default: true
+          readOnly: true
       required:
         - id
         - name
@@ -2010,6 +1763,23 @@ components:
             - self_managed_client_credentials
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
+        supports_multiple_credentials:
+          description: |
+            Indicates whether this auth strategy supports multiple credentials.
+            - `true` for Key Auth strategies and when supported for Client Credentials strategies
+            - `false` when not supported for Client Credentials strategies
+          type: boolean
+          readOnly: true
+        min_allowed_credentials:
+          description: Minimum allowed credentials for this auth strategy. Only present when supports_multiple_credentials is true and the DCR provider enforces a credential limit.
+          type: integer
+          minimum: 1
+          readOnly: true
+        max_allowed_credentials:
+          description: Maximum allowed credentials for this auth strategy. Only present when supports_multiple_credentials is true and the DCR provider enforces a credential limit.
+          type: integer
+          minimum: 1
+          readOnly: true
       required:
         - id
         - name
@@ -2019,10 +1789,14 @@ components:
       type: object
       discriminator:
         propertyName: credential_type
-      nullable: true
       oneOf:
         - $ref: '#/components/schemas/PortalAuthStrategyKeyAuth'
         - $ref: '#/components/schemas/PortalAuthStrategyClientCredentials'
+    Scopes:
+      description: The granted scopes for the application. Will only be included if supported by the application's auth strategy.
+      type: array
+      items:
+        type: string
     CreatedAt:
       description: An ISO-8601 timestamp representation of entity creation date.
       type: string
@@ -2035,6 +1809,50 @@ components:
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
+    GetApplicationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          nullable: true
+        redirect_uri:
+          type: string
+          nullable: true
+        auth_strategy:
+          $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - updated_at
+        - created_at
+    ListApplicationsResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetApplicationResponse'
+      additionalProperties: false
+      required:
+        - data
+        - meta
     InvalidRules:
       description: invalid parameters rules
       type: string
@@ -2053,12 +1871,14 @@ components:
         - is_fqdn
         - is_arn
         - unknown_property
+        - missing_reference
         - is_label
         - matches_regex
         - invalid
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
+        - type
       nullable: true
       readOnly: true
     InvalidParameterStandard:
@@ -2238,6 +2058,82 @@ components:
           properties:
             invalid_parameters:
               $ref: '#/components/schemas/InvalidParameters'
+    AuthStrategyId:
+      description: 'ID of the auth strategy to use for the application. If null or not included, the default application auth strategy will be used.'
+      type: string
+      format: uuid
+      nullable: true
+    CreateApplicationPayload:
+      description: Application creation payload
+      type: object
+      properties:
+        name:
+          description: The name of the application
+          type: string
+          maxLength: 255
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        redirect_uri:
+          description: URL to redirect to after completing an OIDC auth flow
+          type: string
+          format: uri
+        description:
+          description: A brief description of the application
+          type: string
+          maxLength: 255
+        auth_strategy_id:
+          $ref: '#/components/schemas/AuthStrategyId'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+      additionalProperties: false
+      required:
+        - name
+      title: CreateApplicationPayload
+    ApplicationCreationResponse:
+      description: Application creation response payload
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          nullable: true
+        redirect_uri:
+          type: string
+          nullable: true
+        credentials:
+          type: object
+          additionalProperties: false
+          properties:
+            client_id:
+              type: string
+            client_secret:
+              type: string
+          required:
+            - client_id
+            - client_secret
+        auth_strategy:
+          $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - created_at
+        - updated_at
+        - auth_strategy
+      title: ApplicationCreationResponse
     NotFoundError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -2283,11 +2179,279 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Too Many Requests
+    UpdateApplicationPayload:
+      description: Payload required to update an application
+      type: object
+      properties:
+        name:
+          description: The name of the application
+          type: string
+          maxLength: 255
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        redirect_uri:
+          description: URL to redirect to after completing an OIDC auth flow
+          type: string
+          format: uri
+        description:
+          description: A brief description of the application
+          type: string
+          maxLength: 255
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+      additionalProperties: false
+      title: UpdateApplicationPayload
+    ApplicationUpdateResponse:
+      description: Application update response payload
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          type: string
+        reference_id:
+          $ref: '#/components/schemas/ApplicationReferenceId'
+        description:
+          type: string
+          example: A brief description of the application
+          nullable: true
+        redirect_uri:
+          type: string
+          example: 'https://example.com/callback'
+          nullable: true
+        auth_strategy:
+          $ref: '#/components/schemas/PortalAuthStrategy'
+        scopes:
+          $ref: '#/components/schemas/Scopes'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - reference_id
+        - description
+        - updated_at
+        - created_at
+      title: ApplicationUpdateResponse
+    RefreshTokenResponse:
+      description: Refresh token response
+      type: object
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      additionalProperties: false
+      required:
+        - client_id
+        - client_secret
+      title: Refresh token response
+    ApiKeyCredentialListItem:
+      description: API key credential returned when listing credentials.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - api_key
+          readOnly: true
+        id:
+          $ref: '#/components/schemas/UUID'
+        display_name:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - expired
+            - revoked
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+      additionalProperties: false
+      required:
+        - type
+        - id
+        - display_name
+        - created_at
+    ClientSecretCredentialListItem:
+      description: Client secret credential returned when listing credentials.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - client_secret
+          readOnly: true
+        id:
+          description: Credential identifier
+          type: string
+        display_name:
+          description: May not be available for all Client Credentials applications
+          type: string
+          nullable: true
+        client_id:
+          description: OAuth2 client identifier
+          type: string
+          readOnly: true
+        created_at:
+          description: 'Creation timestamp, if available'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        expires_at:
+          description: 'Expiration timestamp, if applicable'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      required:
+        - type
+        - id
+        - client_id
+        - created_at
+    CredentialListItem:
+      type: object
+      discriminator:
+        propertyName: type
+      oneOf:
+        - $ref: '#/components/schemas/ApiKeyCredentialListItem'
+        - $ref: '#/components/schemas/ClientSecretCredentialListItem'
+    ListCredentialsResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialListItem'
+      additionalProperties: false
+      required:
+        - data
+        - meta
+    CreateCredentialRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+      additionalProperties: false
+    ApiKeyCredentialCreationResponse:
+      description: Response when creating an API key credential.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - api_key
+          readOnly: true
+        id:
+          $ref: '#/components/schemas/UUID'
+        display_name:
+          type: string
+        credential:
+          description: The API key value (only returned on creation)
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - expired
+            - revoked
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+      additionalProperties: false
+      required:
+        - type
+        - id
+        - display_name
+        - credential
+        - created_at
+    ClientSecretCredentialCreationResponse:
+      description: Response when creating a client secret credential.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - client_secret
+          readOnly: true
+        id:
+          description: Credential identifier
+          type: string
+        display_name:
+          type: string
+          nullable: true
+        client_id:
+          type: string
+          readOnly: true
+        client_secret:
+          description: Client secret value (only returned on creation)
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        expires_at:
+          description: 'Expiration timestamp, if applicable'
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      required:
+        - type
+        - id
+        - client_id
+        - client_secret
+        - created_at
+    CredentialCreationResponse:
+      type: object
+      discriminator:
+        propertyName: type
+      oneOf:
+        - $ref: '#/components/schemas/ApiKeyCredentialCreationResponse'
+        - $ref: '#/components/schemas/ClientSecretCredentialCreationResponse'
+    UpdateCredentialRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+          maxLength: 255
+      additionalProperties: false
+      required:
+        - display_name
     RefreshedGrantedScopes:
       description: 'List of granted scopes, directly updated from the IDP'
       type: array
       items:
         type: string
+    GetGrantedScopesProductVersionResponse:
+      type: object
+      properties:
+        scopes:
+          $ref: '#/components/schemas/RefreshedGrantedScopes'
+      additionalProperties: false
+      required:
+        - scopes
     UnprocessableContentError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -2303,6 +2467,19 @@ components:
               example: 'kong:trace:1234567891'
             detail:
               example: Unprocessable Content
+    ListAuthStrategiesResponse:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalAuthStrategy'
+      additionalProperties: false
+      required:
+        - data
+        - meta
     AuthenticateRequest:
       description: The request schema for the authenticate endpoint.
       type: object
@@ -2436,7 +2613,7 @@ components:
           example: Jane Doe
           maxLength: 256
           minLength: 1
-      additionalProperties: true
+      additionalProperties: false
       required:
         - full_name
         - email
@@ -2936,10 +3113,32 @@ components:
           type: string
           enum:
             - key_auth
+        key_names:
+          type: array
+          items:
+            type: string
+        ttl:
+          description: Default maximum Time-To-Live for keys created under this strategy.
+          type: object
+          properties:
+            value:
+              type: integer
+              minimum: 1
+            unit:
+              type: string
+              enum:
+                - days
+                - weeks
+                - years
+          required:
+            - value
+            - unit
+      additionalProperties: false
       required:
         - id
         - name
         - credential_type
+        - key_names
     AuthStrategyClientCredentials:
       description: Client Credential Auth strategy that the application uses.
       type: object
@@ -2961,6 +3160,9 @@ components:
             - self_managed_client_credentials
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
+        available_scopes:
+          $ref: '#/components/schemas/AvailableScopes'
+      additionalProperties: false
       required:
         - id
         - name
@@ -3063,12 +3265,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentTree'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
       required:
         - id
         - title
         - slug
         - metadata
         - children
+        - created_at
+        - updated_at
       title: DocumentTree
     ListDocumentsTree:
       type: object
@@ -3808,6 +4016,62 @@ components:
         title: Forbidden
         instance: 'kong:trace:2723154947768991354'
         detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+    ListApiKeyCredentialsExample:
+      value:
+        data:
+          - type: api_key
+            id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            display_name: My API Key
+            status: active
+            expires_at: '2025-12-31T23:59:59.000Z'
+            created_at: '2025-01-01T00:00:00.000Z'
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+    ListClientSecretCredentialsExample:
+      value:
+        data:
+          - type: client_secret
+            id: 6e5f4d3c-2b1a-0987-6543-210fedcba987
+            display_name: null
+            client_id: 12345678-abcd-efgh-ijkl-mnopqrstuvwx
+            created_at: '2024-01-15T10:30:00.000Z'
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+    ApiKeyCredentialCreationResponseExample:
+      value:
+        type: api_key
+        id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        display_name: My API Key
+        credential: sk_live_abc123def456
+        status: active
+        expires_at: null
+        created_at: '2025-01-01T00:00:00.000Z'
+    AzureClientSecretCredentialCreationResponseExample:
+      value:
+        type: client_secret
+        id: 6e5f4d3c-2b1a-0987-6543-210fedcba987
+        display_name: null
+        client_id: 12345678-abcd-efgh-ijkl-mnopqrstuvwx
+        client_secret: azR~8Q~abcdefghijklmnopqrstuvwxyz123456
+        created_at: '2024-01-15T10:30:00.000Z'
+    PostCredentials403Example:
+      value:
+        status: 403
+        title: Forbidden
+        detail: 'Maximum number of Credentials exceeded. Max Allowed: 20'
+        instance: 'kong:trace:2724154947768991355'
     GetGrantedScopesProductVersion200Response:
       value:
         scopes:
@@ -3819,18 +4083,6 @@ components:
         type: 'https://kongapi.info/konnect/portal/granted-scopes-unavailable'
         detail: This feature is not supported by the application.
         instance: 'kong:trace:2724154947768991354'
-    PostCredentials403Example:
-      value:
-        status: 403
-        title: Forbidden
-        detail: 'Maximum number of Credentials exceeded. Max Allowed: 20'
-        instance: 'kong:trace:2724154947768991355'
-    NotFoundExample:
-      value:
-        status: 404
-        title: Not Found
-        instance: 'kong:trace:6816496025408232265'
-        detail: Not Found
     Authenticate-Request:
       value:
         username: developer@example.com
@@ -3947,14 +4199,14 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateCredentialPayload'
+            $ref: '#/components/schemas/CreateCredentialRequest'
     UpdateCredential:
       description: Update a credential
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/UpdateCredentialPayload'
+            $ref: '#/components/schemas/UpdateCredentialRequest'
     AuthenticateRequest:
       description: The request schema for the authenticate endpoint.
       content:
@@ -4050,12 +4302,58 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ListApplicationsResponse'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            400-Invalid-Token:
+              $ref: '#/components/examples/400-Invalid-Token'
+            400-Login-Failed:
+              $ref: '#/components/examples/400-Login-Failed'
+    ApplicationCreation:
+      description: Application Creation success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationCreationResponse'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+            404-Token-Not-Found:
+              $ref: '#/components/examples/404-Token-Not-Found'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
     GetApplication:
       description: Get application response
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GetApplicationResponse'
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequestsError'
+    ApplicationUpdate:
+      description: Application Update success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationUpdateResponse'
     RefreshToken:
       description: Refresh token response
       content:
@@ -4068,24 +4366,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ListCredentialsResponse'
+          examples:
+            ListApiKeyCredentials:
+              $ref: '#/components/examples/ListApiKeyCredentialsExample'
+            ListClientSecretCredentials:
+              $ref: '#/components/examples/ListClientSecretCredentialsExample'
     CredentialCreation:
       description: Credential Creation success
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CredentialCreationResponse'
-    ApplicationCreation:
-      description: Application Creation success
+          examples:
+            ApiKeyCredentialCreationResponse:
+              $ref: '#/components/examples/ApiKeyCredentialCreationResponseExample'
+            ClientSecretCredentialCreationResponse:
+              $ref: '#/components/examples/AzureClientSecretCredentialCreationResponseExample'
+    PostCredentials403Response:
+      description: Error returned when the number of credentials exceed the quota.
       content:
-        application/json:
+        application/problem+json:
           schema:
-            $ref: '#/components/schemas/ApplicationCreationResponse'
-    ApplicationUpdate:
-      description: Application Update success
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApplicationUpdateResponse'
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            PostCredentials403Example:
+              $ref: '#/components/examples/PostCredentials403Example'
     GetGrantedScopesProductVersion:
       description: Get granted scopes response.
       content:
@@ -4104,55 +4409,12 @@ components:
           examples:
             GetGrantedScopesProductVersion422Example:
               $ref: '#/components/examples/GetGrantedScopesProductVersion422Example'
-    PostCredentials403Response:
-      description: Error returned when the number of credentials exceed the quota.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenError'
-          examples:
-            PostCredentials403Example:
-              $ref: '#/components/examples/PostCredentials403Example'
     ListAuthStrategies:
       description: List auth strategies response
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ListAuthStrategiesResponse'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-          examples:
-            400-Invalid-Token:
-              $ref: '#/components/examples/400-Invalid-Token'
-            400-Login-Failed:
-              $ref: '#/components/examples/400-Login-Failed'
-    NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/NotFoundError'
-          examples:
-            NotFoundExample:
-              $ref: '#/components/examples/NotFoundExample'
-            404-Token-Not-Found:
-              $ref: '#/components/examples/404-Token-Not-Found'
-    Conflict:
-      description: Conflict
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConflictError'
-    TooManyRequests:
-      description: Too Many Requests
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/TooManyRequestsError'
     Gone:
       description: Gone
       content:
@@ -4351,7 +4613,7 @@ tags:
   - name: versions
     description: The API for Konnect Portal Product Versions.
   - name: documentation
-    description: The API for Konnect Portal Product Documentation.
+    description: The API for Konnect Portal API Documentation.
   - name: registrations
     description: |
       The API for Konnect Portal application registrations. If the portal is public
